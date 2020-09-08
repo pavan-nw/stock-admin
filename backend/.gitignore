@@ -1,4 +1,12 @@
-# Default ignored files
-/shelf/
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+.idea
+*.iws
+*.iml
+*.ipr
+
 /.idea/
 /target/
