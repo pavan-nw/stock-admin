@@ -1,4 +1,4 @@
-## Stock Admin Front End Application
+## Stock Administrator - Front End Project
 
 ##### This project is bootstrapped using create-react-app and contains react, redux and typescript.
 

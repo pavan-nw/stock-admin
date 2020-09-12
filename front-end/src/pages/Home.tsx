@@ -190,8 +190,8 @@ export const Home: React.FC = () => {
             paginatorRight={paginatorRight}
           >
             <Column field="code" header="Code" sortable />
-            <Column field="name" header="Name" sortable />
-            <Column field="category" header="Category" sortable />
+            <Column field="name" header="Name" sortable filter />
+            <Column field="category" header="Category" sortable filter />
             <Column field="quantity" header="Quantity" sortable />
           </DataTable>
         </Card>

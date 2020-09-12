@@ -1,43 +1,45 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-
-import './navbar.css'
 import { Button } from 'primereact/button'
+import { Toolbar } from 'primereact/toolbar'
+import './navbar.css'
 
-export const Navbar: React.FC = () => (
-  <div className="layout-topbar">
+const leftContents = () => (
+  <>
     <div className="p-d-flex p-jc-between">
       <div className="p-d-flex p-ai-center">
-        <div className="p-mr-2 layout-topbar-title">
-          Stock Admin Application
-        </div>
-      </div>
-      <div className="p-d-flex p-ai-center">
-        <div className="p-mr-2">
-          <NavLink className="link-text" to="/">
-            <Button
-              className="p-button-text p-button-plain link-button"
-              label="Home"
-            />
-          </NavLink>
-        </div>
-        <div className="p-mr-2">
-          <NavLink className="link-text" to="/counter">
-            <Button
-              className="p-button-text p-button-plain link-button"
-              label="Counter"
-            />
-          </NavLink>
-        </div>
-        <div className="p-mr-2">
-          <NavLink className="link-text" to="/">
-            <Button
-              className="p-button-text p-button-plain link-button"
-              label="Logout"
-            />
-          </NavLink>
-        </div>
+        <Button className="p-mr-2" icon="pi pi-bars" />
+        <div className="p-mr-2 layout-topbar-title">Stock Administrator</div>
       </div>
     </div>
-  </div>
+  </>
+)
+
+const rightContents = () => (
+  <>
+    <div className="p-d-flex p-ai-center">
+      <div className="p-mr-2">
+        <NavLink className="link-text" to="/">
+          <Button className="p-button-text" label="Home" />
+        </NavLink>
+      </div>
+      <div className="p-mr-2">
+        <NavLink className="link-text" to="/counter">
+          <Button className="p-button-text" label="Counter" />
+        </NavLink>
+      </div>
+      <div className="p-mr-2">
+        <NavLink className="link-text" to="/about">
+          <Button className="p-button-text" label="Logout" />
+        </NavLink>
+      </div>
+    </div>
+  </>
+)
+export const Navbar: React.FC = () => (
+  <Toolbar
+    className="layout-topbar"
+    left={leftContents}
+    right={rightContents}
+  />
 )
