@@ -1,4 +1,4 @@
-# Stock Administrator Application
+# Stock Administrator - Backend Project
 #### This project is bootstrapped with spring boot initializer, runs with Java 8 and maven installed
 
 ### Steps to set up this project
