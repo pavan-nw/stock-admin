@@ -1,20 +1,45 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import { Button } from 'primereact/button'
+import { Toolbar } from 'primereact/toolbar'
+import './navbar.css'
 
-export const Navbar: React.FC = () => (
-  <nav>
-    <div className="nav-wrapper cyan darken-1 px1">
-      <NavLink to="/" className="brand-logo">
-        Redux + TypeScript
-      </NavLink>
-      <ul className="right hide-on-med-and-down">
-        <li cy-data="home-nav-link">
-          <NavLink to="/">Home</NavLink>
-        </li>
-        <li>
-          <NavLink to="/about">About</NavLink>
-        </li>
-      </ul>
+const leftContents = () => (
+  <>
+    <div className="p-d-flex p-jc-between">
+      <div className="p-d-flex p-ai-center">
+        <Button className="p-mr-2" icon="pi pi-bars" />
+        <div className="p-mr-2 layout-topbar-title">Stock Administrator</div>
+      </div>
     </div>
-  </nav>
+  </>
+)
+
+const rightContents = () => (
+  <>
+    <div className="p-d-flex p-ai-center">
+      <div className="p-mr-2">
+        <NavLink className="link-text" to="/">
+          <Button className="p-button-text" label="Home" />
+        </NavLink>
+      </div>
+      <div className="p-mr-2">
+        <NavLink className="link-text" to="/counter">
+          <Button className="p-button-text" label="Counter" />
+        </NavLink>
+      </div>
+      <div className="p-mr-2">
+        <NavLink className="link-text" to="/about">
+          <Button className="p-button-text" label="Logout" />
+        </NavLink>
+      </div>
+    </div>
+  </>
+)
+export const Navbar: React.FC = () => (
+  <Toolbar
+    className="layout-topbar"
+    left={leftContents}
+    right={rightContents}
+  />
 )

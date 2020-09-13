@@ -1,15 +1,20 @@
-This project is bootstrapped using create-react-app and conatins react, redux and typescript.
+## Stock Administrator - Front End Project
 
-Prerequisites:- 
+##### This project is bootstrapped using create-react-app and contains react, redux and typescript.
+
+### Prerequisites 
 1. Node
 2. Npm 
 3. React
 
-Setup Instructions:-
+### Setup Instructions
 
-1. Run the command npm install. 
-2. Run the command npm start.
+1. Run the command `npm install`. 
+2. Run the command `npm start`.
 
-To build:-
+### Run Tests
+Run the command `npm run test`
 
-Run the command npm run build. 
+### To build
+
+Run the command `npm run build`. 
