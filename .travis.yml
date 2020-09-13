@@ -1,2 +1,4 @@
 language: java
 before_script: cd ./backend
+script: mvn package -DskipTests
+
