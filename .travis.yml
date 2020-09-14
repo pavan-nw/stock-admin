@@ -1,18 +1,13 @@
-matrix:
-  include:
-    - language: node.js
-      node_js: "12.0"
-      before_script:
-        - cd ./front-end
-      script:
-        - npm install
-        - npm run build
-        
-    - language: java
-      before_script:
-        - cp -R ./front-end/build/ ./backend/src/main/resources/static/
-        - cd ./backend
-      script: mvn package -DskipTests
+language: java
+before_install: 
+  - nvm install 12.0
+  - cd ./front-end
+  - npm install
+  - npm run build
+before_script:
+  - cp -R ./front-end/build/ ./backend/src/main/resources/static/
+  - cd ./backend
+script: mvn package -DskipTests
 
 
 
