@@ -1,4 +1,6 @@
 # Stock Administrator
+[![Build Status](https://travis-ci.com/pavan-nw/stock-admin.svg?branch=master)](https://travis-ci.com/pavan-nw/stock-admin)
+
 Stock Administrator is application built with spring boot, mongo db, react, redux and typescript which enables user to keep track of daily stocks coming into their shop and query the the stocks inforrmation for given date.
 
 Project structure consists of
