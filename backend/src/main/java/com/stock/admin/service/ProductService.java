@@ -1,9 +1,9 @@
-package service;
+package com.stock.admin.service;
 
-import model.Product;
+import com.stock.admin.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.ProductsRepository;
+import com.stock.admin.repository.ProductsRepository;
 
 import java.util.List;
 

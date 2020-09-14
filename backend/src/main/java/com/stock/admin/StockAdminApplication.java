@@ -1,13 +1,13 @@
 
 package com.stock.admin;
-import model.Product;
+import com.stock.admin.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import service.ProductService;
+import com.stock.admin.service.ProductService;
 
 @SpringBootApplication
 @RestController
