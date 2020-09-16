@@ -5,6 +5,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
+import java.util.Objects;
+
 @Document("shops")
 public class Shop {
         @Id
@@ -15,8 +17,15 @@ public class Shop {
     @Indexed(name = "shopName")
         private String name;
         private String location;
-        private Date createDate;
-        private Date upateDate;
+        private Date createdAt;
+        private Date upatedAt;
+
+
+    public Shop(String code, String name, String location) {
+        this.code = code;
+        this.name = name;
+        this.location = location;
+    }
 
     public String getId() {
         return id;
@@ -50,19 +59,49 @@ public class Shop {
         this.location = location;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Date getUpateDate() {
-        return upateDate;
+    public Date getUpatedAt() {
+        return upatedAt;
     }
 
-    public void setUpateDate(Date upateDate) {
-        this.upateDate = upateDate;
+    public void setUpatedAt(Date upatedAt) {
+        this.upatedAt = upatedAt;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o)
+            return true;
+        if (!(o instanceof Product))
+            return false;
+        Shop shop = (Shop) o;
+        return Objects.equals(this.id, shop.id) && Objects.equals(this.name, shop.name)
+                && Objects.equals(this.code
+                , shop.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.name, this.code);
+    }
+
+    @Override
+    public String toString() {
+        return "Shop{" + "code=" + this.code +
+                ",name='" + this.name + '\'' +
+                ",location='" + this.location + '\'' +
+                ",createdAt='" + this.createdAt + '\''+
+                ",upatedAt='" + this.upatedAt + '\''+
+                '}';
+    }
+
 }

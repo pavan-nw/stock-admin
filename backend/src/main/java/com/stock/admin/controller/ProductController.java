@@ -17,7 +17,7 @@ public class ProductController {
     private ProductService productService;
 
     @RequestMapping(method = RequestMethod.GET,produces = "application/json")
-    public List<Product> getAll(){
+    public List<Product> getAllProducts(){
         List<Product> products=productService.getAll();
         return products;
     }
