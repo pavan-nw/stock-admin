@@ -23,10 +23,7 @@ public class StockAdminApplication {
 	@GetMapping("/hello")
 	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
 
-		//return String.format("Hello %s!", name);
-		Product product=productService.create("prod001","productName001","shopCode");
-		return product.toString();
-
+		return String.format("Hello %s!", name);
 	}
 
 }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.stock.admin.repository.ProductsRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -13,8 +14,8 @@ public class ProductService {
     private ProductsRepository productsRepository;
 
     //create operation
-    public Product create(String prodCode,String name, String shopCode){
-        return productsRepository.save(new Product(prodCode,name,shopCode));
+    public Product create(String prodCode, String name, String shopCode,Date createdAt,Date updatedAt){
+        return productsRepository.save(new Product(prodCode,name,shopCode,createdAt,updatedAt));
     }
 
     //Retrieve Operation

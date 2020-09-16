@@ -5,8 +5,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
-@Document("shopProfile")
-public class ShopProfile {
+@Document("shops")
+public class Shop {
         @Id
         private String id;
 
