@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { actionTypes, selectors } from '../../features/counter';
+import { selectors } from '../../features/counter/selectors';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import './counter.css';
@@ -9,13 +9,14 @@ import {
     incrementIfOdd,
 } from '../../features/counter/counterThunk';
 import { Toast, ToastMessage } from 'primereact/toast';
+import { decrement, increment } from '../../features/counter/actions';
 
 const Counter: React.FC = () => {
     const count = useSelector(selectors.getCountValue);
     const show = useSelector(selectors.getShow);
     const toast = useRef<Toast>(null);
     const toastMessage: ToastMessage = {
-        severity: 'error',
+        severity: 'success',
         detail: 'Count is ' + count,
         summary: 'Operation Completed',
     };
@@ -32,16 +33,12 @@ const Counter: React.FC = () => {
         <div>
             <Button
                 className="p-button-raised p-mr-2 p-mb-2"
-                onClick={() =>
-                    dispatch({ type: actionTypes.DECREMENT_COUNTER })
-                }
+                onClick={() => dispatch(decrement())}
                 label="Decrement"
             />
             <Button
                 className="p-button-raised p-mr-2 p-mb-2"
-                onClick={() =>
-                    dispatch({ type: actionTypes.INCREMENT_COUNTER })
-                }
+                onClick={() => dispatch(increment())}
                 label="Increment"
             />
             <Button

@@ -1,7 +1,7 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { devToolsEnhancer } from 'redux-devtools-extension';
-import { CounterReducer } from './features/counter';
+import CounterReducer from './features/counter/counterReducer';
 
 /* Create root reducer, containing all features of the application */
 const rootReducer = combineReducers({

@@ -1,4 +1,5 @@
-import { INCREMENT_COUNTER, DECREMENT_COUNTER } from './actionTypes';
+export const INCREMENT_COUNTER = 'INCREMENT_COUNTER';
+export const DECREMENT_COUNTER = 'DECREMENT_COUNTER';
 
 export interface IncrementCounterAction {
     type: typeof INCREMENT_COUNTER;

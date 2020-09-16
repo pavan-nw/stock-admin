@@ -1,23 +1,6 @@
-import { DECREMENT_COUNTER, INCREMENT_COUNTER } from './actionTypes';
-import {
-    CounterActionTypes,
-    DecrementCounterAction,
-    IncrementCounterAction,
-    SystemState,
-} from './types';
+import { CounterActionTypes, SystemState } from './types';
 import { ThunkAction } from 'redux-thunk';
-
-const increment = (): IncrementCounterAction => {
-    return {
-        type: INCREMENT_COUNTER,
-    };
-};
-
-const decrement = (): DecrementCounterAction => {
-    return {
-        type: DECREMENT_COUNTER,
-    };
-};
+import { decrement, increment } from './actions';
 
 export const incrementIfOdd = (): ThunkAction<
     void,

@@ -3,8 +3,11 @@ import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 import configureStore from 'redux-mock-store';
 
-import { actionTypes } from '../../features/counter';
 import Counter from './Counter';
+import {
+    DECREMENT_COUNTER,
+    INCREMENT_COUNTER,
+} from '../../features/counter/types';
 
 describe('Counter', () => {
     const mockStore = configureStore([]);
@@ -48,7 +51,7 @@ describe('Counter', () => {
         expect(store.dispatch).toBeCalledTimes(1);
 
         expect(store.dispatch).toBeCalledWith({
-            type: actionTypes.INCREMENT_COUNTER,
+            type: INCREMENT_COUNTER,
         });
     });
 
@@ -67,7 +70,7 @@ describe('Counter', () => {
         expect(store.dispatch).toHaveBeenCalledTimes(1);
 
         expect(store.dispatch).toHaveBeenCalledWith({
-            type: actionTypes.DECREMENT_COUNTER,
+            type: DECREMENT_COUNTER,
         });
     });
 });

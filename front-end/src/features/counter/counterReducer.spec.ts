@@ -6,10 +6,12 @@ describe('features > counter > counterReducer', () => {
     it(`increments value, if ${INCREMENT_COUNTER} action is provided`, () => {
         const initialState = {
             value: 0,
+            show: false,
         };
 
         const expectedState = {
             value: 1,
+            show: true,
         };
 
         const action: CounterActionTypes = {
@@ -22,10 +24,12 @@ describe('features > counter > counterReducer', () => {
     it(`increments value, if ${DECREMENT_COUNTER} action is provided`, () => {
         const initialState = {
             value: 0,
+            show: false,
         };
 
         const expectedState = {
             value: -1,
+            show: false,
         };
 
         const action: CounterActionTypes = {
