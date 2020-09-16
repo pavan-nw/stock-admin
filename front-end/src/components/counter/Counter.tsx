@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectors } from '../../features/counter/selectors';
+import { getCountValue } from '../../features/counter/selectors';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import './counter.css';
@@ -8,27 +8,11 @@ import {
     decrementIfOdd,
     incrementIfOdd,
 } from '../../features/counter/counterThunk';
-import { Toast, ToastMessage } from 'primereact/toast';
 import { decrement, increment } from '../../features/counter/actions';
 
 const Counter: React.FC = () => {
-    const count = useSelector(selectors.getCountValue);
-    const show = useSelector(selectors.getShow);
-    const toast = useRef<Toast>(null);
-    const toastMessage: ToastMessage = {
-        severity: 'success',
-        detail: 'Count is ' + count,
-        summary: 'Operation Completed',
-    };
+    const count = useSelector(getCountValue);
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (show) {
-            // @ts-ignore
-            toast.current.show(toastMessage);
-        }
-    });
-
     const footer = (
         <div>
             <Button
@@ -59,7 +43,6 @@ const Counter: React.FC = () => {
     );
     return (
         <div className="p-col-12">
-            <Toast ref={toast} />
             <div className="p-col-6 p-offset-3">
                 <Card title="Counter" footer={footer}>
                     <h4>

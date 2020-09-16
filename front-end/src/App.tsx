@@ -1,20 +1,23 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { Navbar } from './components/Navbar';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Navbar } from './components/common/Navbar';
 import { Home } from './pages/Home';
-import Counter from './components/counter';
+import Counter from './components/counter/Counter';
 import { About } from './pages/About';
-
 import 'primereact/resources/themes/saga-green/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import './app.css';
+import { ToastWrapper } from './components/common/ToastWrapper';
+import { SpinnerDialog } from './components/common/SpinnerDialog';
 
 const App: React.FC = () => {
     return (
         <BrowserRouter>
             <Navbar />
+            <ToastWrapper />
+            <SpinnerDialog />
             <div className="p-grid layout-main-content">
                 <Switch>
                     <Route path="/" component={Home} exact />

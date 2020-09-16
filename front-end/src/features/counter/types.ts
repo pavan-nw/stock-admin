@@ -16,6 +16,5 @@ export type CounterActionTypes =
 export interface SystemState {
     count: {
         value: number;
-        show: false;
     };
 }
