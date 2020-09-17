@@ -1,3 +1,3 @@
-import { SystemState } from './types'
+import { SystemState } from './types';
 
-export const getCountValue = (state: SystemState) => state.count.value
+export const getCountValue = (state: SystemState) => state.count.value;
