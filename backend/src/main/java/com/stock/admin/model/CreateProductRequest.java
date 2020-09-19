@@ -4,7 +4,10 @@ package com.stock.admin.model;
  * The type Create product request.
  */
 public class CreateProductRequest extends Request {
-    public static String type="product";
+    /**
+     * The constant type.
+     */
+    public static String type = "product";
 
     private Product product;
 

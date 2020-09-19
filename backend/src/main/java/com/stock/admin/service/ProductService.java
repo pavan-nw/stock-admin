@@ -17,7 +17,13 @@ public class ProductService {
     private ProductsRepository productsRepository;
 
 
-    //create operation
+    /**
+     * Create product.
+     *
+     * @param createProductRequest the create product request
+     * @return the product
+     */
+//create operation
     public Product create(CreateProductRequest createProductRequest) {
         return productsRepository.save(createProductRequest.getProduct());
     }

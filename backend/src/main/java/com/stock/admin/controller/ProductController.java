@@ -26,17 +26,24 @@ public class ProductController {
      * @return the all products
      */
     @RequestMapping(method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    @ResponseBody
     public List<Product> getAllProducts() {
         List<Product> products = productService.getAll();
         return products;
     }
 
 
+    /**
+     * Add product product response.
+     *
+     * @param createProductRequest the create product request
+     * @return the product response
+     */
     @RequestMapping(method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public ProductResponse addProduct(@RequestBody CreateProductRequest createProductRequest) {
         Product addedProduct = productService.create(createProductRequest);
-        ProductResponse productResponseBody=new ProductResponse();
+        ProductResponse productResponseBody = new ProductResponse();
         productResponseBody.setPayload(addedProduct);
         productResponseBody.setStatus(Response.ResponseStatus.SUCCESS);
         return productResponseBody;
