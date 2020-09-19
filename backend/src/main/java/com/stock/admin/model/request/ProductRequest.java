@@ -5,7 +5,7 @@ import com.stock.admin.model.entity.Product;
 /**
  * The type Create product request.
  */
-public class CreateProductRequest extends Request {
+public class ProductRequest extends Request {
     /**
      * The constant type.
      */

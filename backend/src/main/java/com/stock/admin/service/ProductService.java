@@ -1,7 +1,7 @@
 package com.stock.admin.service;
 
 import com.stock.admin.model.entity.Product;
-import com.stock.admin.model.request.CreateProductRequest;
+import com.stock.admin.model.request.ProductRequest;
 import com.stock.admin.repository.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +20,12 @@ public class ProductService {
     /**
      * Create product.
      *
-     * @param createProductRequest the create product request
+     * @param productRequest the create product request
      * @return the product
      */
 //create operation
-    public Product create(CreateProductRequest createProductRequest) {
-        return productsRepository.save(createProductRequest.getProduct());
+    public Product create(ProductRequest productRequest) {
+        return productsRepository.save(productRequest.getProduct());
     }
 
     /**
@@ -38,30 +38,43 @@ public class ProductService {
         return productsRepository.findAll();
     }
 
-    /**
-     * Gets by name.
-     *
-     * @param productName the product name
-     * @return the by name
-     */
-    public Product getByName(String productName) {
-        return productsRepository.findByName(productName);
-    }
 
     /**
-     * Update product.
+     * Gets by product id.
      *
-     * @param prodCode the prod code
-     * @param prodName the prod name
+     * @param productId the product id
+     * @return the by product id
+     */
+    public Product getByProductId(String productId) {
+        return productsRepository.findByCode(productId);
+    }
+
+
+    /**
+     * Gets all products by shop id.
+     *
      * @param shopCode the shop code
+     * @return the all products by shop id
+     */
+    public List<Product> getAllProductsByShopId(String shopCode) {
+        return productsRepository.findByShopCode(shopCode);
+    }
+
+
+    /**
+     * Update by product id product.
+     *
+     * @param prodCode   the prod code
+     * @param newProduct the new product
      * @return the product
      */
 //Update operation
-    public Product update(String prodCode, String prodName, String shopCode) {
-        Product prod = productsRepository.findByCode(prodCode);
-        prod.setName(prodName);
-        prod.setShopCode(shopCode);
-        return productsRepository.save(prod);
+    public Product updateByProductId(String prodCode, Product newProduct) {
+        Product product = productsRepository.findByCode(prodCode);
+        product.setName(newProduct.getName());
+        product.setPackaging(newProduct.getPackaging());
+        return productsRepository.save(product);
+
     }
 
     /**
