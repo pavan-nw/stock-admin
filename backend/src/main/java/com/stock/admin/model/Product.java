@@ -10,9 +10,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The type Product.
+ */
 @Document(collection = "products")
-public class Product {
-    private String type="product";
+public class Product implements APIPayload {
+    private String type = "product";
     @Id
     private String id;
     private String code; //yet to decide on the data type of it
@@ -24,80 +27,169 @@ public class Product {
     private Date createdAt;
 
     @LastModifiedDate
-    private Date upatedAt;
+    private Date updatedAt;
 
     //@DBRef
-    private List packaging;
+    private String packaging;
     private List productType;
 
-    public Product(String code, String name, String shopCode, Date createdAt,Date upatedAt) {
+    /**
+     * Instantiates a new Product.
+     *
+     * @param code      the code
+     * @param name      the name
+     * @param shopCode  the shop code
+     * @param createdAt the created at
+     * @param updatedAt the upated at
+     */
+    public Product(String code, String name, String shopCode, Date createdAt, Date updatedAt) {
         this.code = code;
         this.name = name;
         this.shopCode = shopCode;
-        this.createdAt= createdAt;
-        this.upatedAt = upatedAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Gets code.
+     *
+     * @return the code
+     */
     public String getCode() {
         return code;
     }
 
+    /**
+     * Sets code.
+     *
+     * @param code the code
+     */
     public void setCode(String code) {
         this.code = code;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets shop code.
+     *
+     * @return the shop code
+     */
     public String getShopCode() {
         return shopCode;
     }
 
+    /**
+     * Sets shop code.
+     *
+     * @param shopCode the shop code
+     */
     public void setShopCode(String shopCode) {
         this.shopCode = shopCode;
     }
 
+    /**
+     * Gets created at.
+     *
+     * @return the created at
+     */
     public Date getCreatedAt() {
         return createdAt;
     }
 
+    /**
+     * Sets created at.
+     *
+     * @param createdAt the created at
+     */
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpatedAt() {
-        return upatedAt;
+    /**
+     * Gets upated at.
+     *
+     * @return the upated at
+     */
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpatedAt(Date upatedAt) {
-        this.upatedAt = upatedAt;
+    /**
+     * Sets upated at.
+     *
+     * @param updatedAt the upated at
+     */
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public List getPackaging() {
+    /**
+     * Gets packaging.
+     *
+     * @return the packaging
+     */
+    public String getPackaging() {
         return packaging;
     }
 
-    public void setPackaging(List packaging) {
+    /**
+     * Sets packaging.
+     *
+     * @param packaging the packaging
+     */
+    public void setPackaging(String packaging) {
         this.packaging = packaging;
     }
 
+    /**
+     * Gets product type.
+     *
+     * @return the product type
+     */
     public List getProductType() {
         return productType;
     }
 
+    /**
+     * Sets product type.
+     *
+     * @param productType the product type
+     */
     public void setProductType(List productType) {
         this.productType = productType;
     }
@@ -124,12 +216,12 @@ public class Product {
     @Override
     public String toString() {
         return "Product{" + "code=" + this.code +
-                        ",name='" + this.name + '\'' +
-                        ",shopCode='" + this.shopCode + '\'' +
-                        ",packaging='" + this.packaging + '\''+
-                        ",productType='" + this.productType + '\''+
-                        ",createdAt='" + this.createdAt + '\''+
-                        ",upatedAt='" + this.upatedAt + '\''+
+                ",name='" + this.name + '\'' +
+                ",shopCode='" + this.shopCode + '\'' +
+                ",packaging='" + this.packaging + '\'' +
+                ",productType='" + this.productType + '\'' +
+                ",createdAt='" + this.createdAt + '\'' +
+                ",upatedAt='" + this.updatedAt + '\'' +
                 '}';
     }
 }

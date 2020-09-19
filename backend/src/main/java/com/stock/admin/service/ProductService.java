@@ -1,43 +1,71 @@
 package com.stock.admin.service;
 
+import com.stock.admin.model.CreateProductRequest;
 import com.stock.admin.model.Product;
+import com.stock.admin.repository.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.stock.admin.repository.ProductsRepository;
 
-import java.util.Date;
 import java.util.List;
 
+/**
+ * The type Product service.
+ */
 @Service
 public class ProductService {
     @Autowired
     private ProductsRepository productsRepository;
 
+
     //create operation
-    public Product create(String prodCode, String name, String shopCode,Date createdAt,Date updatedAt){
-        return productsRepository.save(new Product(prodCode,name,shopCode,createdAt,updatedAt));
+    public Product create(CreateProductRequest createProductRequest) {
+        return productsRepository.save(createProductRequest.getProduct());
     }
 
-    //Retrieve Operation
-    public List<Product> getAll(){
+    /**
+     * Gets all.
+     *
+     * @return the all
+     */
+//Retrieve Operation
+    public List<Product> getAll() {
         return productsRepository.findAll();
     }
 
-    public Product getByName(String productName){
+    /**
+     * Gets by name.
+     *
+     * @param productName the product name
+     * @return the by name
+     */
+    public Product getByName(String productName) {
         return productsRepository.findByName(productName);
     }
 
-    //Update operation
-    public Product update(String prodCode,String prodName, String shopCode){
-        Product prod=productsRepository.findByCode(prodCode);
+    /**
+     * Update product.
+     *
+     * @param prodCode the prod code
+     * @param prodName the prod name
+     * @param shopCode the shop code
+     * @return the product
+     */
+//Update operation
+    public Product update(String prodCode, String prodName, String shopCode) {
+        Product prod = productsRepository.findByCode(prodCode);
         prod.setName(prodName);
         prod.setShopCode(shopCode);
         return productsRepository.save(prod);
     }
 
-    //Delete operation
-    public void delete(String prodName){
-        Product prod=productsRepository.findByName(prodName);
+    /**
+     * Delete.
+     *
+     * @param prodName the prod name
+     */
+//Delete operation
+    public void delete(String prodName) {
+        Product prod = productsRepository.findByName(prodName);
         productsRepository.delete(prod);
 
     }

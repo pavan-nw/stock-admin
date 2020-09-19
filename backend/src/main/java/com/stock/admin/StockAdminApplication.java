@@ -1,30 +1,39 @@
-
 package com.stock.admin;
-import com.stock.admin.model.Product;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.stock.admin.service.ProductService;
 
+/**
+ * The type Stock admin application.
+ */
 @SpringBootApplication
 @RestController
 public class StockAdminApplication {
 
-	@Autowired
-	private ProductService productService;
 
-	public static void main(String[] args) {
-		SpringApplication.run(StockAdminApplication.class, args);
-	}
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(StockAdminApplication.class, args);
+    }
 
-	@GetMapping("/hello")
-	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
+    /**
+     * Hello string.
+     *
+     * @param name the name
+     * @return the string
+     */
+    @GetMapping("/hello")
+    public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
 
-		return String.format("Hello %s!", name);
-	}
+        return String.format("Hello %s!", name);
+    }
 
 }
             
