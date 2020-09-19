@@ -1,6 +1,6 @@
 package com.stock.admin.repository;
 
-import com.stock.admin.model.Shop;
+import com.stock.admin.model.entity.Shop;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**

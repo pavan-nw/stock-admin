@@ -1,4 +1,4 @@
-package com.stock.admin.model;
+package com.stock.admin.model.request;
 
 /**
  * The type Request.

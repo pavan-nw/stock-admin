@@ -1,7 +1,7 @@
 package com.stock.admin.controller;
 
 
-import com.stock.admin.model.Shop;
+import com.stock.admin.model.entity.Shop;
 import com.stock.admin.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

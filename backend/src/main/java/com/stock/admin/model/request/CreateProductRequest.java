@@ -1,4 +1,6 @@
-package com.stock.admin.model;
+package com.stock.admin.model.request;
+
+import com.stock.admin.model.entity.Product;
 
 /**
  * The type Create product request.

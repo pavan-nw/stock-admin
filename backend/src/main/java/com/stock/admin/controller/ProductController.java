@@ -1,9 +1,9 @@
 package com.stock.admin.controller;
 
-import com.stock.admin.model.CreateProductRequest;
-import com.stock.admin.model.Product;
-import com.stock.admin.model.ProductResponse;
-import com.stock.admin.model.Response;
+import com.stock.admin.model.entity.Product;
+import com.stock.admin.model.request.CreateProductRequest;
+import com.stock.admin.model.response.ProductResponse;
+import com.stock.admin.model.response.Response;
 import com.stock.admin.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,7 @@
 package com.stock.admin.service;
 
-import com.stock.admin.model.CreateProductRequest;
-import com.stock.admin.model.Product;
+import com.stock.admin.model.entity.Product;
+import com.stock.admin.model.request.CreateProductRequest;
 import com.stock.admin.repository.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

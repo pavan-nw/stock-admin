@@ -1,4 +1,4 @@
-package com.stock.admin.model;
+package com.stock.admin.model.response;
 
 /**
  * The type Error response.
