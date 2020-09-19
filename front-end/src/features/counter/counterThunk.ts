@@ -20,7 +20,7 @@ export const incrementIfOdd = (): ThunkAction<
     if (count.value % 2 === 0) {
         return;
     }
-    // dispatch(showSpinnerDialog('Loading...'));
+    dispatch(showSpinnerDialog('Loading long long message...'));
     // console.log('fetching todos: ');
     // await fetch('https://jsonplaceholder.typicode.com/todos/1')
     //     .then((response) => response.json())
@@ -28,7 +28,7 @@ export const incrementIfOdd = (): ThunkAction<
 
     setTimeout(() => {
         dispatch(increment());
-        // dispatch(hideSpinnerDialog());
+        dispatch(hideSpinnerDialog());
     }, 5000);
 
     dispatch(showToast('Display Summary', 'Count is ' + count.value));

@@ -9,23 +9,23 @@ export const SpinnerDialog: React.FC = () => {
     return (
         <Dialog
             closable={false}
-            style={{ width: '15vw' }}
+            style={{ width: '25vw' }}
             visible={spinnerDialogData.show}
             onHide={() => {}}
         >
-            <div className="p-col-12">
-                <div className="p-col-6 p-offset-3">
-                    <div className="p-d-flex p-dir-col">
-                        <p className="p-ml-auto" style={{ fontWeight: 'bold' }}>
-                            {spinnerDialogData.message}
-                        </p>
-                        <ProgressSpinner
-                            className="p-ml-auto"
-                            style={{ width: '50px', height: '50px' }}
-                            strokeWidth="8"
-                            fill="#EEEEEE"
-                        />
-                    </div>
+            <div className="p-grid">
+                <div className="p-col-2">
+                    <ProgressSpinner
+                        className="p-mr-2"
+                        style={{ width: '50px', height: '50px' }}
+                        strokeWidth="8"
+                        fill="#EEEEEE"
+                    />
+                </div>
+                <div className="p-col-10">
+                    <p style={{ fontWeight: 'bold' }}>
+                        {spinnerDialogData.message}
+                    </p>
                 </div>
             </div>
         </Dialog>

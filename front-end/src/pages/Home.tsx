@@ -166,8 +166,8 @@ export const Home: React.FC = () => {
     );
 
     return (
-        <div className="p-col-12">
-            <div className="p-col-6 p-offset-3">
+        <div className="p-lg-12 p-md-12 p-sm-12">
+            <div className="p-lg-10 p-md-12 p-sm-12 p-lg-offset-1">
                 <Card title="Stock Admin Home">
                     <p>
                         This is cool home page of stock admin application, built
@@ -177,7 +177,7 @@ export const Home: React.FC = () => {
                     </p>
                 </Card>
             </div>
-            <div className="p-col-6 p-offset-3">
+            <div className="p-lg-10 p-md-12 p-sm-12 p-lg-offset-1">
                 <Card title="Sample Datatable">
                     <DataTable
                         value={products}

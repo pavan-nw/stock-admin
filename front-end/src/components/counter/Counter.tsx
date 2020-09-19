@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getCountValue } from '../../features/counter/selectors';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
-import './counter.css';
 import {
     decrementIfOdd,
     incrementIfOdd,
@@ -42,8 +41,8 @@ const Counter: React.FC = () => {
         </div>
     );
     return (
-        <div className="p-col-12">
-            <div className="p-col-6 p-offset-3">
+        <div className="p-lg-12 p-md-12 p-sm-12">
+            <div className="p-lg-10 p-md-12 p-sm-12 p-lg-offset-1">
                 <Card title="Counter" footer={footer}>
                     <h4>
                         Counter: <strong>{count}</strong>

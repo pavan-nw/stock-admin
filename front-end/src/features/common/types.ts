@@ -29,14 +29,14 @@ export type CommonActionTypes =
     | HideSpinnerAction;
 
 export interface ToastData {
-    show: Boolean;
-    summary: String;
-    detail: String;
+    show: boolean;
+    summary: string;
+    detail: string;
 }
 
 export interface SpinnerDialogData {
     show: boolean;
-    message: String;
+    message: string;
 }
 
 export interface CommonState {
