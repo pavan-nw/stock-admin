@@ -63,7 +63,7 @@ public class ProductController {
     @RequestMapping(value = "/{productCode}", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public ProductResponse getProductsDetails(@PathVariable("productCode") String productCode) {
-        Product product = productService.getByProductId(productCode);
+        Product product = productService.getByProductCode(productCode);
         ProductResponse productResponse = new ProductResponse();
         productResponse.setStatus(Response.ResponseStatus.SUCCESS);
         productResponse.setPayload(product);
@@ -91,14 +91,14 @@ public class ProductController {
     /**
      * Modify by product by id product response.
      *
-     * @param productId      the product id
+     * @param productCode    the product code
      * @param productRequest the product request
      * @return the product response
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public ProductResponse modifyByProductById(@PathVariable("id") String productId, @Valid @RequestBody ProductRequest productRequest) {
-        Product updatedProduct = productService.updateByProductId(productId, productRequest.getProduct());
+    public ProductResponse modifyByProductById(@PathVariable("id") String productCode, @Valid @RequestBody ProductRequest productRequest) {
+        Product updatedProduct = productService.updateByProductCode(productCode, productRequest.getProduct());
         ProductResponse productResponseBody = new ProductResponse();
         productResponseBody.setPayload(updatedProduct);
         productResponseBody.setStatus(Response.ResponseStatus.SUCCESS);
@@ -109,13 +109,11 @@ public class ProductController {
     /**
      * Delete by product by id.
      *
-     * @param productId      the product id
-     * @param productRequest the product request
+     * @param productCode the product code
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @ResponseBody
-    public void deleteByProductById(@PathVariable("id") String productId, @Valid @RequestBody ProductRequest productRequest) {
-        productService.deleteByProductId(productId);
+    public void deleteByProductByCode(@PathVariable("id") String productCode) {
+        productService.deleteByProductCode(productCode);
     }
 
 }

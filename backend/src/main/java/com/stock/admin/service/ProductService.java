@@ -40,13 +40,14 @@ public class ProductService {
 
 
     /**
-     * Gets by product id.
+     * Gets by Product code.
      *
-     * @param productId the product id
-     * @return the by product id
+     * @param productCode the Product code
+     * @return the by Product code
      */
-    public Product getByProductId(String productId) {
-        return productsRepository.findByCode(productId);
+    public Product getByProductCode(String productCode) {
+        return productsRepository.findByCode(productCode);
+
     }
 
 
@@ -62,15 +63,15 @@ public class ProductService {
 
 
     /**
-     * Update by product id product.
+     * Update by Product code product.
      *
-     * @param prodCode   the prod code
-     * @param newProduct the new product
+     * @param productCode the prod code
+     * @param newProduct  the new product
      * @return the product
      */
 //Update operation
-    public Product updateByProductId(String prodCode, Product newProduct) {
-        Product product = productsRepository.findByCode(prodCode);
+    public Product updateByProductCode(String productCode, Product newProduct) {
+        Product product = productsRepository.findByCode(productCode);
         product.setName(newProduct.getName());
         product.setPackaging(newProduct.getPackaging());
         return productsRepository.save(product);
@@ -80,12 +81,12 @@ public class ProductService {
     /**
      * Delete.
      *
-     * @param prodCode the prod Code
+     * @param productCode the prod Code
      */
 //Delete operation
-    public void deleteByProductId(String prodCode) {
-        Product prod = productsRepository.findByCode(prodCode);
-        productsRepository.delete(prod);
+    public void deleteByProductCode(String productCode) {
+        Product product = productsRepository.findByCode(productCode);
+        productsRepository.delete(product);
 
     }
 }
