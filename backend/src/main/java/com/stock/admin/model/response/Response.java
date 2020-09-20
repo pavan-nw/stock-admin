@@ -7,16 +7,6 @@ public class Response {
     /**
      * The enum Response status.
      */
-    public enum ResponseStatus {
-        /**
-         * Success response status.
-         */
-        SUCCESS,
-        /**
-         * Failure response status.
-         */
-        FAILURE
-    } // Check is this th right way??
 
     private String type;
     private ResponseStatus status;

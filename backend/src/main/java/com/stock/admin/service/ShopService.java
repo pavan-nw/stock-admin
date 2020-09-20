@@ -17,17 +17,16 @@ public class ShopService {
     @Autowired
     private ShopsRepository shopsRepository;
 
+
     /**
      * Create shop.
      *
-     * @param shopCode     the shop code
-     * @param shopName     the shop name
-     * @param shopLocation the shop location
+     * @param shop the shop
      * @return the shop
      */
 //create operation
-    public Shop create(String shopCode, String shopName, String shopLocation) {
-        return shopsRepository.save(new Shop(shopCode, shopName, shopLocation));
+    public Shop create(Shop shop) {
+        return shopsRepository.save(shop);
     }
 
     /**

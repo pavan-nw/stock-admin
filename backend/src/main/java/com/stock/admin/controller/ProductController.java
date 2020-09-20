@@ -4,7 +4,7 @@ import com.stock.admin.model.entity.Product;
 import com.stock.admin.model.request.ProductRequest;
 import com.stock.admin.model.response.ProductResponse;
 import com.stock.admin.model.response.ProductsResponse;
-import com.stock.admin.model.response.Response;
+import com.stock.admin.model.response.ResponseStatus;
 import com.stock.admin.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +32,7 @@ public class ProductController {
     public ProductsResponse getAllProducts() {
         List<Product> products = productService.getAll();
         ProductsResponse productsResponse = new ProductsResponse();
-        productsResponse.setStatus(Response.ResponseStatus.SUCCESS);
+        productsResponse.setStatus(ResponseStatus.SUCCESS);
         productsResponse.setPayload(products);
         return productsResponse;
     }
@@ -49,7 +49,7 @@ public class ProductController {
     public ProductsResponse getAllProductsOfASpecificShop(@PathVariable("shopId") String shopCode) {
         List<Product> products = productService.getAllProductsByShopId(shopCode);
         ProductsResponse productsResponse = new ProductsResponse();
-        productsResponse.setStatus(Response.ResponseStatus.SUCCESS);
+        productsResponse.setStatus(ResponseStatus.SUCCESS);
         productsResponse.setPayload(products);
         return productsResponse;
     }
@@ -65,7 +65,7 @@ public class ProductController {
     public ProductResponse getProductsDetails(@PathVariable("productCode") String productCode) {
         Product product = productService.getByProductCode(productCode);
         ProductResponse productResponse = new ProductResponse();
-        productResponse.setStatus(Response.ResponseStatus.SUCCESS);
+        productResponse.setStatus(ResponseStatus.SUCCESS);
         productResponse.setPayload(product);
         return productResponse;
     }
@@ -80,10 +80,10 @@ public class ProductController {
     @RequestMapping(method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public ProductResponse addProduct(@RequestBody ProductRequest productRequest) {
-        Product addedProduct = productService.create(productRequest);
+        Product addedProduct = productService.create(productRequest.getProduct());
         ProductResponse productResponseBody = new ProductResponse();
         productResponseBody.setPayload(addedProduct);
-        productResponseBody.setStatus(Response.ResponseStatus.SUCCESS);
+        productResponseBody.setStatus(ResponseStatus.SUCCESS);
         return productResponseBody;
     }
 
@@ -101,7 +101,7 @@ public class ProductController {
         Product updatedProduct = productService.updateByProductCode(productCode, productRequest.getProduct());
         ProductResponse productResponseBody = new ProductResponse();
         productResponseBody.setPayload(updatedProduct);
-        productResponseBody.setStatus(Response.ResponseStatus.SUCCESS);
+        productResponseBody.setStatus(ResponseStatus.SUCCESS);
         return productResponseBody;
     }
 

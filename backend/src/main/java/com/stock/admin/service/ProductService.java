@@ -1,7 +1,6 @@
 package com.stock.admin.service;
 
 import com.stock.admin.model.entity.Product;
-import com.stock.admin.model.request.ProductRequest;
 import com.stock.admin.repository.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +19,12 @@ public class ProductService {
     /**
      * Create product.
      *
-     * @param productRequest the create product request
+     * @param product the create product request
      * @return the product
      */
 //create operation
-    public Product create(ProductRequest productRequest) {
-        return productsRepository.save(productRequest.getProduct());
+    public Product create(Product product) {
+        return productsRepository.save(product);
     }
 
     /**

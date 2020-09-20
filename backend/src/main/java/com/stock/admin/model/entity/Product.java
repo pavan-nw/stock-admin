@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 @Document(collection = "products")
 public class Product implements APIPayload {
-    private String type = "product";
+    private static String type = "product";
     @Id
     private String id;
     private String code; //yet to decide on the data type of it
@@ -31,7 +31,7 @@ public class Product implements APIPayload {
 
     //@DBRef
     private String packaging;
-    private List productType;
+    private ProductType productType;
 
     /**
      * Instantiates a new Product.
@@ -181,7 +181,7 @@ public class Product implements APIPayload {
      *
      * @return the product type
      */
-    public List getProductType() {
+    public ProductType getProductType() {
         return productType;
     }
 
@@ -190,7 +190,7 @@ public class Product implements APIPayload {
      *
      * @param productType the product type
      */
-    public void setProductType(List productType) {
+    public void setProductType(ProductType productType) {
         this.productType = productType;
     }
 

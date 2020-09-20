@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /**
  * The type Product type.
  */
-@Document("productType")
+@Document("productTypes")
 
 public class ProductType {
 

@@ -48,7 +48,7 @@ public class ShopController {
      */
     @RequestMapping(method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     public Shop addShop(@RequestBody Shop newShop) {
-        Shop addedShop = shopService.create(newShop.getCode(), newShop.getName(), newShop.getLocation());
+        Shop addedShop = shopService.create(newShop);
         return addedShop;
     }
 
