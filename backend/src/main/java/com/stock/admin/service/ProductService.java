@@ -80,11 +80,11 @@ public class ProductService {
     /**
      * Delete.
      *
-     * @param prodName the prod name
+     * @param prodCode the prod Code
      */
 //Delete operation
-    public void delete(String prodName) {
-        Product prod = productsRepository.findByName(prodName);
+    public void deleteByProductId(String prodCode) {
+        Product prod = productsRepository.findByCode(prodCode);
         productsRepository.delete(prod);
 
     }

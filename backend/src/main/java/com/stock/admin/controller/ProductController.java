@@ -105,4 +105,17 @@ public class ProductController {
         return productResponseBody;
     }
 
+
+    /**
+     * Delete by product by id.
+     *
+     * @param productId      the product id
+     * @param productRequest the product request
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteByProductById(@PathVariable("id") String productId, @Valid @RequestBody ProductRequest productRequest) {
+        productService.deleteByProductId(productId);
+    }
+
 }
