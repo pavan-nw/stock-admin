@@ -15,23 +15,19 @@ export const incrementIfOdd = (): ThunkAction<
     unknown,
     CounterActionTypes | CommonActionTypes
 > => async (dispatch, getState) => {
-    const { count } = getState();
-    console.log('count: ', count);
-    if (count.value % 2 === 0) {
+    const { counterState } = getState();
+    console.log('count: ', counterState);
+    if (counterState.value % 2 === 0) {
         return;
     }
     dispatch(showSpinnerDialog('Loading long long message...'));
-    // console.log('fetching todos: ');
-    // await fetch('https://jsonplaceholder.typicode.com/todos/1')
-    //     .then((response) => response.json())
-    //     .then((json) => console.log(json));
 
     setTimeout(() => {
         dispatch(increment());
         dispatch(hideSpinnerDialog());
     }, 5000);
 
-    dispatch(showToast('Display Summary', 'Count is ' + count.value));
+    dispatch(showToast('Display Summary', 'Count is ' + counterState.value));
     console.log('count after increment: ', getState());
 };
 
@@ -41,9 +37,9 @@ export const decrementIfOdd = (): ThunkAction<
     unknown,
     CounterActionTypes | CommonActionTypes
 > => async (dispatch, getState) => {
-    const { count } = getState();
-    console.log('count: ', count);
-    if (count.value % 2 === 0) {
+    const { counterState } = getState();
+    console.log('count: ', counterState);
+    if (counterState.value % 2 === 0) {
         return;
     }
     await dispatch(decrement());

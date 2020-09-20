@@ -3,14 +3,14 @@ import { showToast, hideToast } from './actions';
 import { CommonActionTypes, CommonState } from './types';
 
 export const displayToast = (
-    summary: String,
-    detail: String
+    summary: string,
+    detail: string
 ): ThunkAction<void, CommonState, unknown, CommonActionTypes> => async (
     dispatch,
     getState
 ) => {
-    const { common } = getState();
-    console.log('show: ', common.toast);
+    const { commonState } = getState();
+    console.log('show: ', commonState.toast);
     dispatch(showToast(summary, detail));
 };
 
@@ -20,7 +20,7 @@ export const clearToast = (): ThunkAction<
     unknown,
     CommonActionTypes
 > => async (dispatch, getState) => {
-    const { common } = getState();
-    console.log('show: ', common.toast);
+    const { commonState } = getState();
+    console.log('show: ', commonState.toast);
     dispatch(hideToast());
 };

@@ -40,7 +40,7 @@ export interface SpinnerDialogData {
 }
 
 export interface CommonState {
-    common: {
+    commonState: {
         toast: ToastData;
         spinnerDialog: SpinnerDialogData;
     };

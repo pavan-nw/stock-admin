@@ -9,7 +9,7 @@ import {
     ShowToastAction,
 } from './types';
 
-export const showToast = (summary: String, detail: String): ShowToastAction => {
+export const showToast = (summary: string, detail: string): ShowToastAction => {
     return {
         type: SHOW_TOAST,
         summary,
@@ -23,7 +23,7 @@ export const hideToast = (): HideToatAction => {
     };
 };
 
-export const showSpinnerDialog = (message: String): ShowSpinnerAction => {
+export const showSpinnerDialog = (message: string): ShowSpinnerAction => {
     return {
         type: SHOW_SPINNER,
         message,
