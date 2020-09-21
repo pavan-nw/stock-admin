@@ -25,29 +25,19 @@ public class ProductController {
     /**
      * Gets all products.
      *
+     * @param shopCode the shop code
      * @return the all products
      */
     @RequestMapping(method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ProductsResponse getAllProducts() {
-        List<Product> products = productService.getAll();
-        ProductsResponse productsResponse = new ProductsResponse();
-        productsResponse.setStatus(ResponseStatus.SUCCESS);
-        productsResponse.setPayload(products);
-        return productsResponse;
-    }
+    public ProductsResponse getAllProducts(@RequestParam(required = false, name = "shopCode") String shopCode) {
+        List<Product> products;
+        if (shopCode != null) {
+            products = productService.getAllProductsByShopId(shopCode);
+        } else {
+            products = productService.getAll();
+        }
 
-
-    /**
-     * Gets all products of a specific shop.
-     *
-     * @param shopCode the shop code
-     * @return the all products of a specific shop
-     */
-    @RequestMapping(value = "/shops/{shopId}", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-    @ResponseBody
-    public ProductsResponse getAllProductsOfASpecificShop(@PathVariable("shopId") String shopCode) {
-        List<Product> products = productService.getAllProductsByShopId(shopCode);
         ProductsResponse productsResponse = new ProductsResponse();
         productsResponse.setStatus(ResponseStatus.SUCCESS);
         productsResponse.setPayload(products);
