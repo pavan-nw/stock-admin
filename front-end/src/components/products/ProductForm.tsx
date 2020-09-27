@@ -7,7 +7,7 @@ import { Product } from '../../features/product/types';
 import { addProduct, editProduct } from '../../features/product/productThunk';
 import { getSelectedProduct } from '../../features/product/selectors';
 
-const ProductForm: React.FC = () => {
+export const ProductForm: React.FC = () => {
     const dispatch = useDispatch();
     const selectedProduct: Product | null = useSelector(getSelectedProduct);
 
@@ -68,6 +68,7 @@ const ProductForm: React.FC = () => {
                                 updateProductCode(event.target.value)
                             }
                             placeholder="Enter product code here."
+                            disabled={selectedProduct !== null}
                         />
                     </div>
                 </div>
@@ -122,5 +123,3 @@ const ProductForm: React.FC = () => {
         </div>
     );
 };
-
-export default ProductForm;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog } from 'primereact/dialog';
-import ProductForm from './ProductForm';
+import { ProductForm } from './ProductForm';
 import {
     selectProduct,
     toggleShowEditDialog,
@@ -8,7 +8,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { getShowEditProductDialog } from '../../features/product/selectors';
 
-const EditProductDialog: React.FC = () => {
+export const EditProductDialog: React.FC = () => {
     const dispatch = useDispatch();
     const showDialog = useSelector(getShowEditProductDialog);
     return (
@@ -27,5 +27,3 @@ const EditProductDialog: React.FC = () => {
         </Dialog>
     );
 };
-
-export default EditProductDialog;

@@ -11,13 +11,13 @@ import {
 import { Product } from '../../features/product/types';
 import { InputText } from 'primereact/inputtext';
 import './productList.css';
-import EditProductDialog from './EditProductDialog';
+import { EditProductDialog } from './EditProductDialog';
 import {
     selectProduct,
     toggleShowEditDialog,
 } from '../../features/product/actions';
 
-const ProductList: React.FC = () => {
+export const ProductList: React.FC = () => {
     const dispatch = useDispatch();
     const products: Product[] = useSelector(getProducts);
     const [globalFilter, updateGlobalFilter] = useState(null);
@@ -112,5 +112,3 @@ const ProductList: React.FC = () => {
         </div>
     );
 };
-
-export default ProductList;

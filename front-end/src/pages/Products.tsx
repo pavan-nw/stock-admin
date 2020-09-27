@@ -1,7 +1,7 @@
 import React from 'react';
 import { TabPanel, TabView } from 'primereact/tabview';
-import ProductForm from '../components/products/ProductForm';
-import ProductList from '../components/products/ProductList';
+import { ProductForm } from '../components/products/ProductForm';
+import { ProductList } from '../components/products/ProductList';
 
 export const Products: React.FC = () => {
     return (
