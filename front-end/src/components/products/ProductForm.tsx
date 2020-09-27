@@ -6,6 +6,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Product } from '../../features/product/types';
 import { addProduct, editProduct } from '../../features/product/productThunk';
 import { getSelectedProduct } from '../../features/product/selectors';
+import {
+    productCodeLabel,
+    productCodePlaceHolder,
+    productNameLabel,
+    productNamePlaceHolder,
+    productPackagingLabel,
+    productPackagingPlaceHolder,
+    saveLabel,
+} from '../../helpers/constants';
 
 export const ProductForm: React.FC = () => {
     const dispatch = useDispatch();
@@ -57,7 +66,7 @@ export const ProductForm: React.FC = () => {
             <div className="p-fluid">
                 <div className="p-field p-grid">
                     <label htmlFor="productCode" className="p-col-12 p-md-3">
-                        Product Code
+                        {productCodeLabel}
                     </label>
                     <div className="p-col-12 p-md-9">
                         <InputText
@@ -67,14 +76,14 @@ export const ProductForm: React.FC = () => {
                             onChange={(event: any) =>
                                 updateProductCode(event.target.value)
                             }
-                            placeholder="Enter product code here."
+                            placeholder={productCodePlaceHolder}
                             disabled={selectedProduct !== null}
                         />
                     </div>
                 </div>
                 <div className="p-field p-grid">
                     <label htmlFor="productName" className="p-col-12 p-md-3">
-                        Product Name
+                        {productNameLabel}
                     </label>
                     <div className="p-col-12 p-md-9">
                         <InputText
@@ -84,13 +93,13 @@ export const ProductForm: React.FC = () => {
                             onChange={(event: any) =>
                                 updateProductName(event.target.value)
                             }
-                            placeholder="Enter product name here."
+                            placeholder={productNamePlaceHolder}
                         />
                     </div>
                 </div>
                 <div className="p-field p-grid">
                     <label htmlFor="packaging" className="p-col-12 p-md-3">
-                        Packaging
+                        {productPackagingLabel}
                     </label>
                     <div className="p-col-12 p-md-9">
                         <Dropdown
@@ -101,7 +110,7 @@ export const ProductForm: React.FC = () => {
                             filter
                             filterBy="name"
                             onChange={(e) => updatePackaging(e.value)}
-                            placeholder="Select a Packaging"
+                            placeholder={productPackagingPlaceHolder}
                         />
                     </div>
                 </div>
@@ -112,7 +121,7 @@ export const ProductForm: React.FC = () => {
                                 <Button
                                     type="button"
                                     className="p-button-raised p-mr-2"
-                                    label="Save"
+                                    label={saveLabel}
                                     onClick={(event) => onSave()}
                                 />
                             </div>

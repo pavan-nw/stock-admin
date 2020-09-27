@@ -16,6 +16,14 @@ import {
     selectProduct,
     toggleShowEditDialog,
 } from '../../features/product/actions';
+import {
+    actionsLabel,
+    productCodeLabel,
+    productIdLabel,
+    productNameLabel,
+    productPackagingLabel,
+    searchLabel,
+} from '../../helpers/constants';
 
 export const ProductList: React.FC = () => {
     const dispatch = useDispatch();
@@ -75,7 +83,7 @@ export const ProductList: React.FC = () => {
                 <InputText
                     type="search"
                     onInput={(e: any) => updateGlobalFilter(e.target.value)}
-                    placeholder="Search..."
+                    placeholder={searchLabel}
                 />
             </span>
         </div>
@@ -103,11 +111,15 @@ export const ProductList: React.FC = () => {
                     // selectionMode="single"
                     headerStyle={{ width: '3rem' }}
                 />
-                <Column header="Product ID" body={indexBodyTemplate} />
-                <Column field="code" header="Code" sortable />
-                <Column field="name" header="Name" sortable />
-                <Column field="packaging" header="Packaging" sortable />
-                <Column header="Actions" body={actionBodyTemplate} />
+                <Column header={productIdLabel} body={indexBodyTemplate} />
+                <Column field="code" header={productCodeLabel} sortable />
+                <Column field="name" header={productNameLabel} sortable />
+                <Column
+                    field="packaging"
+                    header={productPackagingLabel}
+                    sortable
+                />
+                <Column header={actionsLabel} body={actionBodyTemplate} />
             </DataTable>
         </div>
     );

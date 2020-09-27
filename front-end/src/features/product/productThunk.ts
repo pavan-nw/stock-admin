@@ -15,6 +15,14 @@ import {
 import { CommonActionTypes } from '../common/types';
 import axios from 'axios';
 import { checkSuccess, getErrorMessageToShow } from '../../helpers/utils';
+import axiosInstance from '../../config/axiosConfig';
+import {
+    creatingProduct,
+    deletingProduct,
+    errorOccurred,
+    fetchingProduct,
+    updatingProduct,
+} from '../../helpers/constants';
 
 export const getProducts = (): ThunkAction<
     void,
@@ -23,10 +31,9 @@ export const getProducts = (): ThunkAction<
     ProductActionTypes | CommonActionTypes
 > => async (dispatch, getState) => {
     try {
-        dispatch(showSpinnerDialog('Fetching products...'));
-        const response = await axios.get(
-            'https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products'
-        );
+        dispatch(showSpinnerDialog(fetchingProduct));
+
+        const response = await axiosInstance.get('/products');
 
         console.log(response);
         const responseJson = await response.data;
@@ -35,11 +42,11 @@ export const getProducts = (): ThunkAction<
         if (checkSuccess(responseJson)) {
             dispatch(fetchProducts('shopCode', responseJson.payload));
         } else {
-            dispatch(showToast('Error Occurred', responseJson.status));
+            dispatch(showToast(errorOccurred, responseJson.status));
         }
     } catch (e) {
         dispatch(hideSpinnerDialog());
-        dispatch(showToast('Error Occurred', getErrorMessageToShow(e)));
+        dispatch(showToast(errorOccurred, getErrorMessageToShow(e)));
     }
 };
 
@@ -52,14 +59,14 @@ export const addProduct = (
     ProductActionTypes | CommonActionTypes
 > => async (dispatch, getState) => {
     try {
-        dispatch(showSpinnerDialog('Creating product...'));
+        dispatch(showSpinnerDialog(creatingProduct));
         const createProductRequest = {
             type: 'product',
             product,
         };
         console.log('createProductRequest: ', createProductRequest);
-        const response = await axios.post(
-            'https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products',
+        const response = await axiosInstance.post(
+            '/products',
             createProductRequest
         );
 
@@ -70,11 +77,11 @@ export const addProduct = (
         if (checkSuccess(responseJson)) {
             dispatch(createProduct(responseJson.payload));
         } else {
-            dispatch(showToast('Error Occurred', responseJson.status));
+            dispatch(showToast(errorOccurred, responseJson.status));
         }
     } catch (e) {
         dispatch(hideSpinnerDialog());
-        dispatch(showToast('Error Occurred', getErrorMessageToShow(e)));
+        dispatch(showToast(errorOccurred, getErrorMessageToShow(e)));
     }
 };
 
@@ -87,13 +94,13 @@ export const editProduct = (
     ProductActionTypes | CommonActionTypes
 > => async (dispatch, getState) => {
     try {
-        dispatch(showSpinnerDialog('Updating product...'));
+        dispatch(showSpinnerDialog(updatingProduct));
         const editProductRequest = {
             type: 'product',
             product,
         };
-        const response = await axios.put(
-            `https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products/${product.id}`,
+        const response = await axiosInstance.put(
+            `/products/${product.id}`,
             editProductRequest
         );
 
@@ -105,11 +112,11 @@ export const editProduct = (
             dispatch(updateProduct(responseJson.payload));
             dispatch(toggleShowEditDialog());
         } else {
-            dispatch(showToast('Error Occurred', responseJson.status));
+            dispatch(showToast(errorOccurred, responseJson.status));
         }
     } catch (e) {
         dispatch(hideSpinnerDialog());
-        dispatch(showToast('Error Occurred', getErrorMessageToShow(e)));
+        dispatch(showToast(errorOccurred, getErrorMessageToShow(e)));
     }
 };
 
@@ -122,10 +129,8 @@ export const removeProduct = (
     ProductActionTypes | CommonActionTypes
 > => async (dispatch, getState) => {
     try {
-        dispatch(showSpinnerDialog('Deleting product...'));
-        const response = await axios.delete(
-            `https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products/${productId}`
-        );
+        dispatch(showSpinnerDialog(deletingProduct));
+        const response = await axiosInstance.delete(`/products/${productId}`);
 
         console.log(response);
         const responseJson = await response.data;
@@ -134,10 +139,10 @@ export const removeProduct = (
         if (checkSuccess(responseJson)) {
             dispatch(deleteProduct(responseJson.payload));
         } else {
-            dispatch(showToast('Error Occurred', responseJson.status));
+            dispatch(showToast(errorOccurred, responseJson.status));
         }
     } catch (e) {
         dispatch(hideSpinnerDialog());
-        dispatch(showToast('Error Occurred', getErrorMessageToShow(e)));
+        dispatch(showToast(errorOccurred, getErrorMessageToShow(e)));
     }
 };
