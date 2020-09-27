@@ -14,9 +14,6 @@ export const Products: React.FC = () => {
                     <TabPanel header="Add Product">
                         <ProductForm />
                     </TabPanel>
-                    <TabPanel header="Search Product">
-                        <p>Here comers search product page.</p>
-                    </TabPanel>
                 </TabView>
             </div>
         </div>
