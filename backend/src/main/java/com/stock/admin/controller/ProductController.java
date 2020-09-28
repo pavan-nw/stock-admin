@@ -2,15 +2,18 @@ package com.stock.admin.controller;
 
 import com.stock.admin.model.entity.Product;
 import com.stock.admin.model.request.ProductRequest;
-import com.stock.admin.model.response.ProductResponse;
-import com.stock.admin.model.response.ProductsResponse;
+import com.stock.admin.model.response.*;
 import com.stock.admin.model.response.ResponseStatus;
 import com.stock.admin.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.ws.rs.WebApplicationException;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 
 /**
@@ -30,18 +33,11 @@ public class ProductController {
      */
     @RequestMapping(method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ProductsResponse getAllProducts(@RequestParam(required = false, name = "shopCode") String shopCode) {
-        List<Product> products;
+    public Response getAllProducts(@RequestParam(required = false, name = "shopCode") String shopCode) {
         if (shopCode != null) {
-            products = productService.getAllProductsByShopId(shopCode);
-        } else {
-            products = productService.getAll();
+            return Response.buildResponse(Product.type, productService.getAllProductsByShopId(shopCode), true);
         }
-
-        ProductsResponse productsResponse = new ProductsResponse();
-        productsResponse.setStatus(ResponseStatus.SUCCESS);
-        productsResponse.setPayload(products);
-        return productsResponse;
+            return Response.buildResponse(Product.type, productService.getAll(), true);
     }
 
     /**
@@ -52,12 +48,11 @@ public class ProductController {
      */
     @RequestMapping(value = "/{productCode}", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ProductResponse getProductsDetails(@PathVariable("productCode") String productCode) {
-        Product product = productService.getByProductCode(productCode);
-        ProductResponse productResponse = new ProductResponse();
-        productResponse.setStatus(ResponseStatus.SUCCESS);
-        productResponse.setPayload(product);
-        return productResponse;
+    public Response getProductsDetails(@PathVariable("productCode") String productCode) throws Exception {
+        Optional<Product> product = productService.getByProductCode(productCode);
+        return product.map(p -> Response.buildResponse(Product.type, p, true))
+                .orElseThrow(() -> new Exception(HttpStatus.NOT_FOUND.getReasonPhrase()));
+
     }
 
 
@@ -69,9 +64,9 @@ public class ProductController {
      */
     @RequestMapping(method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ProductResponse addProduct(@RequestBody ProductRequest productRequest) {
+    public Response addProduct(@RequestBody ProductRequest productRequest) {
         Product addedProduct = productService.create(productRequest.getProduct());
-        ProductResponse productResponseBody = new ProductResponse();
+        Response productResponseBody = new Response();
         productResponseBody.setPayload(addedProduct);
         productResponseBody.setStatus(ResponseStatus.SUCCESS);
         return productResponseBody;
@@ -87,9 +82,9 @@ public class ProductController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public ProductResponse modifyByProductById(@PathVariable("id") String productCode, @Valid @RequestBody ProductRequest productRequest) {
+    public Response modifyByProductById(@PathVariable("id") String productCode, @Valid @RequestBody ProductRequest productRequest) {
         Product updatedProduct = productService.updateByProductCode(productCode, productRequest.getProduct());
-        ProductResponse productResponseBody = new ProductResponse();
+        Response productResponseBody = new Response();
         productResponseBody.setPayload(updatedProduct);
         productResponseBody.setStatus(ResponseStatus.SUCCESS);
         return productResponseBody;

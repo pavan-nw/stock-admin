@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 @Document(collection = "products")
 public class Product implements APIPayload {
-    private static String type = "product";
+    public static final String type = "product";
     @Id
     private String id;
     private String code; //yet to decide on the data type of it

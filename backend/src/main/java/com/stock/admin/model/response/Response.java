@@ -12,6 +12,15 @@ public class Response {
     private ResponseStatus status;
     private Object payload;
 
+    public Response() {
+    }
+
+    public Response(String type, Object payload, ResponseStatus responseStatus) {
+        this.type = type;
+        this.payload = payload;
+        this.status = responseStatus;
+    }
+
     /**
      * Gets type.
      *
@@ -64,5 +73,9 @@ public class Response {
      */
     public void setPayload(Object payload) {
         this.payload = payload;
+    }
+
+    public static Response buildResponse(String type, Object payload, boolean success) {
+        return new Response(type, payload, success ? ResponseStatus.SUCCESS : ResponseStatus.FAILURE);
     }
 }

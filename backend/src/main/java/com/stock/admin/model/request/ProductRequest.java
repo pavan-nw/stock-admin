@@ -6,10 +6,6 @@ import com.stock.admin.model.entity.Product;
  * The type Create product request.
  */
 public class ProductRequest extends Request {
-    /**
-     * The constant type.
-     */
-    public static String type = "product";
 
     private Product product;
 

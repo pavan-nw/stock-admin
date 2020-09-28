@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The type Product service.
@@ -44,8 +45,8 @@ public class ProductService {
      * @param productCode the Product code
      * @return the by Product code
      */
-    public Product getByProductCode(String productCode) {
-        return productsRepository.findByCode(productCode);
+    public Optional<Product> getByProductCode(String productCode) {
+        return Optional.ofNullable(productsRepository.findByCode(productCode));
 
     }
 
