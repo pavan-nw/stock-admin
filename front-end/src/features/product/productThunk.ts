@@ -13,7 +13,6 @@ import {
     showToast,
 } from '../common/actions';
 import { CommonActionTypes } from '../common/types';
-import axios from 'axios';
 import { checkSuccess, getErrorMessageToShow } from '../../helpers/utils';
 import axiosInstance from '../../config/axiosConfig';
 import {
@@ -32,21 +31,17 @@ export const getProducts = (): ThunkAction<
 > => async (dispatch, getState) => {
     try {
         dispatch(showSpinnerDialog(fetchingProduct));
-
         const response = await axiosInstance.get('/products');
-
-        console.log(response);
         const responseJson = await response.data;
-        console.log('responseJson: ', responseJson);
         dispatch(hideSpinnerDialog());
         if (checkSuccess(responseJson)) {
             dispatch(fetchProducts('shopCode', responseJson.payload));
         } else {
-            dispatch(showToast(errorOccurred, responseJson.status));
+            dispatch(showToast(errorOccurred, responseJson.status, 'error'));
         }
     } catch (e) {
         dispatch(hideSpinnerDialog());
-        dispatch(showToast(errorOccurred, getErrorMessageToShow(e)));
+        dispatch(showToast(errorOccurred, getErrorMessageToShow(e), 'error'));
     }
 };
 
@@ -64,24 +59,20 @@ export const addProduct = (
             type: 'product',
             product,
         };
-        console.log('createProductRequest: ', createProductRequest);
         const response = await axiosInstance.post(
             '/products',
             createProductRequest
         );
-
-        console.log(response);
         const responseJson = await response.data;
-        console.log('responseJson: ', responseJson);
         dispatch(hideSpinnerDialog());
         if (checkSuccess(responseJson)) {
             dispatch(createProduct(responseJson.payload));
         } else {
-            dispatch(showToast(errorOccurred, responseJson.status));
+            dispatch(showToast(errorOccurred, responseJson.status, 'error'));
         }
     } catch (e) {
         dispatch(hideSpinnerDialog());
-        dispatch(showToast(errorOccurred, getErrorMessageToShow(e)));
+        dispatch(showToast(errorOccurred, getErrorMessageToShow(e), 'error'));
     }
 };
 
@@ -104,19 +95,17 @@ export const editProduct = (
             editProductRequest
         );
 
-        console.log(response);
         const responseJson = await response.data;
-        console.log('responseJson: ', responseJson);
         dispatch(hideSpinnerDialog());
         if (checkSuccess(responseJson)) {
             dispatch(updateProduct(responseJson.payload));
             dispatch(toggleShowEditDialog());
         } else {
-            dispatch(showToast(errorOccurred, responseJson.status));
+            dispatch(showToast(errorOccurred, responseJson.status, 'error'));
         }
     } catch (e) {
         dispatch(hideSpinnerDialog());
-        dispatch(showToast(errorOccurred, getErrorMessageToShow(e)));
+        dispatch(showToast(errorOccurred, getErrorMessageToShow(e), 'error'));
     }
 };
 
@@ -131,18 +120,15 @@ export const removeProduct = (
     try {
         dispatch(showSpinnerDialog(deletingProduct));
         const response = await axiosInstance.delete(`/products/${productId}`);
-
-        console.log(response);
         const responseJson = await response.data;
-        console.log('responseJson: ', responseJson);
         dispatch(hideSpinnerDialog());
         if (checkSuccess(responseJson)) {
             dispatch(deleteProduct(responseJson.payload));
         } else {
-            dispatch(showToast(errorOccurred, responseJson.status));
+            dispatch(showToast(errorOccurred, responseJson.status, 'error'));
         }
     } catch (e) {
         dispatch(hideSpinnerDialog());
-        dispatch(showToast(errorOccurred, getErrorMessageToShow(e)));
+        dispatch(showToast(errorOccurred, getErrorMessageToShow(e), 'error'));
     }
 };

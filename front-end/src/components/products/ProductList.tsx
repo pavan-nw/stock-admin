@@ -42,14 +42,12 @@ export const ProductList: React.FC = () => {
     );
 
     const onDelete = (rowData: Product) => {
-        console.log('rowData: ', rowData);
         if (rowData.id) {
             dispatch(removeProduct(rowData.id));
         }
     };
 
     const onEdit = (rowData: Product) => {
-        console.log('rowData: ', rowData);
         dispatch(selectProduct(rowData));
         dispatch(toggleShowEditDialog());
     };

@@ -16,7 +16,6 @@ export const incrementIfOdd = (): ThunkAction<
     CounterActionTypes | CommonActionTypes
 > => async (dispatch, getState) => {
     const { counterState } = getState();
-    console.log('count: ', counterState);
     if (counterState.value % 2 === 0) {
         return;
     }
@@ -28,7 +27,6 @@ export const incrementIfOdd = (): ThunkAction<
     }, 5000);
 
     dispatch(showToast('Display Summary', 'Count is ' + counterState.value));
-    console.log('count after increment: ', getState());
 };
 
 export const decrementIfOdd = (): ThunkAction<
@@ -38,11 +36,9 @@ export const decrementIfOdd = (): ThunkAction<
     CounterActionTypes | CommonActionTypes
 > => async (dispatch, getState) => {
     const { counterState } = getState();
-    console.log('count: ', counterState);
     if (counterState.value % 2 === 0) {
         return;
     }
     await dispatch(decrement());
     dispatch(hideToast());
-    console.log('count after decrement: ', getState());
 };

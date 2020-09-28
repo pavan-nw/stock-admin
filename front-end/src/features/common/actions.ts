@@ -7,13 +7,19 @@ import {
     SHOW_TOAST,
     ShowSpinnerAction,
     ShowToastAction,
+    ToastSeverity,
 } from './types';
 
-export const showToast = (summary: string, detail: string): ShowToastAction => {
+export const showToast = (
+    summary: string,
+    detail: string,
+    severity?: ToastSeverity
+): ShowToastAction => {
     return {
         type: SHOW_TOAST,
         summary,
         detail,
+        severity,
     };
 };
 
