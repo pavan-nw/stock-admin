@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class StockAdminApplication {
 
-
     /**
      * The entry point of application.
      *
@@ -31,9 +30,7 @@ public class StockAdminApplication {
      */
     @GetMapping("/hello")
     public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-
         return String.format("Hello %s!", name);
     }
 
 }
-            

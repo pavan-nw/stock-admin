@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * The type Product type.
  */
 @Document("productTypes")
-
 public class ProductType {
 
     @Id

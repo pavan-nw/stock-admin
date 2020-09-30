@@ -1,11 +1,10 @@
 package com.stock.admin.model.entity;
 
+import java.util.Date;
+import java.util.Objects;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.Date;
-import java.util.Objects;
 
 /**
  * The type Shop.
@@ -22,7 +21,6 @@ public class Shop {
     private String location;
     private Date createdAt;
     private Date upatedAt;
-
 
     /**
      * Instantiates a new Shop.
@@ -145,14 +143,15 @@ public class Shop {
         this.upatedAt = upatedAt;
     }
 
-
     @Override
     public boolean equals(Object o) {
 
-        if (this == o)
+        if (this == o) {
             return true;
-        if (!(o instanceof Product))
+        }
+        if (!(o instanceof Product)) {
             return false;
+        }
         Shop shop = (Shop) o;
         return Objects.equals(this.id, shop.id) && Objects.equals(this.name, shop.name)
                 && Objects.equals(this.code
@@ -173,5 +172,4 @@ public class Shop {
                 ",upatedAt='" + this.upatedAt + '\'' +
                 '}';
     }
-
 }

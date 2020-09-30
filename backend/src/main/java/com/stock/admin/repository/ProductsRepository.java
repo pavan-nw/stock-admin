@@ -1,10 +1,9 @@
 package com.stock.admin.repository;
 
 import com.stock.admin.model.entity.Product;
+import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * The interface Products repository.
@@ -18,7 +17,7 @@ public interface ProductsRepository extends MongoRepository<Product, String> {
      * @param productName the product name
      * @return the product
      */
-    public Product findByName(String productName);
+    Product findByName(String productName);
 
     /**
      * Find by code product.
@@ -26,7 +25,7 @@ public interface ProductsRepository extends MongoRepository<Product, String> {
      * @param productCode the product code
      * @return the product
      */
-    public Product findByCode(String productCode);
+    Product findByCode(String productCode);
 
     /**
      * Find by shop code list.
@@ -34,5 +33,5 @@ public interface ProductsRepository extends MongoRepository<Product, String> {
      * @param shopCode the shop code
      * @return the list
      */
-    public List<Product> findByShopCode(String shopCode);
+    List<Product> findByShopCode(String shopCode);
 }

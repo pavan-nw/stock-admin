@@ -1,12 +1,15 @@
 package com.stock.admin.controller;
 
-
 import com.stock.admin.model.entity.Shop;
 import com.stock.admin.service.ShopService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The type Shop controller.
@@ -39,7 +42,6 @@ public class ShopController {
         return shopService.getByShopCode(shopCode);
     }
 
-
     /**
      * Add shop shop.
      *
@@ -51,5 +53,4 @@ public class ShopController {
         Shop addedShop = shopService.create(newShop);
         return addedShop;
     }
-
 }

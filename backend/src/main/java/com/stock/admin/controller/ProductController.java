@@ -1,20 +1,26 @@
 package com.stock.admin.controller;
 
+import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.Product;
 import com.stock.admin.model.request.ProductRequest;
-import com.stock.admin.model.response.*;
+import com.stock.admin.model.response.ErrorResponse;
+import com.stock.admin.model.response.Response;
 import com.stock.admin.model.response.ResponseStatus;
 import com.stock.admin.service.ProductService;
+import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import javax.ws.rs.WebApplicationException;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
-
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
  * The type Product controller.
@@ -37,7 +43,7 @@ public class ProductController {
         if (shopCode != null) {
             return Response.buildResponse(Product.type, productService.getAllProductsByShopId(shopCode), true);
         }
-            return Response.buildResponse(Product.type, productService.getAll(), true);
+        return Response.buildResponse(Product.type, productService.getAll(), true);
     }
 
     /**
@@ -45,16 +51,16 @@ public class ProductController {
      *
      * @param productCode the product code
      * @return the products details
+     * @throws Exception the exception
      */
     @RequestMapping(value = "/{productCode}", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Response getProductsDetails(@PathVariable("productCode") String productCode) throws Exception {
         Optional<Product> product = productService.getByProductCode(productCode);
         return product.map(p -> Response.buildResponse(Product.type, p, true))
-                .orElseThrow(() -> new Exception(HttpStatus.NOT_FOUND.getReasonPhrase()));
-
+                .orElseThrow(() -> new StockAdminApplicationException(new
+                        ErrorResponse(404, "Product does not exists"), HttpStatus.NOT_FOUND));
     }
-
 
     /**
      * Add product product response.
@@ -66,12 +72,8 @@ public class ProductController {
     @ResponseBody
     public Response addProduct(@RequestBody ProductRequest productRequest) {
         Product addedProduct = productService.create(productRequest.getProduct());
-        Response productResponseBody = new Response();
-        productResponseBody.setPayload(addedProduct);
-        productResponseBody.setStatus(ResponseStatus.SUCCESS);
-        return productResponseBody;
+        return Response.buildResponse(Product.type, addedProduct, true);
     }
-
 
     /**
      * Modify by product by id product response.
@@ -84,12 +86,8 @@ public class ProductController {
     @ResponseBody
     public Response modifyByProductById(@PathVariable("id") String productCode, @Valid @RequestBody ProductRequest productRequest) {
         Product updatedProduct = productService.updateByProductCode(productCode, productRequest.getProduct());
-        Response productResponseBody = new Response();
-        productResponseBody.setPayload(updatedProduct);
-        productResponseBody.setStatus(ResponseStatus.SUCCESS);
-        return productResponseBody;
+        return Response.buildResponse(Product.type, updatedProduct, true);
     }
-
 
     /**
      * Delete by product by id.
@@ -97,8 +95,7 @@ public class ProductController {
      * @param productCode the product code
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteByProductByCode(@PathVariable("id") String productCode) {
-        productService.deleteByProductCode(productCode);
+    public Response deleteByProductByCode(@PathVariable("id") String productCode) {
+        return Response.buildResponse(Product.type, productService.deleteByProductCode(productCode), true);
     }
-
 }

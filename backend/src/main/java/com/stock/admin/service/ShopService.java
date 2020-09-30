@@ -2,11 +2,9 @@ package com.stock.admin.service;
 
 import com.stock.admin.model.entity.Shop;
 import com.stock.admin.repository.ShopsRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-
 
 /**
  * The type Shop service.
@@ -17,14 +15,12 @@ public class ShopService {
     @Autowired
     private ShopsRepository shopsRepository;
 
-
     /**
      * Create shop.
      *
      * @param shop the shop
      * @return the shop
      */
-//create operation
     public Shop create(Shop shop) {
         return shopsRepository.save(shop);
     }
@@ -34,7 +30,6 @@ public class ShopService {
      *
      * @return the all
      */
-//Retrieve Operation
     public List<Shop> getAll() {
         return shopsRepository.findAll();
     }
@@ -67,7 +62,6 @@ public class ShopService {
      * @param location the location
      * @return the shop
      */
-//Update operation
     public Shop update(String shopCode, String shopName, String location) {
         Shop shop = shopsRepository.findByCode(shopCode);
         shop.setName(shopName);
@@ -80,11 +74,9 @@ public class ShopService {
      *
      * @param shopName the shop name
      */
-//Delete operation
     public void delete(String shopName) {
         Shop shop = shopsRepository.findByName(shopName);
         shopsRepository.delete(shop);
-
     }
 }
 

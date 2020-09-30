@@ -1,20 +1,21 @@
 package com.stock.admin.model.entity;
 
+import java.util.Date;
+import java.util.Objects;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-
 /**
  * The type Product.
  */
 @Document(collection = "products")
-public class Product implements APIPayload {
+public class Product {
+    /**
+     * The constant type.
+     */
     public static final String type = "product";
     @Id
     private String id;
@@ -198,10 +199,12 @@ public class Product implements APIPayload {
     @Override
     public boolean equals(Object o) {
 
-        if (this == o)
+        if (this == o) {
             return true;
-        if (!(o instanceof Product))
+        }
+        if (!(o instanceof Product)) {
             return false;
+        }
         Product product = (Product) o;
         return Objects.equals(this.id, product.id) && Objects.equals(this.name, product.name)
                 && Objects.equals(this.code

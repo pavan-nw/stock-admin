@@ -14,7 +14,7 @@ public interface ShopsRepository extends MongoRepository<Shop, String> {
      * @param shopName the shop name
      * @return the shop
      */
-    public Shop findByName(String shopName);
+    Shop findByName(String shopName);
 
     /**
      * Find by code shop.
@@ -22,6 +22,5 @@ public interface ShopsRepository extends MongoRepository<Shop, String> {
      * @param shopCode the shop code
      * @return the shop
      */
-    public Shop findByCode(String shopCode);
-
+    Shop findByCode(String shopCode);
 }
