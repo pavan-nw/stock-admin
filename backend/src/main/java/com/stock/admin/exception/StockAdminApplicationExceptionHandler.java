@@ -20,7 +20,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class StockAdminApplicationExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
-     * Handle error response response entity.
+     * Handle error response entity.
      *
      * @param ex      the ex
      * @param request the request

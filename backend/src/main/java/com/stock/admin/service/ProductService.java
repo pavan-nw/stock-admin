@@ -82,7 +82,11 @@ public class ProductService {
      */
     public Product deleteByProductCode(String productCode) {
         Product product = productsRepository.findByCode(productCode);
-        productsRepository.delete(product);
-        return product;
+        if (product != null) {
+            productsRepository.delete(product);
+            return product;
+        }
+        throw new StockAdminApplicationException(new ErrorResponse(HttpStatus.NOT_FOUND.value(),
+                "Product does not exists"), HttpStatus.NOT_FOUND);
     }
 }
