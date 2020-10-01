@@ -17,10 +17,10 @@ public interface ShopsRepository extends MongoRepository<Shop, String> {
     Shop findByName(String shopName);
 
     /**
-     * Find by code shop.
+     * Find by shop code shop.
      *
      * @param shopCode the shop code
      * @return the shop
      */
-    Shop findByCode(String shopCode);
+    Shop findByShopCode(String shopCode);
 }

@@ -1,10 +1,15 @@
 package com.stock.admin.service;
 
+import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.Shop;
+import com.stock.admin.model.response.ErrorResponse;
 import com.stock.admin.repository.ShopsRepository;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * The type Shop service.
@@ -50,34 +55,46 @@ public class ShopService {
      * @param shopcode the shopcode
      * @return the by shop code
      */
-    public Shop getByShopCode(String shopcode) {
-        return shopsRepository.findByCode(shopcode);
+    public Optional<Shop> getByShopCode(String shopcode) {
+        return Optional.ofNullable(shopsRepository.findByShopCode(shopcode));
     }
 
+
     /**
-     * Update shop.
+     * Update by shop code shop.
      *
      * @param shopCode the shop code
-     * @param shopName the shop name
-     * @param location the location
+     * @param newShop  the new shop
      * @return the shop
      */
-    public Shop update(String shopCode, String shopName, String location) {
-        Shop shop = shopsRepository.findByCode(shopCode);
-        shop.setName(shopName);
-        shop.setLocation(location);
-        return shopsRepository.save(shop);
+    public Shop updateByShopCode(String shopCode, Shop newShop) {
+        Shop shop = shopsRepository.findByShopCode(shopCode);
+        if (shop != null) {
+            shop.setName(newShop.getName());
+            shop.setLocation(newShop.getLocation());
+            return shopsRepository.save(shop);
+        }
+        throw new StockAdminApplicationException(new ErrorResponse(HttpStatus.NOT_FOUND.value(),
+                "Product does not exists"), HttpStatus.NOT_FOUND);
     }
 
     /**
      * Delete.
      *
-     * @param shopName the shop name
+     * @param shopCode the shop code
+     * @return the shop
      */
-    public void delete(String shopName) {
-        Shop shop = shopsRepository.findByName(shopName);
-        shopsRepository.delete(shop);
+    public Shop delete(String shopCode) {
+
+        Shop shop = shopsRepository.findByShopCode(shopCode);
+        if (shop != null) {
+            shopsRepository.delete(shop);
+            return shop;
+        }
+        throw new StockAdminApplicationException(new ErrorResponse(HttpStatus.NOT_FOUND.value(),
+                "Shop does not exist"), HttpStatus.NOT_FOUND);
     }
+
 }
 
 

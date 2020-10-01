@@ -1,9 +1,10 @@
 package com.stock.admin.repository;
 
 import com.stock.admin.model.entity.Product;
-import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * The interface Products repository.

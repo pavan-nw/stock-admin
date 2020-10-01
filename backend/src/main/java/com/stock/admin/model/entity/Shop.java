@@ -1,20 +1,24 @@
 package com.stock.admin.model.entity;
 
-import java.util.Date;
-import java.util.Objects;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
 
 /**
  * The type Shop.
  */
 @Document("shops")
 public class Shop {
+    /**
+     * The constant type.
+     */
+    public static final String type = "shop";
     @Id
     private String id;
 
-    private String code; //yet to decide on the data type of it
+    private String shopCode; //yet to decide on the data type of it
 
     @Indexed(name = "shopName")
     private String name;
@@ -25,12 +29,12 @@ public class Shop {
     /**
      * Instantiates a new Shop.
      *
-     * @param code     the code
+     * @param shopCode the shopCode
      * @param name     the name
      * @param location the location
      */
-    public Shop(String code, String name, String location) {
-        this.code = code;
+    public Shop(String shopCode, String name, String location) {
+        this.shopCode = shopCode;
         this.name = name;
         this.location = location;
     }
@@ -54,21 +58,21 @@ public class Shop {
     }
 
     /**
-     * Gets code.
+     * Gets shopCode.
      *
-     * @return the code
+     * @return the shopCode
      */
-    public String getCode() {
-        return code;
+    public String getShopCode() {
+        return shopCode;
     }
 
     /**
-     * Sets code.
+     * Sets shopCode.
      *
-     * @param code the code
+     * @param shopCode the shopCode
      */
-    public void setCode(String code) {
-        this.code = code;
+    public void setShopCode(String shopCode) {
+        this.shopCode = shopCode;
     }
 
     /**
@@ -143,33 +147,5 @@ public class Shop {
         this.upatedAt = upatedAt;
     }
 
-    @Override
-    public boolean equals(Object o) {
 
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Product)) {
-            return false;
-        }
-        Shop shop = (Shop) o;
-        return Objects.equals(this.id, shop.id) && Objects.equals(this.name, shop.name)
-                && Objects.equals(this.code
-                , shop.code);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.id, this.name, this.code);
-    }
-
-    @Override
-    public String toString() {
-        return "Shop{" + "code=" + this.code +
-                ",name='" + this.name + '\'' +
-                ",location='" + this.location + '\'' +
-                ",createdAt='" + this.createdAt + '\'' +
-                ",upatedAt='" + this.upatedAt + '\'' +
-                '}';
-    }
 }

@@ -4,11 +4,12 @@ import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.Product;
 import com.stock.admin.model.response.ErrorResponse;
 import com.stock.admin.repository.ProductsRepository;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * The type Product service.
@@ -79,6 +80,7 @@ public class ProductService {
      * Delete.
      *
      * @param productCode the prod Code
+     * @return the product
      */
     public Product deleteByProductCode(String productCode) {
         Product product = productsRepository.findByCode(productCode);
