@@ -11,6 +11,7 @@ const initialState = {
         show: false,
         summary: '',
         detail: '',
+        severity: 'success',
     },
     spinnerDialog: {
         show: false,
@@ -28,6 +29,7 @@ export default (state = initialState, action: CommonActionTypes) => {
                     show: true,
                     summary: action.summary,
                     detail: action.detail,
+                    severity: action.severity || 'success',
                 },
             };
         case HIDE_TOAST:

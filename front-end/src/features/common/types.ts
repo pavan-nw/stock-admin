@@ -5,8 +5,9 @@ export const HIDE_SPINNER = 'HIDE_SPINNER';
 
 export interface ShowToastAction {
     type: typeof SHOW_TOAST;
-    summary: String;
-    detail: String;
+    summary: string;
+    detail: string;
+    severity?: string;
 }
 
 export interface HideToatAction {
@@ -15,7 +16,7 @@ export interface HideToatAction {
 
 export interface ShowSpinnerAction {
     type: typeof SHOW_SPINNER;
-    message: String;
+    message: string;
 }
 
 export interface HideSpinnerAction {
@@ -28,19 +29,22 @@ export type CommonActionTypes =
     | ShowSpinnerAction
     | HideSpinnerAction;
 
+export type ToastSeverity = 'success' | 'info' | 'warn' | 'error';
+
 export interface ToastData {
-    show: Boolean;
-    summary: String;
-    detail: String;
+    show: boolean;
+    summary: string;
+    detail: string;
+    severity?: ToastSeverity;
 }
 
 export interface SpinnerDialogData {
     show: boolean;
-    message: String;
+    message: string;
 }
 
 export interface CommonState {
-    common: {
+    commonState: {
         toast: ToastData;
         spinnerDialog: SpinnerDialogData;
     };

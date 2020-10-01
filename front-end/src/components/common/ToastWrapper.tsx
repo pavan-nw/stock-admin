@@ -10,7 +10,7 @@ export const ToastWrapper: React.FC = () => {
     useEffect(() => {
         if (toast && toastData.show && toast.current) {
             const toastMessage: ToastMessage = {
-                severity: 'success',
+                severity: toastData.severity,
                 detail: toastData.detail,
                 summary: toastData.summary,
             };

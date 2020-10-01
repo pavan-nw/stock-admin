@@ -14,7 +14,7 @@ export type CounterActionTypes =
     | DecrementCounterAction;
 
 export interface SystemState {
-    count: {
+    counterState: {
         value: number;
     };
 }

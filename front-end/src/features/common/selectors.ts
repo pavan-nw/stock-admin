@@ -1,5 +1,5 @@
 import { CommonState } from './types';
 
-export const getShowToast = (state: CommonState) => state.common.toast;
+export const getShowToast = (state: CommonState) => state.commonState.toast;
 export const getShowSpinnerDialog = (state: CommonState) =>
-    state.common.spinnerDialog;
+    state.commonState.spinnerDialog;

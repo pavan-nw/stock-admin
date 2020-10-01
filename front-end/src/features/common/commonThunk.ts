@@ -1,17 +1,16 @@
 import { ThunkAction } from 'redux-thunk';
 import { showToast, hideToast } from './actions';
-import { CommonActionTypes, CommonState } from './types';
+import { CommonActionTypes, CommonState, ToastSeverity } from './types';
 
 export const displayToast = (
-    summary: String,
-    detail: String
+    summary: string,
+    detail: string,
+    severity?: ToastSeverity
 ): ThunkAction<void, CommonState, unknown, CommonActionTypes> => async (
     dispatch,
     getState
 ) => {
-    const { common } = getState();
-    console.log('show: ', common.toast);
-    dispatch(showToast(summary, detail));
+    dispatch(showToast(summary, detail, severity));
 };
 
 export const clearToast = (): ThunkAction<
@@ -20,7 +19,5 @@ export const clearToast = (): ThunkAction<
     unknown,
     CommonActionTypes
 > => async (dispatch, getState) => {
-    const { common } = getState();
-    console.log('show: ', common.toast);
     dispatch(hideToast());
 };
