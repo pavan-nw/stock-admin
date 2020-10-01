@@ -1,10 +1,10 @@
 package com.stock.admin.model.entity;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.Date;
 
 /**
  * The type Shop.
@@ -18,13 +18,18 @@ public class Shop {
     @Id
     private String id;
 
-    private String shopCode; //yet to decide on the data type of it
+    private String shopCode;
 
     @Indexed(name = "shopName")
     private String name;
+
     private String location;
-    private Date createdAt;
-    private Date upatedAt;
+
+    @CreatedDate
+    private long createdAt;
+
+    @LastModifiedDate
+    private long updatedAt;
 
     /**
      * Instantiates a new Shop.
@@ -116,7 +121,7 @@ public class Shop {
      *
      * @return the created at
      */
-    public Date getCreatedAt() {
+    public long getCreatedAt() {
         return createdAt;
     }
 
@@ -125,7 +130,7 @@ public class Shop {
      *
      * @param createdAt the created at
      */
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -134,18 +139,16 @@ public class Shop {
      *
      * @return the upated at
      */
-    public Date getUpatedAt() {
-        return upatedAt;
+    public long getUpdatedAt() {
+        return updatedAt;
     }
 
     /**
      * Sets upated at.
      *
-     * @param upatedAt the upated at
+     * @param updatedAt the upated at
      */
-    public void setUpatedAt(Date upatedAt) {
-        this.upatedAt = upatedAt;
+    public void setUpdatedAt(long updatedAt) {
+        this.updatedAt = updatedAt;
     }
-
-
 }

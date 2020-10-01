@@ -37,7 +37,7 @@ public class Response {
      * @return the response
      */
     public static Response buildResponse(String type, Object payload, boolean success) {
-        return new Response(type, payload, success ? ResponseStatus.SUCCESS : ResponseStatus.FAILURE);
+        return new Response(type, payload, success ? ResponseStatus.Success : ResponseStatus.Failure);
     }
 
     /**

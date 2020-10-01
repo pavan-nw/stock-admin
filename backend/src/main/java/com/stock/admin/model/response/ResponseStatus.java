@@ -7,9 +7,9 @@ public enum ResponseStatus {
     /**
      * Success response status.
      */
-    SUCCESS,
+    Success,
     /**
      * Failure response status.
      */
-    FAILURE
+    Failure
 }

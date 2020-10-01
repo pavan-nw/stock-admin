@@ -4,9 +4,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -20,20 +18,17 @@ public class Product {
     public static final String type = "product";
     @Id
     private String id;
-    private String code; //yet to decide on the data type of it
+    private String code;
     private String name;
     private String shopCode;
 
-    @DateTimeFormat(style = "M-")
     @CreatedDate
-    private Date createdAt;
+    private long createdAt;
 
     @LastModifiedDate
-    private Date updatedAt;
+    private long updatedAt;
 
-    //@DBRef
     private String packaging;
-    private ProductType productType;
 
     /**
      * Instantiates a new Product.
@@ -44,7 +39,7 @@ public class Product {
      * @param createdAt the created at
      * @param updatedAt the upated at
      */
-    public Product(String code, String name, String shopCode, Date createdAt, Date updatedAt) {
+    public Product(String code, String name, String shopCode, long createdAt, long updatedAt) {
         this.code = code;
         this.name = name;
         this.shopCode = shopCode;
@@ -129,7 +124,7 @@ public class Product {
      *
      * @return the created at
      */
-    public Date getCreatedAt() {
+    public long getCreatedAt() {
         return createdAt;
     }
 
@@ -138,7 +133,7 @@ public class Product {
      *
      * @param createdAt the created at
      */
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -147,7 +142,7 @@ public class Product {
      *
      * @return the upated at
      */
-    public Date getUpdatedAt() {
+    public long getUpdatedAt() {
         return updatedAt;
     }
 
@@ -156,7 +151,7 @@ public class Product {
      *
      * @param updatedAt the upated at
      */
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -177,25 +172,6 @@ public class Product {
     public void setPackaging(String packaging) {
         this.packaging = packaging;
     }
-
-    /**
-     * Gets product type.
-     *
-     * @return the product type
-     */
-    public ProductType getProductType() {
-        return productType;
-    }
-
-    /**
-     * Sets product type.
-     *
-     * @param productType the product type
-     */
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -223,7 +199,6 @@ public class Product {
                 ",name='" + this.name + '\'' +
                 ",shopCode='" + this.shopCode + '\'' +
                 ",packaging='" + this.packaging + '\'' +
-                ",productType='" + this.productType + '\'' +
                 ",createdAt='" + this.createdAt + '\'' +
                 ",upatedAt='" + this.updatedAt + '\'' +
                 '}';
