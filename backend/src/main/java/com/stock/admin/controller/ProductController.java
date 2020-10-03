@@ -21,6 +21,11 @@ import java.util.Optional;
 public class ProductController {
     private final ProductService productService;
 
+    /**
+     * Instantiates a new Product controller.
+     *
+     * @param productService the product service
+     */
     @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;

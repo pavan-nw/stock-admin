@@ -21,6 +21,11 @@ import java.util.Optional;
 public class ShopController {
     private final ShopService shopService;
 
+    /**
+     * Instantiates a new Shop controller.
+     *
+     * @param shopService the shop service
+     */
     @Autowired
     public ShopController(ShopService shopService) {
         this.shopService = shopService;

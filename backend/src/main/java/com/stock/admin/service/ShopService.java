@@ -18,6 +18,11 @@ import java.util.Optional;
 public class ShopService {
     private final ShopsRepository shopsRepository;
 
+    /**
+     * Instantiates a new Shop service.
+     *
+     * @param shopsRepository the shops repository
+     */
     @Autowired
     public ShopService(ShopsRepository shopsRepository) {
         this.shopsRepository = shopsRepository;

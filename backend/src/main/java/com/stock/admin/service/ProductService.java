@@ -18,6 +18,11 @@ import java.util.Optional;
 public class ProductService {
     private final ProductsRepository productsRepository;
 
+    /**
+     * Instantiates a new Product service.
+     *
+     * @param productsRepository the products repository
+     */
     @Autowired
     public ProductService(ProductsRepository productsRepository) {
         this.productsRepository = productsRepository;
