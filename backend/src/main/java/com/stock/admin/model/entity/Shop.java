@@ -1,5 +1,6 @@
 package com.stock.admin.model.entity;
 
+import java.util.Date;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -26,10 +27,10 @@ public class Shop {
     private String location;
 
     @CreatedDate
-    private long createdAt;
+    private Date createdAt;
 
     @LastModifiedDate
-    private long updatedAt;
+    private Date updatedAt;
 
     /**
      * Instantiates a new Shop.
@@ -121,7 +122,7 @@ public class Shop {
      *
      * @return the created at
      */
-    public long getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
@@ -130,7 +131,7 @@ public class Shop {
      *
      * @param createdAt the created at
      */
-    public void setCreatedAt(long createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -139,7 +140,7 @@ public class Shop {
      *
      * @return the upated at
      */
-    public long getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
@@ -148,7 +149,7 @@ public class Shop {
      *
      * @param updatedAt the upated at
      */
-    public void setUpdatedAt(long updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

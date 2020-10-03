@@ -44,6 +44,7 @@ public class StockAdminApplicationExceptionHandler extends ResponseEntityExcepti
     @ExceptionHandler(value = {Exception.class})
     protected ResponseEntity<Object> handleUnexpectedError(
             Exception ex, WebRequest request) {
+        ex.printStackTrace();
         Object response = Response.buildResponse("error", new ErrorResponse(500, ex.getMessage()), false);
         return handleExceptionInternal(ex, response, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
