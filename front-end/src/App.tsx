@@ -11,6 +11,7 @@ import 'primeflex/primeflex.css';
 import './app.css';
 import { ToastWrapper } from './components/common/ToastWrapper';
 import { SpinnerDialog } from './components/common/SpinnerDialog';
+import { Products } from './pages/Products';
 
 const App: React.FC = () => {
     return (
@@ -20,7 +21,8 @@ const App: React.FC = () => {
             <SpinnerDialog />
             <div className="p-grid layout-main-content">
                 <Switch>
-                    <Route path="/" component={Home} exact />
+                    <Route path="/" component={Products} exact />
+                    <Route path="/home" component={Home} exact />
                     <Route path="/counter" component={Counter} />
                     <Route path="/about" component={About} />
                 </Switch>
