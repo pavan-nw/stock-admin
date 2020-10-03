@@ -52,8 +52,7 @@ public class ShopController {
     public Response getShopById(@PathVariable("shopCode") String shopCode) {
         Optional<Shop> shop = shopService.getByShopCode(shopCode);
         return shop.map(s -> Response.buildResponse(Shop.type, s, true))
-                .orElseThrow(() -> new StockAdminApplicationException(new
-                        ErrorResponse(404, "Shop does not exists"), HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new StockAdminApplicationException("Shop does not exists", HttpStatus.NOT_FOUND));
 
     }
 

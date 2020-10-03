@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * The type Product.
@@ -25,9 +26,11 @@ public class Product {
     private String shopCode;
     private String packaging;
 
+    @DateTimeFormat
     @CreatedDate
     private Date createdAt;
 
+    @DateTimeFormat
     @LastModifiedDate
     private Date updatedAt;
 

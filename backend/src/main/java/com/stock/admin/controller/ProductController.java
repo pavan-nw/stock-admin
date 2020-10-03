@@ -57,8 +57,7 @@ public class ProductController {
     public Response getProductsDetails(@PathVariable("productCode") String productCode)  {
         Optional<Product> product = productService.getByProductCode(productCode);
         return product.map(p -> Response.buildResponse(Product.type, p, true))
-                .orElseThrow(() -> new StockAdminApplicationException(new
-                        ErrorResponse(404, "Product does not exists"), HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new StockAdminApplicationException("Product does not exists", HttpStatus.NOT_FOUND));
     }
 
     /**

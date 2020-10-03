@@ -82,8 +82,7 @@ public class ShopService {
             shop.setLocation(newShop.getLocation());
             return shopsRepository.save(shop);
         }
-        throw new StockAdminApplicationException(new ErrorResponse(HttpStatus.NOT_FOUND.value(),
-                "Product does not exists"), HttpStatus.NOT_FOUND);
+        throw new StockAdminApplicationException("Shop does not exists", HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -99,8 +98,7 @@ public class ShopService {
             shopsRepository.delete(shop);
             return shop;
         }
-        throw new StockAdminApplicationException(new ErrorResponse(HttpStatus.NOT_FOUND.value(),
-                "Shop does not exist"), HttpStatus.NOT_FOUND);
+        throw new StockAdminApplicationException("Shop does not exists", HttpStatus.NOT_FOUND);
     }
 
 }

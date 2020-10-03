@@ -81,8 +81,7 @@ public class ProductService {
             product.setPackaging(newProduct.getPackaging());
             return productsRepository.save(product);
         }
-        throw new StockAdminApplicationException(new ErrorResponse(HttpStatus.NOT_FOUND.value(),
-                "Product does not exists"), HttpStatus.NOT_FOUND);
+        throw new StockAdminApplicationException("Product does not exists", HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -97,7 +96,6 @@ public class ProductService {
             productsRepository.delete(product);
             return product;
         }
-        throw new StockAdminApplicationException(new ErrorResponse(HttpStatus.NOT_FOUND.value(),
-                "Product does not exists"), HttpStatus.NOT_FOUND);
+        throw new StockAdminApplicationException("Product does not exists", HttpStatus.NOT_FOUND);
     }
 }

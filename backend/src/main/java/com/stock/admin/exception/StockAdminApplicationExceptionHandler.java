@@ -27,11 +27,12 @@ public class StockAdminApplicationExceptionHandler extends ResponseEntityExcepti
      * @return the response entity
      */
     @ExceptionHandler(value = {StockAdminApplicationException.class})
-    protected ResponseEntity<Object> handleErrorResponse(
-            StockAdminApplicationException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleErrorResponse(StockAdminApplicationException ex, WebRequest request) {
+        if(ex.getCause()!=null) {
+            ex.getCause().printStackTrace();
+        }
         Object response = Response.buildResponse("error", ex.getErrorObject(), false);
-        return handleExceptionInternal(ex, response,
-                new HttpHeaders(), ex.getHttpStatus(), request);
+        return handleExceptionInternal(ex, response, new HttpHeaders(), ex.getHttpStatus(), request);
     }
 
     /**
@@ -42,8 +43,7 @@ public class StockAdminApplicationExceptionHandler extends ResponseEntityExcepti
      * @return the response entity
      */
     @ExceptionHandler(value = {Exception.class})
-    protected ResponseEntity<Object> handleUnexpectedError(
-            Exception ex, WebRequest request) {
+    protected ResponseEntity<Object> handleUnexpectedError(Exception ex, WebRequest request) {
         ex.printStackTrace();
         Object response = Response.buildResponse("error", new ErrorResponse(500, ex.getMessage()), false);
         return handleExceptionInternal(ex, response, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);

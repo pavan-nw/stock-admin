@@ -1,5 +1,8 @@
 package com.stock.admin.exception;
 
+import com.stock.admin.model.response.ErrorResponse;
+import java.util.Objects;
+import javax.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -21,8 +24,10 @@ public class StockAdminApplicationException extends RuntimeException {
      * @param httpStatus  the http status
      * @since 1.4
      */
-    public StockAdminApplicationException(Throwable cause, Object errorObject, HttpStatus httpStatus) {
+    public StockAdminApplicationException(Throwable cause, @NotNull Object errorObject, @NotNull HttpStatus httpStatus) {
         super(cause);
+        Objects.requireNonNull(errorObject);
+        Objects.requireNonNull(httpStatus);
         this.errorObject = errorObject;
         this.httpStatus = httpStatus;
     }
@@ -37,9 +42,25 @@ public class StockAdminApplicationException extends RuntimeException {
      * @param httpStatus  the http status
      * @since 1.4
      */
-    public StockAdminApplicationException(Object errorObject, HttpStatus httpStatus) {
+    public StockAdminApplicationException(@NotNull Object errorObject, @NotNull HttpStatus httpStatus) {
         super();
+        Objects.requireNonNull(errorObject);
+        Objects.requireNonNull(httpStatus);
         this.errorObject = errorObject;
+        this.httpStatus = httpStatus;
+    }
+
+    public StockAdminApplicationException(Integer errorCode, String errorMessage, @NotNull HttpStatus httpStatus) {
+        super();
+        Objects.requireNonNull(httpStatus);
+        this.errorObject = new ErrorResponse(errorCode, errorMessage);
+        this.httpStatus = httpStatus;
+    }
+
+    public StockAdminApplicationException(String errorMessage, @NotNull HttpStatus httpStatus) {
+        super();
+        Objects.requireNonNull(httpStatus);
+        this.errorObject = new ErrorResponse(httpStatus.value(), errorMessage);
         this.httpStatus = httpStatus;
     }
 

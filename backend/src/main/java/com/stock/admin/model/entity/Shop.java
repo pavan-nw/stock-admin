@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * The type Shop.
@@ -25,9 +26,11 @@ public class Shop {
     private String shopCode;
     private String location;
 
+    @DateTimeFormat
     @CreatedDate
     private Date createdAt;
 
+    @DateTimeFormat
     @LastModifiedDate
     private Date updatedAt;
 
