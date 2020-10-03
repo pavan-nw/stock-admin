@@ -19,15 +19,19 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/shops")
 public class ShopController {
+    private final ShopService shopService;
+
     @Autowired
-    private ShopService shopService;
+    public ShopController(ShopService shopService) {
+        this.shopService = shopService;
+    }
 
     /**
      * Gets all shops.
      *
      * @return the all shops
      */
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    @GetMapping
     public Response getAllShops() {
         return Response.buildResponse(Shop.type, shopService.getAll(), true);
 
@@ -39,7 +43,7 @@ public class ShopController {
      * @param shopCode the shop code
      * @return the shop by id
      */
-    @GetMapping(value = "/{shopCode}", produces = "application/json; charset=UTF-8")
+    @GetMapping(value = "/{shopCode}")
     public Response getShopById(@PathVariable("shopCode") String shopCode) {
         Optional<Shop> shop = shopService.getByShopCode(shopCode);
         return shop.map(s -> Response.buildResponse(Shop.type, s, true))
@@ -54,7 +58,7 @@ public class ShopController {
      * @param shopRequest the new shop
      * @return the shop
      */
-    @RequestMapping(method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @PostMapping
     @ResponseBody
     public Response addShop(@RequestBody ShopRequest shopRequest) {
         Shop addedShop = shopService.create(shopRequest.getShop());
@@ -69,7 +73,7 @@ public class ShopController {
      * @param shopRequest the shop request
      * @return the response
      */
-    @RequestMapping(value = "/{shopCode}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{shopCode}")
     @ResponseBody
     public Response modifyByShopCode(@PathVariable("shopCode") String shopCode, @Valid @RequestBody ShopRequest shopRequest) {
         Shop updatedShop = shopService.updateByShopCode(shopCode, shopRequest.getShop());
@@ -83,7 +87,7 @@ public class ShopController {
      * @param shopCode the shop code
      * @return the response
      */
-    @RequestMapping(value = "/{shopCode}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{shopCode}")
     public Response deleteByShopCode(@PathVariable("shopCode") String shopCode) {
         return Response.buildResponse(Shop.type, shopService.delete(shopCode), true);
     }

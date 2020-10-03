@@ -16,9 +16,12 @@ import java.util.Optional;
  */
 @Service
 public class ShopService {
+    private final ShopsRepository shopsRepository;
 
     @Autowired
-    private ShopsRepository shopsRepository;
+    public ShopService(ShopsRepository shopsRepository) {
+        this.shopsRepository = shopsRepository;
+    }
 
     /**
      * Create shop.

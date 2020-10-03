@@ -17,11 +17,13 @@ public class Product {
      * The constant type.
      */
     public static final String type = "product";
+
     @Id
     private String id;
     private String code;
     private String name;
     private String shopCode;
+    private String packaging;
 
     @CreatedDate
     private Date createdAt;
@@ -29,7 +31,6 @@ public class Product {
     @LastModifiedDate
     private Date updatedAt;
 
-    private String packaging;
 
     /**
      * Instantiates a new Product.

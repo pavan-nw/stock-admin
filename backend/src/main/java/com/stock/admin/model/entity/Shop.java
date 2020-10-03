@@ -19,11 +19,10 @@ public class Shop {
     @Id
     private String id;
 
-    private String shopCode;
-
     @Indexed(name = "shopName")
     private String name;
 
+    private String shopCode;
     private String location;
 
     @CreatedDate

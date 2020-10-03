@@ -19,8 +19,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
+    private final ProductService productService;
+
     @Autowired
-    private ProductService productService;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     /**
      * Gets all products.
@@ -28,7 +32,7 @@ public class ProductController {
      * @param shopCode the shop code
      * @return the all products
      */
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    @GetMapping
     @ResponseBody
     public Response getAllProducts(@RequestParam(required = false, name = "shopCode") String shopCode) {
         if (shopCode != null) {
@@ -43,7 +47,7 @@ public class ProductController {
      * @param productCode the product code
      * @return the products details
      */
-    @RequestMapping(value = "/{productCode}", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    @GetMapping(value = "/{productCode}")
     @ResponseBody
     public Response getProductsDetails(@PathVariable("productCode") String productCode)  {
         Optional<Product> product = productService.getByProductCode(productCode);
@@ -58,7 +62,7 @@ public class ProductController {
      * @param productRequest the create product request
      * @return the product response
      */
-    @RequestMapping(method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @PostMapping
     @ResponseBody
     public Response addProduct(@RequestBody ProductRequest productRequest) {
         Product addedProduct = productService.create(productRequest.getProduct());
@@ -72,7 +76,7 @@ public class ProductController {
      * @param productRequest the product request
      * @return the product response
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{id}")
     @ResponseBody
     public Response modifyByProductById(@PathVariable("id") String productCode, @Valid @RequestBody ProductRequest productRequest) {
         Product updatedProduct = productService.updateByProductCode(productCode, productRequest.getProduct());
@@ -85,7 +89,7 @@ public class ProductController {
      * @param productCode the product code
      * @return the response
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public Response deleteByProductByCode(@PathVariable("id") String productCode) {
         return Response.buildResponse(Product.type, productService.deleteByProductCode(productCode), true);
     }
