@@ -12,7 +12,7 @@ import './app.css';
 import { ToastWrapper } from './components/common/ToastWrapper';
 import { SpinnerDialog } from './components/common/SpinnerDialog';
 import { Products } from './pages/Products';
-
+import { DailyStocks } from './pages/DailyStocks';
 const App: React.FC = () => {
     return (
         <BrowserRouter>
@@ -25,6 +25,7 @@ const App: React.FC = () => {
                     <Route path="/home" component={Home} exact />
                     <Route path="/counter" component={Counter} />
                     <Route path="/about" component={About} />
+                    <Route path="/daily-stocks" component={DailyStocks} />
                 </Switch>
             </div>
         </BrowserRouter>

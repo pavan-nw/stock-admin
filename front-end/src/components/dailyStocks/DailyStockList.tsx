@@ -3,36 +3,41 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProducts } from '../../features/product/selectors';
+import { getProducts, getStocks } from '../../features/dailyStocks/selectors';
 import {
-    getProducts as fetchProducts,
+    getStocks as fetchStocks,
     removeProduct,
-} from '../../features/product/productThunk';
-import { Product } from '../../features/product/types';
+} from '../../features/dailyStocks/dailyStockThunk';
+import { Product, Stocks } from '../../features/dailyStocks/types';
 import { InputText } from 'primereact/inputtext';
-import './productList.css';
-import { EditProductDialog } from './EditProductDialog';
+import { EditDailyStockDialog } from './EditDailyStockDialog';
 import {
     selectProduct,
     toggleShowEditDialog,
 } from '../../features/product/actions';
 import {
     actionsLabel,
-    manageProductsLabel,
+    dailyStockDateLabel,
+    incomingStockCountLabel,
+    ManageStocksLabel,
+    outgoingStockCountLabel,
     productCodeLabel,
     productIdLabel,
     productNameLabel,
     productPackagingLabel,
     searchLabel,
+    stockIdLabel,
+    totalStockCountLabel
 } from '../../helpers/constants';
+import {formatDate} from '../../helpers/utils'
 
-export const ProductList: React.FC = () => {
+export const DailyStockList: React.FC = () => {
     const dispatch = useDispatch();
-    const products: Product[] = useSelector(getProducts);
+    const stocks: Stocks[] = useSelector(getStocks);
     const [globalFilter, updateGlobalFilter] = useState(null);
 
     useEffect(() => {
-        dispatch(fetchProducts());
+        dispatch(fetchStocks());
     }, []);
 
     const paginatorLeft = (
@@ -71,12 +76,16 @@ export const ProductList: React.FC = () => {
     };
 
     const indexBodyTemplate = (rowData: any) => {
-        return <>{rowData.id}</>;
+        return <>{rowData.product.code}</>;
+    };
+
+    const dateBodyTemplate = (rowData: any) => {                 
+        return <>{formatDate(rowData.stockDate)}</>;
     };
 
     const header = (
         <div className="table-header">
-            <h3 className="p-m-0">{manageProductsLabel}</h3>
+            <h3 className="p-m-0">{ManageStocksLabel}</h3>
             <span className="p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText
@@ -90,10 +99,10 @@ export const ProductList: React.FC = () => {
 
     return (
         <div>
-            <EditProductDialog />
+            <EditDailyStockDialog />
             <DataTable
-                emptyMessage={'No Products Found'}
-                value={products}
+                emptyMessage={'No Stocks Found'}
+                value={stocks}
                 className="p-datatable-striped"
                 paginator
                 rowHover
@@ -110,15 +119,14 @@ export const ProductList: React.FC = () => {
                     // selectionMode="single"
                     headerStyle={{ width: '3rem' }}
                 />
-                <Column header={productIdLabel} body={indexBodyTemplate} />
-                <Column field="code" header={productCodeLabel} sortable />
-                <Column field="name" header={productNameLabel} sortable />
-                <Column
-                    field="packaging"
-                    header={productPackagingLabel}
-                    sortable
-                />
-                <Column header={actionsLabel} body={actionBodyTemplate} />
+                <Column header={productCodeLabel} body={indexBodyTemplate} />
+                <Column body={dateBodyTemplate} header={dailyStockDateLabel} sortable />
+                <Column field="product.name" header={productNameLabel} sortable />
+                <Column field="product.packaging" header={productPackagingLabel} sortable />
+                <Column field="openingStock" header={incomingStockCountLabel} sortable />
+                <Column field="closingStock" header={outgoingStockCountLabel} sortable />
+                <Column field="totalStock" header={totalStockCountLabel} sortable />
+                {/* <Column header={actionsLabel} body={actionBodyTemplate} /> */}
             </DataTable>
         </div>
     );
