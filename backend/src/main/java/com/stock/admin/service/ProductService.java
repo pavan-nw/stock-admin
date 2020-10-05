@@ -57,6 +57,10 @@ public class ProductService {
         return Optional.ofNullable(productsRepository.findByCode(productCode));
     }
 
+    public Optional<Product> getByProductNameAndPackaging(String productName, String packaging) {
+        return productsRepository.findByNameAndPackaging(productName, packaging);
+    }
+
     /**
      * Gets all products by shop id.
      *
