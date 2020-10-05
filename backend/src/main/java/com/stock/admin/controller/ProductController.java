@@ -3,7 +3,6 @@ package com.stock.admin.controller;
 import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.Product;
 import com.stock.admin.model.request.ProductRequest;
-import com.stock.admin.model.response.ErrorResponse;
 import com.stock.admin.model.response.Response;
 import com.stock.admin.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +53,7 @@ public class ProductController {
      */
     @GetMapping(value = "/{productCode}")
     @ResponseBody
-    public Response getProductsDetails(@PathVariable("productCode") String productCode)  {
+    public Response getProductsDetails(@PathVariable("productCode") String productCode) {
         Optional<Product> product = productService.getByProductCode(productCode);
         return product.map(p -> Response.buildResponse(Product.type, p, true))
                 .orElseThrow(() -> new StockAdminApplicationException("Product does not exists", HttpStatus.NOT_FOUND));
@@ -68,7 +67,7 @@ public class ProductController {
      */
     @PostMapping
     @ResponseBody
-    public Response addProduct(@RequestBody ProductRequest productRequest) {
+    public Response addProduct(@Valid @RequestBody ProductRequest productRequest) {
         Product addedProduct = productService.create(productRequest.getProduct());
         return Response.buildResponse(Product.type, addedProduct, true);
     }

@@ -2,7 +2,6 @@ package com.stock.admin.service;
 
 import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.Shop;
-import com.stock.admin.model.response.ErrorResponse;
 import com.stock.admin.repository.ShopsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

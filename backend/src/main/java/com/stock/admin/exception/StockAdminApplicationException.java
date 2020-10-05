@@ -1,9 +1,10 @@
 package com.stock.admin.exception;
 
 import com.stock.admin.model.response.ErrorResponse;
-import java.util.Objects;
-import javax.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
+
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**
  * The type Stock admin application exception.
@@ -50,6 +51,13 @@ public class StockAdminApplicationException extends RuntimeException {
         this.httpStatus = httpStatus;
     }
 
+    /**
+     * Instantiates a new Stock admin application exception.
+     *
+     * @param errorCode    the error code
+     * @param errorMessage the error message
+     * @param httpStatus   the http status
+     */
     public StockAdminApplicationException(Integer errorCode, String errorMessage, @NotNull HttpStatus httpStatus) {
         super();
         Objects.requireNonNull(httpStatus);
@@ -57,6 +65,12 @@ public class StockAdminApplicationException extends RuntimeException {
         this.httpStatus = httpStatus;
     }
 
+    /**
+     * Instantiates a new Stock admin application exception.
+     *
+     * @param errorMessage the error message
+     * @param httpStatus   the http status
+     */
     public StockAdminApplicationException(String errorMessage, @NotNull HttpStatus httpStatus) {
         super();
         Objects.requireNonNull(httpStatus);

@@ -3,7 +3,6 @@ package com.stock.admin.controller;
 import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.Shop;
 import com.stock.admin.model.request.ShopRequest;
-import com.stock.admin.model.response.ErrorResponse;
 import com.stock.admin.model.response.Response;
 import com.stock.admin.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +63,7 @@ public class ShopController {
      */
     @PostMapping
     @ResponseBody
-    public Response addShop(@RequestBody ShopRequest shopRequest) {
+    public Response addShop(@Valid @RequestBody ShopRequest shopRequest) {
         Shop addedShop = shopService.create(shopRequest.getShop());
         return Response.buildResponse(Shop.type, addedShop, true);
     }
