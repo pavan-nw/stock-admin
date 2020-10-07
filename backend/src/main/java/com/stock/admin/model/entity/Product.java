@@ -3,6 +3,7 @@ package com.stock.admin.model.entity;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,6 +20,12 @@ public class Product {
      * The constant type.
      */
     public static final String type = "product";
+
+    /**
+     * The constant SEQUENCE_NAME.
+     */
+    @Transient
+    public static final String SEQUENCE_NAME = "PROD";
 
     @Id
     private String id;

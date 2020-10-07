@@ -5,6 +5,7 @@ import com.stock.admin.model.entity.Product;
 import com.stock.admin.model.request.ProductRequest;
 import com.stock.admin.model.response.Response;
 import com.stock.admin.service.ProductService;
+import com.stock.admin.service.SequenceGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,15 +20,19 @@ import java.util.Optional;
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
+    private final SequenceGeneratorService sequenceGeneratorService;
+
 
     /**
      * Instantiates a new Product controller.
      *
-     * @param productService the product service
+     * @param productService           the product service
+     * @param sequenceGeneratorService the sequence generator service
      */
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService,SequenceGeneratorService sequenceGeneratorService) {
         this.productService = productService;
+        this.sequenceGeneratorService=sequenceGeneratorService;
     }
 
     /**
@@ -68,6 +73,7 @@ public class ProductController {
     @PostMapping
     @ResponseBody
     public Response addProduct(@Valid @RequestBody ProductRequest productRequest) {
+        productRequest.getProduct().setCode(sequenceGeneratorService.generateSequence(Product.SEQUENCE_NAME));
         Product addedProduct = productService.create(productRequest.getProduct());
         return Response.buildResponse(Product.type, addedProduct, true);
     }

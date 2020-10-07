@@ -4,6 +4,7 @@ import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.Shop;
 import com.stock.admin.model.request.ShopRequest;
 import com.stock.admin.model.response.Response;
+import com.stock.admin.service.SequenceGeneratorService;
 import com.stock.admin.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,15 +20,19 @@ import java.util.Optional;
 @RequestMapping("/shops")
 public class ShopController {
     private final ShopService shopService;
+    private final SequenceGeneratorService sequenceGeneratorService;
+
 
     /**
      * Instantiates a new Shop controller.
      *
-     * @param shopService the shop service
+     * @param shopService              the shop service
+     * @param sequenceGeneratorService the sequence generator service
      */
     @Autowired
-    public ShopController(ShopService shopService) {
+    public ShopController(ShopService shopService,SequenceGeneratorService sequenceGeneratorService) {
         this.shopService = shopService;
+        this.sequenceGeneratorService = sequenceGeneratorService;
     }
 
     /**
@@ -64,6 +69,7 @@ public class ShopController {
     @PostMapping
     @ResponseBody
     public Response addShop(@Valid @RequestBody ShopRequest shopRequest) {
+        shopRequest.getShop().setShopCode(sequenceGeneratorService.generateSequence(Shop.SEQUENCE_NAME));
         Shop addedShop = shopService.create(shopRequest.getShop());
         return Response.buildResponse(Shop.type, addedShop, true);
     }
