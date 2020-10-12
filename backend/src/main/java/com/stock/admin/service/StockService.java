@@ -1,5 +1,11 @@
 package com.stock.admin.service;
 
+import static com.stock.admin.utils.StockAdminConstants.PRODUCT_DOES_NOT_EXISTS;
+import static com.stock.admin.utils.StockAdminConstants.PATH_PRODUCT_NAME;
+import static com.stock.admin.utils.StockAdminConstants.PATH_PRODUCT_PACKAGING;
+import static com.stock.admin.utils.StockAdminConstants.STOCK_DATE;
+import static com.stock.admin.utils.StockAdminConstants.TOTAL_STOCK;
+
 import com.mongodb.client.result.UpdateResult;
 import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.Product;
@@ -48,11 +54,8 @@ public class StockService {
      */
     @Transactional
     public Stock createOrUpdate(StockRequest stockRequest) {
-
-        String productName = stockRequest.getProductName();
-        String packaging = stockRequest.getPackaging();
         return productService
-                .getByProductNameAndPackaging(productName, packaging)
+                .getByProductNameAndPackaging(stockRequest.getProductName(), stockRequest.getPackaging())
                 .map(product -> {
                     Optional<Stock> stockFound = findStock(stockRequest);
                     Stock updatedStock = stockFound
@@ -60,19 +63,21 @@ public class StockService {
                             .orElseGet(() -> handleWhenStockNotFound(stockRequest, product));
                     cascadeUpdate(stockRequest);
                     return updatedStock;
-                }).orElseThrow(() -> new StockAdminApplicationException("Product does not exists", HttpStatus.NOT_FOUND));
+                }).orElseThrow(() -> new StockAdminApplicationException(PRODUCT_DOES_NOT_EXISTS, HttpStatus.NOT_FOUND));
     }
 
     private Optional<Stock> findStock(StockRequest stockRequest) {
         // Query to check stock exist for given date
         Query queryToCheckStockForGivenDate = new Query();
-        List<Criteria> criterias = new ArrayList<Criteria>();
-        criterias.add(Criteria.where("product.name").is(stockRequest.getProductName()));
-        criterias.add(Criteria.where("product.packaging").is(stockRequest.getPackaging()));
-        criterias.add(Criteria.where("stockDate").is(stockRequest.getStockDate()));
-        Criteria criteria = new Criteria().andOperator(criterias.toArray(new Criteria[criterias.size()]));
+        Criteria criteria = matchingProductCriteria(stockRequest)
+                .and(STOCK_DATE).is(stockRequest.getStockDate());
         queryToCheckStockForGivenDate.addCriteria(criteria);
         return Optional.ofNullable(mongoTemplate.findOne(queryToCheckStockForGivenDate, Stock.class));
+    }
+
+    private Criteria matchingProductCriteria(StockRequest stockRequest) {
+        return Criteria.where(PATH_PRODUCT_NAME).is(stockRequest.getProductName())
+                .and(PATH_PRODUCT_PACKAGING).is(stockRequest.getPackaging());
     }
 
     private Stock handleWhenStockFound(Stock stockFound, StockRequest stockRequest) {
@@ -95,12 +100,11 @@ public class StockService {
 
     private Optional<Stock> findPreviousStocks(StockRequest stockRequest) {
         Query queryToCheckStockForPreviousDates = new Query();
-        List<Criteria> criterias1 = new ArrayList<Criteria>();
-        criterias1.add(Criteria.where("product.name").is(stockRequest.getProductName()));
-        criterias1.add(Criteria.where("product.packaging").is(stockRequest.getPackaging()));
-        criterias1.add(Criteria.where("stockDate").lt(stockRequest.getStockDate()));
-        Criteria criteria1 = new Criteria().andOperator(criterias1.toArray(new Criteria[criterias1.size()]));
-        queryToCheckStockForPreviousDates.addCriteria(criteria1).with(Sort.by(Sort.Direction.DESC, "stockDate")).limit(1);
+        Criteria criteria = matchingProductCriteria(stockRequest).and(STOCK_DATE).lt(stockRequest.getStockDate());
+        queryToCheckStockForPreviousDates
+                .addCriteria(criteria)
+                .with(Sort.by(Sort.Direction.DESC, STOCK_DATE))
+                .limit(1);
         return Optional.ofNullable(mongoTemplate.findOne(queryToCheckStockForPreviousDates, Stock.class));
     }
 
@@ -126,15 +130,15 @@ public class StockService {
         Query queryToCheckStocksOnLaterDate = new Query();
 
         List<Criteria> criterias = new ArrayList<Criteria>();
-        criterias.add(Criteria.where("product.name").is(stockRequest.getProductName()));
-        criterias.add(Criteria.where("product.packaging").is(stockRequest.getPackaging()));
-        criterias.add(Criteria.where("stockDate").gt(stockRequest.getStockDate()));
+        criterias.add(Criteria.where(PATH_PRODUCT_NAME).is(stockRequest.getProductName()));
+        criterias.add(Criteria.where(PATH_PRODUCT_PACKAGING).is(stockRequest.getPackaging()));
+        criterias.add(Criteria.where(STOCK_DATE).gt(stockRequest.getStockDate()));
         Criteria criteria = new Criteria().andOperator(criterias.toArray(new Criteria[criterias.size()]));
         queryToCheckStocksOnLaterDate.addCriteria(criteria);
 
         Update updateStock = new Update();
         // Increment the total stock
-        updateStock.inc("totalStock", stockRequest.getOpeningStock() - stockRequest.getClosingStock());
+        updateStock.inc(TOTAL_STOCK, stockRequest.getOpeningStock() - stockRequest.getClosingStock());
 
         // Update all records matching query with total stock
         UpdateResult updateResult = mongoTemplate.updateMulti(queryToCheckStocksOnLaterDate, updateStock, Stock.class);

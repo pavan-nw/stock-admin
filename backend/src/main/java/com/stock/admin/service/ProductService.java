@@ -1,5 +1,7 @@
 package com.stock.admin.service;
 
+import static com.stock.admin.utils.StockAdminConstants.PRODUCT_DOES_NOT_EXISTS;
+
 import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.Product;
 import com.stock.admin.model.response.ErrorResponse;
@@ -85,7 +87,7 @@ public class ProductService {
             product.setPackaging(newProduct.getPackaging());
             return productsRepository.save(product);
         }
-        throw new StockAdminApplicationException("Product does not exists", HttpStatus.NOT_FOUND);
+        throw new StockAdminApplicationException(PRODUCT_DOES_NOT_EXISTS, HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -100,6 +102,6 @@ public class ProductService {
             productsRepository.delete(product);
             return product;
         }
-        throw new StockAdminApplicationException("Product does not exists", HttpStatus.NOT_FOUND);
+        throw new StockAdminApplicationException(PRODUCT_DOES_NOT_EXISTS, HttpStatus.NOT_FOUND);
     }
 }

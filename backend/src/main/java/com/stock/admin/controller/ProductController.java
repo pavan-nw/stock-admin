@@ -1,5 +1,7 @@
 package com.stock.admin.controller;
 
+import static com.stock.admin.utils.StockAdminConstants.PRODUCT_DOES_NOT_EXISTS;
+
 import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.Product;
 import com.stock.admin.model.request.ProductRequest;
@@ -57,7 +59,7 @@ public class ProductController {
     public Response getProductsDetails(@PathVariable("productCode") String productCode)  {
         Optional<Product> product = productService.getByProductCode(productCode);
         return product.map(p -> Response.buildResponse(Product.type, p, true))
-                .orElseThrow(() -> new StockAdminApplicationException("Product does not exists", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new StockAdminApplicationException(PRODUCT_DOES_NOT_EXISTS, HttpStatus.NOT_FOUND));
     }
 
     /**
