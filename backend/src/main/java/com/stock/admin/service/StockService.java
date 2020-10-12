@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -99,7 +100,7 @@ public class StockService {
         criterias1.add(Criteria.where("product.packaging").is(stockRequest.getPackaging()));
         criterias1.add(Criteria.where("stockDate").lt(stockRequest.getStockDate()));
         Criteria criteria1 = new Criteria().andOperator(criterias1.toArray(new Criteria[criterias1.size()]));
-        queryToCheckStockForPreviousDates.addCriteria(criteria1).limit(1);
+        queryToCheckStockForPreviousDates.addCriteria(criteria1).with(Sort.by(Sort.Direction.DESC, "stockDate")).limit(1);
         return Optional.ofNullable(mongoTemplate.findOne(queryToCheckStockForPreviousDates, Stock.class));
     }
 
