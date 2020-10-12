@@ -10,8 +10,8 @@ public class StockRequest extends Request {
     private String productName;
     private String packaging;
     private Date stockDate;
-    private int openingStock;
-    private int closingStock;
+    private int openingStock = 0;
+    private int closingStock = 0;
 
     /**
      * Gets product name.

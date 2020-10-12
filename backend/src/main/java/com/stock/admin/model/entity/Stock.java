@@ -135,6 +135,9 @@ public class Stock {
      * @param totalStock the total stock
      */
     public void setTotalStock(int totalStock) {
+        if (totalStock < 0) {
+            throw new RuntimeException("Total stock should be more than zero");
+        }
         this.totalStock = totalStock;
     }
 
