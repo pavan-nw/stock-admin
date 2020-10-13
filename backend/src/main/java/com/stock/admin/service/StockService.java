@@ -1,5 +1,6 @@
 package com.stock.admin.service;
 
+import static com.stock.admin.utils.Helper.pageRequestFor;
 import static com.stock.admin.utils.StockAdminConstants.PRODUCT_DOES_NOT_EXISTS;
 import static com.stock.admin.utils.StockAdminConstants.PATH_PRODUCT_NAME;
 import static com.stock.admin.utils.StockAdminConstants.PATH_PRODUCT_PACKAGING;
@@ -12,10 +13,10 @@ import com.stock.admin.model.entity.Product;
 import com.stock.admin.model.entity.Stock;
 import com.stock.admin.model.request.StockRequest;
 import com.stock.admin.repository.StocksRepository;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -128,12 +129,7 @@ public class StockService {
 
         // Query to check for stocks present on later dates, so that cascade the update for all the stocks
         Query queryToCheckStocksOnLaterDate = new Query();
-
-        List<Criteria> criterias = new ArrayList<Criteria>();
-        criterias.add(Criteria.where(PATH_PRODUCT_NAME).is(stockRequest.getProductName()));
-        criterias.add(Criteria.where(PATH_PRODUCT_PACKAGING).is(stockRequest.getPackaging()));
-        criterias.add(Criteria.where(STOCK_DATE).gt(stockRequest.getStockDate()));
-        Criteria criteria = new Criteria().andOperator(criterias.toArray(new Criteria[criterias.size()]));
+        Criteria criteria = matchingProductCriteria(stockRequest).and(STOCK_DATE).gt(stockRequest.getStockDate());
         queryToCheckStocksOnLaterDate.addCriteria(criteria);
 
         Update updateStock = new Update();
@@ -151,9 +147,12 @@ public class StockService {
      * Gets all.
      *
      * @return the all
+     * @param pageNum
+     * @param size
+     * @param sortType
      */
-    public List<Stock> getAll() {
-        return stocksRepository.findAll();
+    public Page<Stock> getAll(int pageNum, int size, String sortType) {
+        return stocksRepository.findAll(pageRequestFor(pageNum, size, sortType, STOCK_DATE));
     }
 }
 

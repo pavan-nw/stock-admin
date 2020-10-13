@@ -1,7 +1,10 @@
 package com.stock.admin.repository;
 
 import com.stock.admin.model.entity.Stock;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
@@ -15,4 +18,10 @@ public interface StocksRepository extends MongoRepository<Stock, String> {
      * @return
      */
     Optional<Stock> findById(String id);
+
+    List<Stock> findByStockDateLessThanEqual(Date stockDate, Pageable pageable);
+
+    List<Stock> findByStockDateBefore(Date stockDate, Pageable pageable);
+
+    List<Stock> findByStockDateAfter(Date stockDate, Pageable pageable);
 }
