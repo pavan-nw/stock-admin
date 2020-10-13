@@ -28,7 +28,7 @@ public class StockAdminApplicationExceptionHandler extends ResponseEntityExcepti
      */
     @ExceptionHandler(value = {StockAdminApplicationException.class})
     protected ResponseEntity<Object> handleErrorResponse(StockAdminApplicationException ex, WebRequest request) {
-        if(ex.getCause()!=null) {
+        if (ex.getCause() != null) {
             ex.getCause().printStackTrace();
         }
         Object response = Response.buildResponse("error", ex.getErrorObject(), false);

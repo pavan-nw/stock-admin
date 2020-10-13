@@ -50,6 +50,13 @@ public class StockAdminApplicationException extends RuntimeException {
         this.httpStatus = httpStatus;
     }
 
+    /**
+     * Instantiates a new Stock admin application exception.
+     *
+     * @param errorCode    the error code
+     * @param errorMessage the error message
+     * @param httpStatus   the http status
+     */
     public StockAdminApplicationException(Integer errorCode, String errorMessage, @NotNull HttpStatus httpStatus) {
         super();
         Objects.requireNonNull(httpStatus);
@@ -57,6 +64,12 @@ public class StockAdminApplicationException extends RuntimeException {
         this.httpStatus = httpStatus;
     }
 
+    /**
+     * Instantiates a new Stock admin application exception.
+     *
+     * @param errorMessage the error message
+     * @param httpStatus   the http status
+     */
     public StockAdminApplicationException(String errorMessage, @NotNull HttpStatus httpStatus) {
         super();
         Objects.requireNonNull(httpStatus);

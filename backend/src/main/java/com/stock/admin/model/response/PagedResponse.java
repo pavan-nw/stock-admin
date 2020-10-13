@@ -8,7 +8,7 @@ public class PagedResponse extends Response {
     private int size;
     private int totalPages;
     private boolean isLast;
-
+    private long totalCount;
 
     /**
      * Instantiates a new Response.
@@ -16,13 +16,50 @@ public class PagedResponse extends Response {
      * @param type           the type
      * @param payload        the payload
      * @param responseStatus the response status
+     * @param page           the page
+     * @param size           the size
+     * @param totalPages     the total pages
+     * @param isLast         the is last
+     * @param totalCount     the total count
      */
-    public PagedResponse(String type, Object payload, ResponseStatus responseStatus, int page, int size, int totalPages, boolean isLast) {
+    public PagedResponse(String type, Object payload,
+                         ResponseStatus responseStatus,
+                         int page, int size,
+                         int totalPages, boolean isLast,
+                         long totalCount) {
         super(type, payload, responseStatus);
         this.page = page;
         this.size = size;
         this.totalPages = totalPages;
         this.isLast = isLast;
+        this.totalCount = totalCount;
+    }
+
+    /**
+     * Build paged response paged response.
+     *
+     * @param type       the type
+     * @param payload    the payload
+     * @param success    the success
+     * @param page       the page
+     * @param size       the size
+     * @param totalPages the total pages
+     * @param isLast     the is last
+     * @param totalCount the total count
+     * @return the paged response
+     */
+    public static PagedResponse buildPagedResponse(String type, Object payload, boolean success,
+                                                   int page, int size, int totalPages, boolean isLast,
+                                                   long totalCount) {
+        return new PagedResponse(type,
+                payload,
+                success ? ResponseStatus.Success : ResponseStatus.Failure,
+                page + 1,
+                size,
+                totalPages,
+                isLast,
+                totalCount
+        );
     }
 
     /**
@@ -97,14 +134,21 @@ public class PagedResponse extends Response {
         isLast = last;
     }
 
-    public static PagedResponse buildPagedResponse(String type, Object payload, boolean success, int page, int size, int totalPages, boolean isLast) {
-        return new PagedResponse(type,
-                payload,
-                success ? ResponseStatus.Success : ResponseStatus.Failure,
-                page+1,
-                size,
-                totalPages,
-                isLast
-        );
+    /**
+     * Gets total count.
+     *
+     * @return the total count
+     */
+    public long getTotalCount() {
+        return totalCount;
+    }
+
+    /**
+     * Sets total count.
+     *
+     * @param totalCount the total count
+     */
+    public void setTotalCount(long totalCount) {
+        this.totalCount = totalCount;
     }
 }

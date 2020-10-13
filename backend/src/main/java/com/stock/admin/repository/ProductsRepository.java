@@ -1,11 +1,10 @@
 package com.stock.admin.repository;
 
 import com.stock.admin.model.entity.Product;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * The interface Products repository.
@@ -30,6 +29,13 @@ public interface ProductsRepository extends MongoRepository<Product, String> {
     Product findByCode(String productCode);
 
 
+    /**
+     * Find by name and packaging optional.
+     *
+     * @param name      the name
+     * @param packaging the packaging
+     * @return the optional
+     */
     Optional<Product> findByNameAndPackaging(String name, String packaging);
 
     /**

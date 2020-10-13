@@ -28,11 +28,22 @@ public class StockController {
 
     private final StockService stockService;
 
+    /**
+     * Instantiates a new Stock controller.
+     *
+     * @param stockService the stock service
+     */
     @Autowired
     public StockController(StockService stockService) {
         this.stockService = stockService;
     }
 
+    /**
+     * Create or update stock response.
+     *
+     * @param stockRequest the stock request
+     * @return the response
+     */
     @PostMapping
     @ResponseBody
     public Response createOrUpdateStock(@RequestBody StockRequest stockRequest) {
@@ -40,6 +51,15 @@ public class StockController {
         return Response.buildResponse(Stock.type, stock, true);
     }
 
+    /**
+     * Gets all stocks.
+     *
+     * @param stockDate the stock date
+     * @param pageNum   the page num
+     * @param size      the size
+     * @param sortType  the sort type
+     * @return the all stocks
+     */
     @GetMapping
     @ResponseBody
     public PagedResponse getAllStocks(@RequestParam(required = false, name = "stockDate")
@@ -61,6 +81,7 @@ public class StockController {
                 page.getNumber(),
                 page.getSize(),
                 page.getTotalPages(),
-                page.isLast());
+                page.isLast(),
+                page.getTotalElements());
     }
 }

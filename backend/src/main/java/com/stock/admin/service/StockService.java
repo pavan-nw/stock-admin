@@ -1,9 +1,9 @@
 package com.stock.admin.service;
 
 import static com.stock.admin.utils.Helper.pageRequestFor;
-import static com.stock.admin.utils.StockAdminConstants.PRODUCT_DOES_NOT_EXISTS;
 import static com.stock.admin.utils.StockAdminConstants.PATH_PRODUCT_NAME;
 import static com.stock.admin.utils.StockAdminConstants.PATH_PRODUCT_PACKAGING;
+import static com.stock.admin.utils.StockAdminConstants.PRODUCT_DOES_NOT_EXISTS;
 import static com.stock.admin.utils.StockAdminConstants.STOCK_DATE;
 import static com.stock.admin.utils.StockAdminConstants.TOTAL_STOCK;
 
@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -40,6 +39,8 @@ public class StockService {
      * Instantiates a new Stock service.
      *
      * @param stocksRepository the stocks repository
+     * @param productService   the product service
+     * @param mongoTemplate    the mongo template
      */
     @Autowired
     public StockService(StocksRepository stocksRepository, ProductService productService, MongoTemplate mongoTemplate) {
@@ -126,6 +127,11 @@ public class StockService {
         return stock;
     }
 
+    /**
+     * Cascade update.
+     *
+     * @param stockRequest the stock request
+     */
     public void cascadeUpdate(StockRequest stockRequest) {
 
         // Query to check for stocks present on later dates, so that cascade the update for all the stocks
@@ -147,15 +153,24 @@ public class StockService {
     /**
      * Gets all.
      *
+     * @param pageNum  the page num
+     * @param size     the size
+     * @param sortType the sort type
      * @return the all
-     * @param pageNum
-     * @param size
-     * @param sortType
      */
     public Page<Stock> getAll(int pageNum, int size, String sortType) {
         return stocksRepository.findAll(pageRequestFor(pageNum, size, sortType, STOCK_DATE));
     }
 
+    /**
+     * Find by stock date less than equal page.
+     *
+     * @param stockDate the stock date
+     * @param pageNum   the page num
+     * @param size      the size
+     * @param sortType  the sort type
+     * @return the page
+     */
     public Page<Stock> findByStockDateLessThanEqual(Date stockDate, int pageNum, int size, String sortType) {
         return stocksRepository.findByStockDateLessThanEqual(stockDate, pageRequestFor(pageNum, size, sortType, STOCK_DATE));
     }

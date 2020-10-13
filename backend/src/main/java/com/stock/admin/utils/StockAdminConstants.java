@@ -1,10 +1,28 @@
 package com.stock.admin.utils;
 
+/**
+ * The interface Stock admin constants.
+ */
 public interface StockAdminConstants {
 
-     String STOCK_DATE = "stockDate";
-     String PATH_PRODUCT_NAME = "product.name";
-     String PATH_PRODUCT_PACKAGING = "product.packaging";
-     String TOTAL_STOCK = "totalStock";
-     String PRODUCT_DOES_NOT_EXISTS = "Product does not exists";
+    /**
+     * The constant STOCK_DATE.
+     */
+    String STOCK_DATE = "stockDate";
+    /**
+     * The constant PATH_PRODUCT_NAME.
+     */
+    String PATH_PRODUCT_NAME = "product.name";
+    /**
+     * The constant PATH_PRODUCT_PACKAGING.
+     */
+    String PATH_PRODUCT_PACKAGING = "product.packaging";
+    /**
+     * The constant TOTAL_STOCK.
+     */
+    String TOTAL_STOCK = "totalStock";
+    /**
+     * The constant PRODUCT_DOES_NOT_EXISTS.
+     */
+    String PRODUCT_DOES_NOT_EXISTS = "Product does not exists";
 }

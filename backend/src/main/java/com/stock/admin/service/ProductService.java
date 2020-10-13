@@ -4,14 +4,12 @@ import static com.stock.admin.utils.StockAdminConstants.PRODUCT_DOES_NOT_EXISTS;
 
 import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.Product;
-import com.stock.admin.model.response.ErrorResponse;
 import com.stock.admin.repository.ProductsRepository;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * The type Product service.
@@ -59,6 +57,13 @@ public class ProductService {
         return Optional.ofNullable(productsRepository.findByCode(productCode));
     }
 
+    /**
+     * Gets by product name and packaging.
+     *
+     * @param productName the product name
+     * @param packaging   the packaging
+     * @return the by product name and packaging
+     */
     public Optional<Product> getByProductNameAndPackaging(String productName, String packaging) {
         return productsRepository.findByNameAndPackaging(productName, packaging);
     }
