@@ -1,6 +1,6 @@
 export const getErrorMessageToShow: any = (e: any) => {
     if (e.response) {
-        console.error('e: ', e.response);
+        console.log('e: ', e.response);
         return e.response.data.payload
             ? e.response.data.payload.errorMessage
             : e.response.data.error.message;

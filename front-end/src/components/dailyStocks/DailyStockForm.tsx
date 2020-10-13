@@ -4,12 +4,9 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { Product } from '../../features/dailyStocks/types';
-import { addProduct, editProduct } from '../../features/dailyStocks/dailyStockThunk';
 import { getSelectedProduct,getProducts } from '../../features/dailyStocks/selectors';
 import { Calendar } from 'primereact/calendar';
-import {
-    productCodeLabel,
-    productCodePlaceHolder,
+import {   
     productNameLabel,
     productNamePlaceHolder,
     productPackagingLabel,
@@ -23,8 +20,7 @@ import {
     clearLabel
 } from '../../helpers/constants';
 import {
-    getProducts as fetchProducts,
-    removeProduct,
+    getProducts as fetchProducts    
 } from '../../features/product/productThunk';
 
 export const DailyStockForm: React.FC = () => {
@@ -32,8 +28,8 @@ export const DailyStockForm: React.FC = () => {
     const selectedProduct: Product | null = useSelector(getSelectedProduct);
     const products: Product[] | [] = useSelector(getProducts);
 
-    const initialProductName = selectedProduct ? selectedProduct.name : '';
-    const initialPackaging = selectedProduct ? selectedProduct.packaging : '';
+    const initialProductName = selectedProduct ? selectedProduct : {name:""}
+    const initialPackaging = selectedProduct ? selectedProduct : {name:""};
     const initialProductCode = selectedProduct ? selectedProduct.code : '';
     const initialStockDate = new Date('10/09/01');
     const initialOpenStock = 0;
@@ -41,16 +37,13 @@ export const DailyStockForm: React.FC = () => {
 
     const [selectedPackaging, updatePackaging] = useState(initialPackaging);
     const [stockDate, updateStockDate] = useState(initialStockDate);
-    const [productName, updateProductName] = useState(initialProductName);
-    const [productCode, updateProductCode] = useState(initialProductCode);
+    const [productName, updateProductName] = useState(initialProductName);    
     const [openStock, updateOpenStock] = useState(initialOpenStock);
     const [closeStock, updateCloseStock] = useState(initialCloseStock);
 
-    useEffect(() => {
-        console.log(`inside useeffect in dailystock form ${products}`);
-        if(products.length==0){
-                console.log(`dispatching useeffect ${products}`);
-                dispatch(fetchProducts());
+    useEffect(() => {        
+        if(products.length==0){                
+            dispatch(fetchProducts());
         } 
     }, [])
 
@@ -69,22 +62,23 @@ export const DailyStockForm: React.FC = () => {
     ];
 
     const onSave = () => {
-        if (selectedProduct) {
-            const product: Product = {
-                id: selectedProduct.id,
-                code: productCode,
-                name: productName,
-                packaging: selectedPackaging,
-            };
-            dispatch(editProduct(product));
-        } else {
-            const product: Product = {
-                code: productCode,
-                name: productName,
-                packaging: selectedPackaging,
-            };
-            dispatch(addProduct(product));
-        }
+        console.log(`inside dailystock form ${JSON.stringify(productName)} ${JSON.stringify(selectedPackaging)}`);
+        // if (selectedProduct) {
+        //     const product: Product = {
+        //         id: selectedProduct.id,
+        //         code: productCode,
+        //         name: productName,
+        //         packaging: selectedPackaging,
+        //     };
+        //     dispatch(editProduct(product));
+        // } else {
+        //     const product: Product = {
+        //         code: productCode,
+        //         name: productName,
+        //         packaging: selectedPackaging,
+        //     };
+        //     dispatch(addProduct(product));
+        // }
     };
 
     const onClear = () => {

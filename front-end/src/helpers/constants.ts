@@ -1,8 +1,4 @@
-export const baseURL = 'https://8857876d-52c1-4258-aa92-c9b4e7dc695f.mock.pstmn.io';
-    //'https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io';
-
-export const stocksBaseURL =
-'https://8857876d-52c1-4258-aa92-c9b4e7dc695f.mock.pstmn.io';    
+export const baseURL = 'https://16e8e330-0633-41ec-b5de-bdb7dfb1981c.mock.pstmn.io';  
 
 export const appName = 'Stock Administrator';
 
@@ -12,6 +8,9 @@ export const editProductTitle = 'Edit Product';
 
 export const viewDailyStocksTitle = 'Search Daily Stocks';
 export const addDailyStockTitle = 'Add Stock';
+export const addInvoiceTitle = 'Add Invoice';
+export const addSalesTitle = 'Add Sales';
+
 
 export const stockIdLabel = 'Stock ID';
 export const dailyStockDateLabel = 'Date';

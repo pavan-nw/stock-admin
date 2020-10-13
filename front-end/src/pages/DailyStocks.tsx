@@ -1,9 +1,10 @@
 import React from 'react';
 import { TabPanel, TabView } from 'primereact/tabview';
-import { ProductForm } from '../components/products/ProductForm';
 import { DailyStockList } from '../components/dailyStocks/DailyStockList';
 import { DailyStockForm } from '../components/dailyStocks/DailyStockForm';
-import { addProductTitle, viewProductsTitle,viewDailyStocksTitle,addDailyStockTitle } from '../helpers/constants';
+import {DailyStockAddInvoice  } from '../components/dailyStocks/DailyStockAddInvoice';
+import {DailyStockAddSales  } from '../components/dailyStocks/DailyStockAddSales';
+import {viewDailyStocksTitle,addDailyStockTitle,addInvoiceTitle,addSalesTitle } from '../helpers/constants';
 
 export const DailyStocks: React.FC = () => {
     return (
@@ -16,6 +17,12 @@ export const DailyStocks: React.FC = () => {
                     <TabPanel header={addDailyStockTitle}>
                         <DailyStockForm />
                     </TabPanel>
+                    <TabPanel header={addInvoiceTitle}>
+                        <DailyStockAddInvoice />
+                    </TabPanel> 
+                    <TabPanel header={addSalesTitle}>
+                        <DailyStockAddSales />
+                    </TabPanel>                    
                 </TabView>
             </div>
         </div>

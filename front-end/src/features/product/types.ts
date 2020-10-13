@@ -49,8 +49,8 @@ export interface Product {
     name: string;
     packaging: string;
     shopCode?: string;
-    createdat?: number;
-    updatedat?: number;
+    createDate?: number;
+    updateDate?: number;
 }
 
 export interface ProductState {

@@ -6,3 +6,8 @@ export const getSelectedProduct = (state: ProductState) =>
     state.productState.selectedProduct;
 export const getShowEditProductDialog = (state: ProductState) =>
     state.productState.showEditDialog;
+export const getCurrentStockProductName = (state:StockState) => state.stockState.currentStock.productName;
+export const getCurrentStockProductPackaging = (state:StockState) => state.stockState.currentStock.packaging;
+export const getCurrentStockDate = (state:StockState) => state.stockState.currentStock.stockDate;
+export const getOpeningStock = (state:StockState) => state.stockState.currentStock.openingStocks;
+export const getClosingStock = (state:StockState) => state.stockState.currentStock.closingStocks;

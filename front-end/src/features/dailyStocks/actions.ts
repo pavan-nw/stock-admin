@@ -1,17 +1,20 @@
 import {
-    CREATE_PRODUCT,
-    CreateProductAction,
-    DELETE_PRODUCT,
-    DeleteProductAction,
     FETCH_PRODUCTS,
     FetchProductsAction,
     Product,
-    SELECT_PRODUCT,
-    SelectProductAction,
-    TOGGLE_EDIT_DIALOG,
-    ToggleEditProductDialogAction,
-    UPDATE_PRODUCT,
-    UpdateProductAction,Stocks, FETCH_STOCKS,FetchStocksAction
+    Stocks,
+    FETCH_STOCKS,
+    FetchStocksAction,
+    setProductNameAction,
+    SET_PRODUCT_NAME,
+    setProductPackagingAction,
+    SET_PRODUCT_PACKAGING,
+    setStockDateAction,
+    SET_STOCK_DATE,
+    setOpenStockAction,
+    SET_OPEN_STOCK,
+    setCLoseStockAction,
+    SET_CLOSE_STOCK,
 } from './types';
 
 export const fetchProducts = (
@@ -28,7 +31,7 @@ export const fetchProducts = (
 export const fetchStocks = (
     shopCode: string,
     stocks: Stocks[]
-): FetchStocksAction => {    
+): FetchStocksAction => {
     return {
         type: FETCH_STOCKS,
         shopCode,
@@ -36,36 +39,39 @@ export const fetchStocks = (
     };
 };
 
-export const createProduct = (product: Product): CreateProductAction => {
+export const setProductName = (productName: string): setProductNameAction => {
     return {
-        type: CREATE_PRODUCT,
-        product,
+        type: SET_PRODUCT_NAME,
+        productName,
     };
 };
 
-export const updateProduct = (product: Product): UpdateProductAction => {
+export const setProductPackaging = (
+    productPackaging: string
+): setProductPackagingAction => {
     return {
-        type: UPDATE_PRODUCT,
-        product,
+        type: SET_PRODUCT_PACKAGING,
+        productPackaging,
     };
 };
 
-export const deleteProduct = (product: Product): DeleteProductAction => {
+export const setStockDate = (stockDate: string): setStockDateAction => {
     return {
-        type: DELETE_PRODUCT,
-        product,
+        type: SET_STOCK_DATE,
+        stockDate,
     };
 };
 
-export const selectProduct = (product: Product | null): SelectProductAction => {
+export const setOpenStock = (openStock: string): setOpenStockAction => {
     return {
-        type: SELECT_PRODUCT,
-        product: product,
+        type: SET_OPEN_STOCK,
+        openStock,
     };
 };
 
-export const toggleShowEditDialog = (): ToggleEditProductDialogAction => {
+export const setCloseStock = (closeStock: string): setCLoseStockAction => {
     return {
-        type: TOGGLE_EDIT_DIALOG,
+        type: SET_CLOSE_STOCK,
+        closeStock,
     };
 };

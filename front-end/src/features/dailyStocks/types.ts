@@ -5,6 +5,13 @@ export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const SELECT_PRODUCT = 'SELECT_PRODUCT';
 export const TOGGLE_EDIT_DIALOG = 'TOGGLE_EDIT_DIALOG';
 
+export const SET_PRODUCT_NAME = 'SET_PRODUCT_NAME';
+export const SET_PRODUCT_PACKAGING = 'SET_PRODUCT_PACKAGING';
+export const SET_STOCK_DATE = 'SET_STOCK_DATE';
+export const SET_CLOSE_STOCK = 'SET_CLOSE_STOCK';
+export const SET_OPEN_STOCK = 'SET_OPEN_STOCK';
+
+
 export const FETCH_STOCKS = 'FETCH_STOCKS';
 export const CREATE_STOCK = 'CREATE_STOCK';
 export const UPDATE_STOCK = 'UPDATE_STOCK';
@@ -14,6 +21,31 @@ export interface FetchProductsAction {
     type: typeof FETCH_PRODUCTS;
     products: Array<Product>;
     shopcode: String;
+}
+
+export interface setProductNameAction{
+    type :typeof SET_PRODUCT_NAME;
+    productName: string;
+}
+
+export interface setProductPackagingAction{
+    type :typeof SET_PRODUCT_PACKAGING;
+    productPackaging: string;
+}
+
+export interface setStockDateAction{
+    type :typeof SET_STOCK_DATE;
+    stockDate: string;
+}
+
+export interface setOpenStockAction{
+    type :typeof SET_OPEN_STOCK;
+    openStock: string;
+}
+
+export interface setCLoseStockAction{
+    type :typeof SET_CLOSE_STOCK;
+    closeStock: string;
 }
 
 export interface FetchStocksAction {
@@ -31,43 +63,20 @@ export interface UpdateStockAction {
     type: typeof UPDATE_STOCK;
     stock: Stocks;
 }
-
-export interface CreateProductAction {
-    type: typeof CREATE_PRODUCT;
-    product: Product;
-}
-
-export interface UpdateProductAction {
-    type: typeof UPDATE_PRODUCT;
-    product: Product;
-}
-
 export interface DeleteProductAction {
     type: typeof DELETE_PRODUCT;
     product: Product;
 }
 
-export interface SelectProductAction {
-    type: typeof SELECT_PRODUCT;
-    product: Product | null;
-}
-
-export interface ToggleEditProductDialogAction {
-    type: typeof TOGGLE_EDIT_DIALOG;
-}
-
-export type ProductActionTypes =
-    | FetchProductsAction
-    | CreateProductAction
-    | UpdateProductAction
-    | DeleteProductAction
-    | SelectProductAction
-    | ToggleEditProductDialogAction;
-
 export type StockActionTypes =
     | FetchStocksAction
     | CreateStocksAction
-    | UpdateStockAction;   
+    | UpdateStockAction
+    | setProductNameAction
+    | setProductPackagingAction
+    | setStockDateAction
+    | setOpenStockAction
+    | setCLoseStockAction;
 
 export interface Product {
     id?: string;
@@ -75,8 +84,8 @@ export interface Product {
     name: string;
     packaging: string;
     shopCode?: string;
-    createdat?: number;
-    updatedat?: number;
+    createdAt?: number;
+    updateAt?: number;
 }
 
 export interface Stocks {
@@ -98,9 +107,19 @@ export interface ProductState {
     };
 }
 
+export interface StockDetails{
+    productName:string;
+    packaging:string | null;
+    stockDate:string;
+    openingStocks:number;
+    closingStocks:number;
+}
+
+
 export interface StockState {
     stockState: {
         stocks: Stocks[];
-        showEditDialog: boolean;        
+        showEditDialog: boolean; 
+        currentStock: StockDetails;
     };
 }
