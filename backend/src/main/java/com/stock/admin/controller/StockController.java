@@ -5,9 +5,12 @@ import com.stock.admin.model.request.StockRequest;
 import com.stock.admin.model.response.PagedResponse;
 import com.stock.admin.model.response.Response;
 import com.stock.admin.service.StockService;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,10 +42,18 @@ public class StockController {
 
     @GetMapping
     @ResponseBody
-    public PagedResponse getAllStocks(@RequestParam(required = false, name = "page", defaultValue = "1") int pageNum,
+    public PagedResponse getAllStocks(@RequestParam(required = false, name = "stockDate")
+                                      @DateTimeFormat(pattern = "dd-MM-yyyy", iso = DateTimeFormat.ISO.DATE) Date stockDate,
+                                      @RequestParam(required = false, name = "page", defaultValue = "1") int pageNum,
                                       @RequestParam(required = false, name = "size", defaultValue = "5") int size,
                                       @RequestParam(required = false, name = "sort", defaultValue = "DESC") String sortType) {
-        Page<Stock> page = stockService.getAll(pageNum, size, sortType);
+        Page<Stock> page = null;
+        if (Objects.nonNull(stockDate)) {
+            page = stockService.findByStockDateLessThanEqual(stockDate, pageNum, size, sortType);
+        } else {
+            page = stockService.getAll(pageNum, size, sortType);
+        }
+
         List<Stock> contents = page.getContent();
         return PagedResponse.buildPagedResponse(Stock.type,
                 contents,

@@ -5,6 +5,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * The type Stocks.
@@ -21,6 +22,7 @@ public class Stock {
     private Product product;
     private int openingStock;
     private int closingStock;
+    @DateTimeFormat(pattern = "dd-MM-yyyy", iso = DateTimeFormat.ISO.DATE)
     private Date stockDate;
     private int totalStock;
 

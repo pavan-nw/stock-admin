@@ -1,6 +1,7 @@
 package com.stock.admin.model.request;
 
 import java.util.Date;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * The type Stock request.
@@ -9,6 +10,7 @@ public class StockRequest extends Request {
 
     private String productName;
     private String packaging;
+    @DateTimeFormat(pattern = "dd-MM-yyyy", iso = DateTimeFormat.ISO.DATE)
     private Date stockDate;
     private int openingStock = 0;
     private int closingStock = 0;

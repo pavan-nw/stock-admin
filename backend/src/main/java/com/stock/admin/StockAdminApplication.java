@@ -1,5 +1,6 @@
 package com.stock.admin;
 
+import java.util.TimeZone;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
@@ -21,6 +22,7 @@ public class StockAdminApplication {
      * @param args the input arguments
      */
     public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         SpringApplication.run(StockAdminApplication.class, args);
     }
 

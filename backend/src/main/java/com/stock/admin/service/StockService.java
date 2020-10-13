@@ -13,6 +13,7 @@ import com.stock.admin.model.entity.Product;
 import com.stock.admin.model.entity.Stock;
 import com.stock.admin.model.request.StockRequest;
 import com.stock.admin.repository.StocksRepository;
+import java.util.Date;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -153,6 +154,10 @@ public class StockService {
      */
     public Page<Stock> getAll(int pageNum, int size, String sortType) {
         return stocksRepository.findAll(pageRequestFor(pageNum, size, sortType, STOCK_DATE));
+    }
+
+    public Page<Stock> findByStockDateLessThanEqual(Date stockDate, int pageNum, int size, String sortType) {
+        return stocksRepository.findByStockDateLessThanEqual(stockDate, pageRequestFor(pageNum, size, sortType, STOCK_DATE));
     }
 }
 
