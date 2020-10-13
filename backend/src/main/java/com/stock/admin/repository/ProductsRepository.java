@@ -1,8 +1,9 @@
 package com.stock.admin.repository;
 
 import com.stock.admin.model.entity.Product;
-import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -42,7 +43,8 @@ public interface ProductsRepository extends MongoRepository<Product, String> {
      * Find by shop code list.
      *
      * @param shopCode the shop code
+     * @param pageable the pageable
      * @return the list
      */
-    List<Product> findByShopCode(String shopCode);
+    Page<Product> findByShopCode(String shopCode, Pageable pageable);
 }

@@ -1,13 +1,15 @@
 package com.stock.admin.controller;
 
+import static com.stock.admin.utils.Helper.pageRequestFor;
+import static com.stock.admin.utils.StockAdminConstants.STOCK_DATE;
+
 import com.stock.admin.model.entity.Stock;
 import com.stock.admin.model.request.StockRequest;
 import com.stock.admin.model.response.PagedResponse;
 import com.stock.admin.model.response.Response;
 import com.stock.admin.service.StockService;
 import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -62,21 +64,19 @@ public class StockController {
      */
     @GetMapping
     @ResponseBody
-    public PagedResponse getAllStocks(@RequestParam(required = false, name = "stockDate")
-                                      @DateTimeFormat(pattern = "dd-MM-yyyy", iso = DateTimeFormat.ISO.DATE) Date stockDate,
-                                      @RequestParam(required = false, name = "page", defaultValue = "1") int pageNum,
-                                      @RequestParam(required = false, name = "size", defaultValue = "5") int size,
-                                      @RequestParam(required = false, name = "sort", defaultValue = "DESC") String sortType) {
-        Page<Stock> page = null;
-        if (Objects.nonNull(stockDate)) {
-            page = stockService.findByStockDateLessThanEqual(stockDate, pageNum, size, sortType);
-        } else {
-            page = stockService.getAll(pageNum, size, sortType);
-        }
+    public PagedResponse getAllStocks(@RequestParam(name = "stockDate")
+                                      @DateTimeFormat(pattern = "dd-MM-yyyy",
+                                              iso = DateTimeFormat.ISO.DATE) Optional<Date> stockDate,
+                                      @RequestParam(name = "page", defaultValue = "1") int pageNum,
+                                      @RequestParam(name = "size", defaultValue = "5") int size,
+                                      @RequestParam(name = "sort", defaultValue = "DESC") String sortType) {
 
-        List<Stock> contents = page.getContent();
+        Page<Stock> page = stockDate.map(date -> stockService
+                .findByStockDateLessThanEqual(date, pageRequestFor(pageNum, size, sortType, STOCK_DATE)))
+                .orElseGet(() -> stockService.getAll(pageNum, size, sortType));
+
         return PagedResponse.buildPagedResponse(Stock.type,
-                contents,
+                page.getContent(),
                 true,
                 page.getNumber(),
                 page.getSize(),

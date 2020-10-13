@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -162,17 +163,16 @@ public class StockService {
         return stocksRepository.findAll(pageRequestFor(pageNum, size, sortType, STOCK_DATE));
     }
 
+
     /**
      * Find by stock date less than equal page.
      *
-     * @param stockDate the stock date
-     * @param pageNum   the page num
-     * @param size      the size
-     * @param sortType  the sort type
+     * @param stockDate   the stock date
+     * @param pageRequest the page request
      * @return the page
      */
-    public Page<Stock> findByStockDateLessThanEqual(Date stockDate, int pageNum, int size, String sortType) {
-        return stocksRepository.findByStockDateLessThanEqual(stockDate, pageRequestFor(pageNum, size, sortType, STOCK_DATE));
+    public Page<Stock> findByStockDateLessThanEqual(Date stockDate, Pageable pageRequest) {
+        return stocksRepository.findByStockDateLessThanEqual(stockDate, pageRequest);
     }
 }
 

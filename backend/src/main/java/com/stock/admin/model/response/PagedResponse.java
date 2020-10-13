@@ -1,5 +1,7 @@
 package com.stock.admin.model.response;
 
+import org.springframework.data.domain.Page;
+
 /**
  * The type Paged response.
  */
@@ -60,6 +62,24 @@ public class PagedResponse extends Response {
                 isLast,
                 totalCount
         );
+    }
+
+    /**
+     * Build paged response paged response.
+     *
+     * @param type the type
+     * @param page the page
+     * @return the paged response
+     */
+    public static PagedResponse buildPagedResponse(String type, Page page) {
+        return buildPagedResponse(type,
+                page.getContent(),
+                true,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalPages(),
+                page.isLast(),
+                page.getTotalElements());
     }
 
     /**

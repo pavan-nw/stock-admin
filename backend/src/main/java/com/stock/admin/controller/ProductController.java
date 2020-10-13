@@ -1,15 +1,19 @@
 package com.stock.admin.controller;
 
+import static com.stock.admin.utils.Helper.pageRequestFor;
 import static com.stock.admin.utils.StockAdminConstants.PRODUCT_DOES_NOT_EXISTS;
 
 import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.Product;
 import com.stock.admin.model.request.ProductRequest;
+import com.stock.admin.model.response.PagedResponse;
 import com.stock.admin.model.response.Response;
 import com.stock.admin.service.ProductService;
 import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,15 +48,29 @@ public class ProductController {
      * Gets all products.
      *
      * @param shopCode the shop code
+     * @param pageNum  the page num
+     * @param size     the size
+     * @param sortBy   the sort by
+     * @param sortType the sort type
      * @return the all products
      */
     @GetMapping
     @ResponseBody
-    public Response getAllProducts(@RequestParam(required = false, name = "shopCode") String shopCode) {
-        if (shopCode != null) {
-            return Response.buildResponse(Product.type, productService.getAllProductsByShopId(shopCode), true);
-        }
-        return Response.buildResponse(Product.type, productService.getAll(), true);
+    public Response getAllProducts(@RequestParam(name = "shopCode") Optional<String> shopCode,
+                                   @RequestParam(name = "page", defaultValue = "1") int pageNum,
+                                   @RequestParam(name = "size", defaultValue = "5") int size,
+                                   @RequestParam(name = "sortBy", defaultValue = "code") String sortBy,
+                                   @RequestParam(name = "sortType", defaultValue = "ASC") String sortType) {
+        Pageable pageRequest = pageRequestFor(pageNum, size, sortType, sortBy);
+        return shopCode
+                .map(code -> {
+                    Page<Product> page = productService.getAllProductsByShopId(code, pageRequest);
+                    return PagedResponse.buildPagedResponse(Product.type, page);
+                })
+                .orElseGet(() -> {
+                    Page<Product> page = productService.getAll(pageRequest);
+                    return PagedResponse.buildPagedResponse(Product.type, page);
+                });
     }
 
     /**
