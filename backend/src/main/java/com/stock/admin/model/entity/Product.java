@@ -1,12 +1,14 @@
 package com.stock.admin.model.entity;
 
-import java.util.Date;
-import java.util.Objects;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * The type Product.
@@ -18,11 +20,21 @@ public class Product {
      */
     public static final String type = "product";
 
+    /**
+     * The constant SEQUENCE_NAME.
+     */
+    @Transient
+    public static final String SEQUENCE_NAME = "PROD";
+
     @Id
     private String id;
+    @NotNull(message = "Product code is the mandatory field")
     private String code;
+    @NotNull(message = "Product name is the mandatory field")
     private String name;
+    @NotNull(message = "Shop code for the product is the mandatory field")
     private String shopCode;
+    @NotNull(message = "Packaging/unit of the product is the mandatory field")
     private String packaging;
 
     @DateTimeFormat

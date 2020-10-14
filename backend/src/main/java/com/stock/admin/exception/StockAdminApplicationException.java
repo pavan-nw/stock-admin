@@ -1,9 +1,10 @@
 package com.stock.admin.exception;
 
 import com.stock.admin.model.response.ErrorResponse;
-import java.util.Objects;
-import javax.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
+
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**
  * The type Stock admin application exception.

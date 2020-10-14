@@ -1,12 +1,15 @@
 package com.stock.admin.model.entity;
 
-import java.util.Date;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * The type Shop.
@@ -20,10 +23,19 @@ public class Shop {
     @Id
     private String id;
 
+    /**
+     * The constant SEQUENCE_NAME.
+     */
+    @Transient
+    public static final String SEQUENCE_NAME = "SHOP";
+
+    @NotNull(message = "Shop name is the mandatory field")
     @Indexed(name = "shopName")
     private String name;
 
+    @NotNull(message = "Shop code is the mandatory field")
     private String shopCode;
+    @NotNull(message = "Shop location is the mandatory field")
     private String location;
 
     @DateTimeFormat
