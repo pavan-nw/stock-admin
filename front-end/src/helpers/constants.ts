@@ -52,3 +52,17 @@ export const updatingProduct = 'Updating product...';
 export const deletingProduct = 'Deleting product...';
 
 export const fetchingStocks = 'Fetching Stocks...';
+export type LocalPackaging = {name:string};
+export const packaging : LocalPackaging[] = [
+    { name: '1 Ml' },
+    { name: '10 Ml' },
+    { name: '1 Liter' },
+    { name: '10 Gram' },
+    { name: '200 Gram' },
+    { name: '1 Kg' },
+    { name: '2 Kg' },
+    { name: '3 Kg' },
+    { name: '5 Kg' },
+    { name: '10 Kg' },
+    { name: '15 Kg' },
+];    

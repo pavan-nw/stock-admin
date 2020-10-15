@@ -5,8 +5,8 @@ import {
     Stocks,
     FETCH_STOCKS,
     FetchStocksAction,
-    setProductNameAction,
-    SET_PRODUCT_NAME,
+    setProductAction,
+    SET_PRODUCT,
     setProductPackagingAction,
     SET_PRODUCT_PACKAGING,
     setStockDateAction,
@@ -15,6 +15,10 @@ import {
     SET_OPEN_STOCK,
     setCLoseStockAction,
     SET_CLOSE_STOCK,
+    ClearCurrentStockAction,
+    CLEAR_CURRENT_STOCK,
+    StockDetails,
+    LocalPackaging
 } from './types';
 
 export const fetchProducts = (
@@ -39,26 +43,32 @@ export const fetchStocks = (
     };
 };
 
-export const setProductName = (productName: string): setProductNameAction => {
+export const setProduct = (product: Product): setProductAction => {
     return {
-        type: SET_PRODUCT_NAME,
-        productName,
+        type: SET_PRODUCT,
+        product,
     };
 };
 
 export const setProductPackaging = (
-    productPackaging: string
+    productPackaging: LocalPackaging
 ): setProductPackagingAction => {
     return {
         type: SET_PRODUCT_PACKAGING,
-        productPackaging,
+        productPackaging
     };
 };
 
-export const setStockDate = (stockDate: string): setStockDateAction => {
+export const setStockDate = (stockDate: Date): setStockDateAction => {
     return {
         type: SET_STOCK_DATE,
         stockDate,
+    };
+};
+
+export const clearCurrentStock = (): ClearCurrentStockAction => {
+    return {
+        type: CLEAR_CURRENT_STOCK,        
     };
 };
 

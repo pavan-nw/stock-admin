@@ -4,17 +4,35 @@ import {
     StockState,
     FETCH_STOCKS,
     StockDetails,
-    SET_PRODUCT_NAME,
+    SET_PRODUCT,
     SET_PRODUCT_PACKAGING,
     SET_STOCK_DATE,
     SET_OPEN_STOCK,
     SET_CLOSE_STOCK,
+    CLEAR_CURRENT_STOCK,
+    Product,
+    LocalPackaging
 } from './types';
 
-let currentStock: StockDetails = {
-    productName: '',
-    packaging: null,
-    stockDate: new Date().toDateString(),
+import {formatDate} from '../../helpers/utils';
+
+const product : Product = {
+    id: '',
+    code: '',
+    name: '',
+    packaging: '',
+    shopCode: '',
+    createdAt: 0,
+    updateAt: 0
+}
+
+const packaging : LocalPackaging = {
+    name :''
+}
+const currentStock: StockDetails = {
+    product: product,
+    packaging: packaging,
+    stockDate: new Date(),
     closingStocks: 0,
     openingStocks: 0,
 };
@@ -38,12 +56,12 @@ export default (state = initialState.stockState, action: StockActionTypes) => {
                 ...state,
                 products: [...state.stocks, action.stock],
             };
-        case SET_PRODUCT_NAME:           
+        case SET_PRODUCT:           
             return {
                 ...state,
                 currentStock: {
                     ...state.currentStock,
-                    productName: action.productName,
+                    product: action.product,
                 },
             };
         case SET_PRODUCT_PACKAGING:            
@@ -68,7 +86,12 @@ export default (state = initialState.stockState, action: StockActionTypes) => {
             return {
                 ...state,
                 currentStock: { ...state.currentStock, closingStocks: action.closeStock },
-            };      
+            };
+        case CLEAR_CURRENT_STOCK:            
+            return {
+                ...state,
+                currentStock: currentStock,
+            };         
         default:
             return state;
     }

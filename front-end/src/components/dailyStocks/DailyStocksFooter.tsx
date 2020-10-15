@@ -4,15 +4,19 @@ import {
     saveLabel,   
     clearLabel
 } from '../../helpers/constants';
+import {useDispatch} from 'react-redux';
+import { clearCurrentStock } from '../../features/dailyStocks/actions';
 
 export const DailyStocksFooter: React.FC = (props) => {
-       
+    
+    const dispatch = useDispatch();
     const onSave = () => {
        console.log("Saving the info");
     };
 
     const onClear = () => {
-       console.log("clearing the info");
+        console.log("Clearing the stock");
+        dispatch(clearCurrentStock());
     };
 
     return (

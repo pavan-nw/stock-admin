@@ -5,12 +5,13 @@ export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const SELECT_PRODUCT = 'SELECT_PRODUCT';
 export const TOGGLE_EDIT_DIALOG = 'TOGGLE_EDIT_DIALOG';
 
-export const SET_PRODUCT_NAME = 'SET_PRODUCT_NAME';
+export const SET_PRODUCT = 'SET_PRODUCT';
 export const SET_PRODUCT_PACKAGING = 'SET_PRODUCT_PACKAGING';
 export const SET_STOCK_DATE = 'SET_STOCK_DATE';
 export const SET_CLOSE_STOCK = 'SET_CLOSE_STOCK';
 export const SET_OPEN_STOCK = 'SET_OPEN_STOCK';
 
+export const CLEAR_CURRENT_STOCK = 'CLEAR_CURRENT_STOCK';
 
 export const FETCH_STOCKS = 'FETCH_STOCKS';
 export const CREATE_STOCK = 'CREATE_STOCK';
@@ -23,19 +24,23 @@ export interface FetchProductsAction {
     shopcode: String;
 }
 
-export interface setProductNameAction{
-    type :typeof SET_PRODUCT_NAME;
-    productName: string;
+export interface ClearCurrentStockAction {
+    type : typeof CLEAR_CURRENT_STOCK    
+}
+
+export interface setProductAction{
+    type :typeof SET_PRODUCT;
+    product: Product;
 }
 
 export interface setProductPackagingAction{
     type :typeof SET_PRODUCT_PACKAGING;
-    productPackaging: string;
+    productPackaging: LocalPackaging;
 }
 
 export interface setStockDateAction{
     type :typeof SET_STOCK_DATE;
-    stockDate: string;
+    stockDate: Date;
 }
 
 export interface setOpenStockAction{
@@ -72,11 +77,12 @@ export type StockActionTypes =
     | FetchStocksAction
     | CreateStocksAction
     | UpdateStockAction
-    | setProductNameAction
+    | setProductAction
     | setProductPackagingAction
     | setStockDateAction
     | setOpenStockAction
-    | setCLoseStockAction;
+    | setCLoseStockAction
+    | ClearCurrentStockAction;
 
 export interface Product {
     id?: string;
@@ -107,10 +113,14 @@ export interface ProductState {
     };
 }
 
+export interface LocalPackaging {
+    name:string;
+}
+
 export interface StockDetails{
-    productName:string;
-    packaging:string | null;
-    stockDate:string;
+    product:Product;
+    packaging:LocalPackaging;
+    stockDate:Date;
     openingStocks:number;
     closingStocks:number;
 }

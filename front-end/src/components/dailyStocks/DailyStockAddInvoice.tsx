@@ -1,6 +1,6 @@
-import React, { useState} from 'react';
+import React from 'react';
 import { InputText } from 'primereact/inputtext';
-import { useDispatch} from 'react-redux';
+import { useDispatch,useSelector} from 'react-redux';
 import {DailyStockHeader} from './DailyStockHeader';
 import {       
     incomingStockCountLabel,
@@ -8,16 +8,13 @@ import {
 } from '../../helpers/constants';
 import { DailyStocksFooter } from './DailyStocksFooter';
 import { setOpenStock } from '../../features/dailyStocks/actions';
+import { getOpeningStock } from '../../features/dailyStocks/selectors';
 
 export const DailyStockAddInvoice: React.FC = () => {
     const dispatch = useDispatch();
-
-    const initialOpenStock = 0;
-    const [openStock, updateOpenStock] = useState(initialOpenStock);
-   
-
+    const openStock = useSelector(getOpeningStock);    
+    
     const onOpenStockChange = (incomingStock:any ) => {        
-        updateOpenStock(incomingStock);
         dispatch(setOpenStock(incomingStock));        
     }
 

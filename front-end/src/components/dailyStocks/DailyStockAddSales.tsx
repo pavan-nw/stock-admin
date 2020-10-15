@@ -1,6 +1,6 @@
-import React, { useState} from 'react';
+import React from 'react';
 import { InputText } from 'primereact/inputtext';
-import { useDispatch} from 'react-redux';
+import { useDispatch,useSelector} from 'react-redux';
 import {DailyStockHeader} from './DailyStockHeader';
 import {    
     outgoingStockCountLabel,
@@ -8,16 +8,13 @@ import {
 } from '../../helpers/constants';
 import { DailyStocksFooter } from './DailyStocksFooter';
 import { setCloseStock} from '../../features/dailyStocks/actions';
+import { getClosingStock } from '../../features/dailyStocks/selectors';
 
 export const DailyStockAddSales: React.FC = () => {
     const dispatch = useDispatch();
-
-    const initialCloseStock = 0;
-    const [closeStock, updateCloseStock] = useState(initialCloseStock);
-   
+    const closeStock = useSelector(getClosingStock); 
 
     const onCloseStockChange = (outgoingStock:any ) => {        
-        updateCloseStock(outgoingStock);
         dispatch(setCloseStock(outgoingStock));        
     }
 

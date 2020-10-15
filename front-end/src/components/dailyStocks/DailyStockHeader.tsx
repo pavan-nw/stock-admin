@@ -1,68 +1,50 @@
 import React, { useState,useEffect } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import { useDispatch, useSelector } from 'react-redux';
-import { Product } from '../../features/dailyStocks/types';
-import { getSelectedProduct,getProducts } from '../../features/dailyStocks/selectors';
+import { LocalPackaging, Product } from '../../features/dailyStocks/types';
+import { getSelectedProduct,getProducts, getCurrentStockProduct, getCurrentStockProductPackaging, getCurrentStockDate } from '../../features/dailyStocks/selectors';
 import { Calendar } from 'primereact/calendar';
 import {   
     productNameLabel,
     productNamePlaceHolder,
     productPackagingLabel,
     productPackagingPlaceHolder,    
-    dailyStockDateLabel    
+    dailyStockDateLabel,    
+    packaging
 } from '../../helpers/constants';
 import {
     getProducts as fetchProducts    
 } from '../../features/product/productThunk';
-import { setProductName, setProductPackaging, setStockDate } from '../../features/dailyStocks/actions';
+import { setProduct, setProductPackaging, setStockDate } from '../../features/dailyStocks/actions';
 
 export const DailyStockHeader: React.FC = () => {
-    const dispatch = useDispatch();
-    const selectedProduct: Product | null = useSelector(getSelectedProduct);
+    const dispatch = useDispatch();    
     const products: Product[] | [] = useSelector(getProducts);
 
-    const initialProductName = selectedProduct ? selectedProduct : {name:""};
-    const initialPackaging = selectedProduct ? selectedProduct : {name:""};
-    const initialStockDate = new Date();   
-
-    const [selectedPackaging, updatePackaging] = useState(initialPackaging);
-    const [stockDate, updateStockDate] = useState(initialStockDate);
-    const [productName, updateProductName] = useState(initialProductName);
-
-    useEffect(() => {        
+    const selectedProduct = useSelector(getCurrentStockProduct);
+    const selectedPackaging = useSelector(getCurrentStockProductPackaging);
+    const selectedStockDate = useSelector(getCurrentStockDate);   
+    console.log("date in header",selectedStockDate);
+    useEffect(() => {
         if(products.length==0){                
             dispatch(fetchProducts());
         } 
     }, [])
 
-    const packagings = [
-        { name: '1 Ml' },
-        { name: '10 Ml' },
-        { name: '1 Liter' },
-        { name: '10 Gram' },
-        { name: '200 Gram' },
-        { name: '1 Kg' },
-        { name: '2 Kg' },
-        { name: '3 Kg' },
-        { name: '5 Kg' },
-        { name: '10 Kg' },
-        { name: '15 Kg' },
-    ];    
+    
 
-    const onProductNameChange = (product:Product ) => {        
-        updateProductName(product);
-        dispatch(setProductName(product.name));        
+    const onProductNameChange = (product:Product ) => {                
+        dispatch(setProduct(product));        
     }
 
-    const onProductPackagingChange = (packaging:any) => {
-        updatePackaging(packaging);
-        dispatch(setProductPackaging(packaging.name));
+    const onProductPackagingChange = (stockPackaging:LocalPackaging) => {        
+        dispatch(setProductPackaging(stockPackaging));
         console.log(`${selectedPackaging}`);
     }
 
     const onDateChange = (date:Date ) => {
-        updateStockDate(date);
-        dispatch(setStockDate(date.toDateString()));
+        console.log("stock date ")
+        dispatch(setStockDate(date));
     }
 
     return (
@@ -73,7 +55,9 @@ export const DailyStockHeader: React.FC = () => {
                         {dailyStockDateLabel}
                     </label>
                     <div className="p-field p-col-12 p-md-4">
-                        <Calendar id="icon" value={stockDate} onChange={(event: any) => onDateChange(event.target.value)} showIcon />
+                        <Calendar id="icon" viewDate={selectedStockDate} dateFormat="dd/mm/yy" value={selectedStockDate} 
+                        onViewDateChange={(event: any) => onDateChange(event.value)}
+                        onChange={(event: any) => onDateChange(event.target.value)} showIcon />
                     </div>
                 </div>
                 <div className="p-field p-grid">
@@ -83,7 +67,7 @@ export const DailyStockHeader: React.FC = () => {
                     <div className="p-col-12 p-md-9">
                         <Dropdown
                             id="productName"
-                            value={productName}
+                            value={selectedProduct}
                             options={products}
                             showClear
                             filter
@@ -102,7 +86,7 @@ export const DailyStockHeader: React.FC = () => {
                         <Dropdown
                             id="packaging"
                             value={selectedPackaging}
-                            options={packagings}
+                            options={packaging}
                             showClear
                             filter
                             optionLabel="name"
