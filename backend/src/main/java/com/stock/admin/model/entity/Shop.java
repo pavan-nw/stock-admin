@@ -1,38 +1,60 @@
 package com.stock.admin.model.entity;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * The type Shop.
  */
 @Document("shops")
 public class Shop {
+    /**
+     * The constant type.
+     */
+    public static final String type = "shop";
     @Id
     private String id;
 
-    private String code; //yet to decide on the data type of it
+    /**
+     * The constant SEQUENCE_NAME.
+     */
+    @Transient
+    public static final String SEQUENCE_NAME = "SHOP";
 
+    @NotNull(message = "Shop name is the mandatory field")
     @Indexed(name = "shopName")
     private String name;
-    private String location;
-    private Date createdAt;
-    private Date upatedAt;
 
+    @NotNull(message = "Shop code is the mandatory field")
+    private String shopCode;
+    @NotNull(message = "Shop location is the mandatory field")
+    private String location;
+
+    @DateTimeFormat
+    @CreatedDate
+    private Date createdAt;
+
+    @DateTimeFormat
+    @LastModifiedDate
+    private Date updatedAt;
 
     /**
      * Instantiates a new Shop.
      *
-     * @param code     the code
+     * @param shopCode the shopCode
      * @param name     the name
      * @param location the location
      */
-    public Shop(String code, String name, String location) {
-        this.code = code;
+    public Shop(String shopCode, String name, String location) {
+        this.shopCode = shopCode;
         this.name = name;
         this.location = location;
     }
@@ -56,21 +78,21 @@ public class Shop {
     }
 
     /**
-     * Gets code.
+     * Gets shopCode.
      *
-     * @return the code
+     * @return the shopCode
      */
-    public String getCode() {
-        return code;
+    public String getShopCode() {
+        return shopCode;
     }
 
     /**
-     * Sets code.
+     * Sets shopCode.
      *
-     * @param code the code
+     * @param shopCode the shopCode
      */
-    public void setCode(String code) {
-        this.code = code;
+    public void setShopCode(String shopCode) {
+        this.shopCode = shopCode;
     }
 
     /**
@@ -132,46 +154,16 @@ public class Shop {
      *
      * @return the upated at
      */
-    public Date getUpatedAt() {
-        return upatedAt;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
     /**
      * Sets upated at.
      *
-     * @param upatedAt the upated at
+     * @param updatedAt the upated at
      */
-    public void setUpatedAt(Date upatedAt) {
-        this.upatedAt = upatedAt;
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
-
-
-    @Override
-    public boolean equals(Object o) {
-
-        if (this == o)
-            return true;
-        if (!(o instanceof Product))
-            return false;
-        Shop shop = (Shop) o;
-        return Objects.equals(this.id, shop.id) && Objects.equals(this.name, shop.name)
-                && Objects.equals(this.code
-                , shop.code);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.id, this.name, this.code);
-    }
-
-    @Override
-    public String toString() {
-        return "Shop{" + "code=" + this.code +
-                ",name='" + this.name + '\'' +
-                ",location='" + this.location + '\'' +
-                ",createdAt='" + this.createdAt + '\'' +
-                ",upatedAt='" + this.upatedAt + '\'' +
-                '}';
-    }
-
 }

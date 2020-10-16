@@ -3,35 +3,48 @@ package com.stock.admin.model.entity;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
-
+import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 /**
  * The type Product.
  */
 @Document(collection = "products")
-public class Product implements APIPayload {
+public class Product {
+    /**
+     * The constant type.
+     */
     public static final String type = "product";
+
+    /**
+     * The constant SEQUENCE_NAME.
+     */
+    @Transient
+    public static final String SEQUENCE_NAME = "PROD";
+
     @Id
     private String id;
-    private String code; //yet to decide on the data type of it
+    @NotNull(message = "Product code is the mandatory field")
+    private String code;
+    @NotNull(message = "Product name is the mandatory field")
     private String name;
+    @NotNull(message = "Shop code for the product is the mandatory field")
     private String shopCode;
+    @NotNull(message = "Packaging/unit of the product is the mandatory field")
+    private String packaging;
 
-    @DateTimeFormat(style = "M-")
+    @DateTimeFormat
     @CreatedDate
     private Date createdAt;
 
+    @DateTimeFormat
     @LastModifiedDate
     private Date updatedAt;
 
-    //@DBRef
-    private String packaging;
-    private ProductType productType;
 
     /**
      * Instantiates a new Product.
@@ -176,32 +189,15 @@ public class Product implements APIPayload {
         this.packaging = packaging;
     }
 
-    /**
-     * Gets product type.
-     *
-     * @return the product type
-     */
-    public ProductType getProductType() {
-        return productType;
-    }
-
-    /**
-     * Sets product type.
-     *
-     * @param productType the product type
-     */
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
-    }
-
-
     @Override
     public boolean equals(Object o) {
 
-        if (this == o)
+        if (this == o) {
             return true;
-        if (!(o instanceof Product))
+        }
+        if (!(o instanceof Product)) {
             return false;
+        }
         Product product = (Product) o;
         return Objects.equals(this.id, product.id) && Objects.equals(this.name, product.name)
                 && Objects.equals(this.code
@@ -219,7 +215,6 @@ public class Product implements APIPayload {
                 ",name='" + this.name + '\'' +
                 ",shopCode='" + this.shopCode + '\'' +
                 ",packaging='" + this.packaging + '\'' +
-                ",productType='" + this.productType + '\'' +
                 ",createdAt='" + this.createdAt + '\'' +
                 ",upatedAt='" + this.updatedAt + '\'' +
                 '}';
