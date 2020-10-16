@@ -1,10 +1,11 @@
 package com.stock.admin.repository;
 
 import com.stock.admin.model.entity.Product;
+import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * The interface Products repository.
@@ -28,11 +29,22 @@ public interface ProductsRepository extends MongoRepository<Product, String> {
      */
     Product findByCode(String productCode);
 
+
+    /**
+     * Find by name and packaging optional.
+     *
+     * @param name      the name
+     * @param packaging the packaging
+     * @return the optional
+     */
+    Optional<Product> findByNameAndPackaging(String name, String packaging);
+
     /**
      * Find by shop code list.
      *
      * @param shopCode the shop code
+     * @param pageable the pageable
      * @return the list
      */
-    List<Product> findByShopCode(String shopCode);
+    Page<Product> findByShopCode(String shopCode, Pageable pageable);
 }

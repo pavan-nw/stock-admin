@@ -1,14 +1,16 @@
 package com.stock.admin.service;
 
+import static com.stock.admin.utils.StockAdminConstants.PRODUCT_DOES_NOT_EXISTS;
+
 import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.Product;
 import com.stock.admin.repository.ProductsRepository;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * The type Product service.
@@ -40,10 +42,11 @@ public class ProductService {
     /**
      * Gets all.
      *
+     * @param pageable the pageable
      * @return the all
      */
-    public List<Product> getAll() {
-        return productsRepository.findAll();
+    public Page<Product> getAll(Pageable pageable) {
+        return productsRepository.findAll(pageable);
     }
 
     /**
@@ -57,13 +60,25 @@ public class ProductService {
     }
 
     /**
+     * Gets by product name and packaging.
+     *
+     * @param productName the product name
+     * @param packaging   the packaging
+     * @return the by product name and packaging
+     */
+    public Optional<Product> getByProductNameAndPackaging(String productName, String packaging) {
+        return productsRepository.findByNameAndPackaging(productName, packaging);
+    }
+
+    /**
      * Gets all products by shop id.
      *
-     * @param shopCode the shop code
+     * @param shopCode    the shop code
+     * @param pageRequest the page request
      * @return the all products by shop id
      */
-    public List<Product> getAllProductsByShopId(String shopCode) {
-        return productsRepository.findByShopCode(shopCode);
+    public Page<Product> getAllProductsByShopId(String shopCode, Pageable pageRequest) {
+        return productsRepository.findByShopCode(shopCode, pageRequest);
     }
 
     /**
@@ -80,7 +95,7 @@ public class ProductService {
             product.setPackaging(newProduct.getPackaging());
             return productsRepository.save(product);
         }
-        throw new StockAdminApplicationException("Product does not exists", HttpStatus.NOT_FOUND);
+        throw new StockAdminApplicationException(PRODUCT_DOES_NOT_EXISTS, HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -95,6 +110,6 @@ public class ProductService {
             productsRepository.delete(product);
             return product;
         }
-        throw new StockAdminApplicationException("Product does not exists", HttpStatus.NOT_FOUND);
+        throw new StockAdminApplicationException(PRODUCT_DOES_NOT_EXISTS, HttpStatus.NOT_FOUND);
     }
 }

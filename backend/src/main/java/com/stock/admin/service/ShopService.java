@@ -3,12 +3,11 @@ package com.stock.admin.service;
 import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.Shop;
 import com.stock.admin.repository.ShopsRepository;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * The type Shop service.
