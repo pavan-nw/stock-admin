@@ -1,21 +1,33 @@
 package com.stock.admin.service;
 
+import static com.stock.admin.utils.StockAdminConstants.PRODUCT_DOES_NOT_EXISTS;
+
+import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.Product;
 import com.stock.admin.repository.ProductsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 /**
  * The type Product service.
  */
 @Service
 public class ProductService {
-    @Autowired
-    private ProductsRepository productsRepository;
+    private final ProductsRepository productsRepository;
 
+    /**
+     * Instantiates a new Product service.
+     *
+     * @param productsRepository the products repository
+     */
+    @Autowired
+    public ProductService(ProductsRepository productsRepository) {
+        this.productsRepository = productsRepository;
+    }
 
     /**
      * Create product.
@@ -23,7 +35,6 @@ public class ProductService {
      * @param product the create product request
      * @return the product
      */
-//create operation
     public Product create(Product product) {
         return productsRepository.save(product);
     }
@@ -31,13 +42,12 @@ public class ProductService {
     /**
      * Gets all.
      *
+     * @param pageable the pageable
      * @return the all
      */
-//Retrieve Operation
-    public List<Product> getAll() {
-        return productsRepository.findAll();
+    public Page<Product> getAll(Pageable pageable) {
+        return productsRepository.findAll(pageable);
     }
-
 
     /**
      * Gets by Product code.
@@ -47,20 +57,29 @@ public class ProductService {
      */
     public Optional<Product> getByProductCode(String productCode) {
         return Optional.ofNullable(productsRepository.findByCode(productCode));
-
     }
 
+    /**
+     * Gets by product name and packaging.
+     *
+     * @param productName the product name
+     * @param packaging   the packaging
+     * @return the by product name and packaging
+     */
+    public Optional<Product> getByProductNameAndPackaging(String productName, String packaging) {
+        return productsRepository.findByNameAndPackaging(productName, packaging);
+    }
 
     /**
      * Gets all products by shop id.
      *
-     * @param shopCode the shop code
+     * @param shopCode    the shop code
+     * @param pageRequest the page request
      * @return the all products by shop id
      */
-    public List<Product> getAllProductsByShopId(String shopCode) {
-        return productsRepository.findByShopCode(shopCode);
+    public Page<Product> getAllProductsByShopId(String shopCode, Pageable pageRequest) {
+        return productsRepository.findByShopCode(shopCode, pageRequest);
     }
-
 
     /**
      * Update by Product code product.
@@ -69,24 +88,28 @@ public class ProductService {
      * @param newProduct  the new product
      * @return the product
      */
-//Update operation
     public Product updateByProductCode(String productCode, Product newProduct) {
         Product product = productsRepository.findByCode(productCode);
-        product.setName(newProduct.getName());
-        product.setPackaging(newProduct.getPackaging());
-        return productsRepository.save(product);
-
+        if (product != null) {
+            product.setName(newProduct.getName());
+            product.setPackaging(newProduct.getPackaging());
+            return productsRepository.save(product);
+        }
+        throw new StockAdminApplicationException(PRODUCT_DOES_NOT_EXISTS, HttpStatus.NOT_FOUND);
     }
 
     /**
      * Delete.
      *
      * @param productCode the prod Code
+     * @return the product
      */
-//Delete operation
-    public void deleteByProductCode(String productCode) {
+    public Product deleteByProductCode(String productCode) {
         Product product = productsRepository.findByCode(productCode);
-        productsRepository.delete(product);
-
+        if (product != null) {
+            productsRepository.delete(product);
+            return product;
+        }
+        throw new StockAdminApplicationException(PRODUCT_DOES_NOT_EXISTS, HttpStatus.NOT_FOUND);
     }
 }

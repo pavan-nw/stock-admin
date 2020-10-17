@@ -1,20 +1,31 @@
 package com.stock.admin.controller;
 
+import static com.stock.admin.utils.Helper.pageRequestFor;
+import static com.stock.admin.utils.StockAdminConstants.PRODUCT_DOES_NOT_EXISTS;
+
+import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.Product;
 import com.stock.admin.model.request.ProductRequest;
-import com.stock.admin.model.response.*;
-import com.stock.admin.model.response.ResponseStatus;
+import com.stock.admin.model.response.PagedResponse;
+import com.stock.admin.model.response.Response;
 import com.stock.admin.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import javax.ws.rs.WebApplicationException;
-import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
-
+import javax.validation.Valid;
+import com.stock.admin.service.SequenceGeneratorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The type Product controller.
@@ -22,22 +33,49 @@ import java.util.function.Supplier;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
+    private final ProductService productService;
+    private final SequenceGeneratorService sequenceGeneratorService;
+
+
+    /**
+     * Instantiates a new Product controller.
+     *
+     * @param productService           the product service
+     * @param sequenceGeneratorService the sequence generator service
+     */
     @Autowired
-    private ProductService productService;
+    public ProductController(ProductService productService,SequenceGeneratorService sequenceGeneratorService) {
+        this.productService = productService;
+        this.sequenceGeneratorService=sequenceGeneratorService;
+    }
 
     /**
      * Gets all products.
      *
      * @param shopCode the shop code
+     * @param pageNum  the page num
+     * @param size     the size
+     * @param sortBy   the sort by
+     * @param sortType the sort type
      * @return the all products
      */
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    @GetMapping
     @ResponseBody
-    public Response getAllProducts(@RequestParam(required = false, name = "shopCode") String shopCode) {
-        if (shopCode != null) {
-            return Response.buildResponse(Product.type, productService.getAllProductsByShopId(shopCode), true);
-        }
-            return Response.buildResponse(Product.type, productService.getAll(), true);
+    public Response getAllProducts(@RequestParam(name = "shopCode") Optional<String> shopCode,
+                                   @RequestParam(name = "page", defaultValue = "1") int pageNum,
+                                   @RequestParam(name = "size", defaultValue = "5") int size,
+                                   @RequestParam(name = "sortBy", defaultValue = "code") String sortBy,
+                                   @RequestParam(name = "sortType", defaultValue = "ASC") String sortType) {
+        Pageable pageRequest = pageRequestFor(pageNum, size, sortType, sortBy);
+        return shopCode
+                .map(code -> {
+                    Page<Product> page = productService.getAllProductsByShopId(code, pageRequest);
+                    return PagedResponse.buildPagedResponse(Product.type, page);
+                })
+                .orElseGet(() -> {
+                    Page<Product> page = productService.getAll(pageRequest);
+                    return PagedResponse.buildPagedResponse(Product.type, page);
+                });
     }
 
     /**
@@ -46,15 +84,13 @@ public class ProductController {
      * @param productCode the product code
      * @return the products details
      */
-    @RequestMapping(value = "/{productCode}", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    @GetMapping(value = "/{productCode}")
     @ResponseBody
-    public Response getProductsDetails(@PathVariable("productCode") String productCode) throws Exception {
+    public Response getProductsDetails(@PathVariable("productCode") String productCode) {
         Optional<Product> product = productService.getByProductCode(productCode);
         return product.map(p -> Response.buildResponse(Product.type, p, true))
-                .orElseThrow(() -> new Exception(HttpStatus.NOT_FOUND.getReasonPhrase()));
-
+                .orElseThrow(() -> new StockAdminApplicationException(PRODUCT_DOES_NOT_EXISTS, HttpStatus.NOT_FOUND));
     }
-
 
     /**
      * Add product product response.
@@ -62,16 +98,13 @@ public class ProductController {
      * @param productRequest the create product request
      * @return the product response
      */
-    @RequestMapping(method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @PostMapping
     @ResponseBody
-    public Response addProduct(@RequestBody ProductRequest productRequest) {
+    public Response addProduct(@Valid @RequestBody ProductRequest productRequest) {
+        productRequest.getProduct().setCode(sequenceGeneratorService.generateSequence(Product.SEQUENCE_NAME));
         Product addedProduct = productService.create(productRequest.getProduct());
-        Response productResponseBody = new Response();
-        productResponseBody.setPayload(addedProduct);
-        productResponseBody.setStatus(ResponseStatus.SUCCESS);
-        return productResponseBody;
+        return Response.buildResponse(Product.type, addedProduct, true);
     }
-
 
     /**
      * Modify by product by id product response.
@@ -80,25 +113,21 @@ public class ProductController {
      * @param productRequest the product request
      * @return the product response
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{id}")
     @ResponseBody
     public Response modifyByProductById(@PathVariable("id") String productCode, @Valid @RequestBody ProductRequest productRequest) {
         Product updatedProduct = productService.updateByProductCode(productCode, productRequest.getProduct());
-        Response productResponseBody = new Response();
-        productResponseBody.setPayload(updatedProduct);
-        productResponseBody.setStatus(ResponseStatus.SUCCESS);
-        return productResponseBody;
+        return Response.buildResponse(Product.type, updatedProduct, true);
     }
-
 
     /**
      * Delete by product by id.
      *
      * @param productCode the product code
+     * @return the response
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteByProductByCode(@PathVariable("id") String productCode) {
-        productService.deleteByProductCode(productCode);
+    @DeleteMapping(value = "/{id}")
+    public Response deleteByProductByCode(@PathVariable("id") String productCode) {
+        return Response.buildResponse(Product.type, productService.deleteByProductCode(productCode), true);
     }
-
 }
