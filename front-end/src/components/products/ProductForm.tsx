@@ -22,7 +22,7 @@ export const ProductForm: React.FC = () => {
 
     const initialProductCode = selectedProduct ? selectedProduct.code : '';
     const initialProductName = selectedProduct ? selectedProduct.name : '';
-    const initialPackaging = selectedProduct ? selectedProduct.packaging : '';
+    const initialPackaging = {name: ""};
 
     const [selectedPackaging, updatePackaging] = useState(initialPackaging);
     const [productCode, updateProductCode] = useState(initialProductCode);
@@ -48,14 +48,14 @@ export const ProductForm: React.FC = () => {
                 id: selectedProduct.id,
                 code: productCode,
                 name: productName,
-                packaging: selectedPackaging,
+                packaging: selectedPackaging.name,
             };
             dispatch(editProduct(product));
         } else {
             const product: Product = {
                 code: productCode,
                 name: productName,
-                packaging: selectedPackaging,
+                packaging: selectedPackaging.name,
             };
             dispatch(addProduct(product));
         }

@@ -89,7 +89,7 @@ public class StockService {
 
         // Update the found stockFound
         stockFound.setOpeningStock(stockFound.getOpeningStock() + stockRequest.getOpeningStock());
-        stockFound.setClosingStock(stockFound.getClosingStock() - stockRequest.getClosingStock());
+        stockFound.setClosingStock(stockFound.getClosingStock() + stockRequest.getClosingStock());
 
         stockFound.setTotalStock(stockFound.getTotalStock() + stockRequest.getOpeningStock() - stockRequest.getClosingStock());
         return stocksRepository.save(stockFound);

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/products")
+@CrossOrigin
 public class ProductController {
     private final ProductService productService;
     private final SequenceGeneratorService sequenceGeneratorService;
@@ -63,7 +65,7 @@ public class ProductController {
     @ResponseBody
     public Response getAllProducts(@RequestParam(name = "shopCode") Optional<String> shopCode,
                                    @RequestParam(name = "page", defaultValue = "1") int pageNum,
-                                   @RequestParam(name = "size", defaultValue = "5") int size,
+                                   @RequestParam(name = "size", defaultValue = "500") int size,
                                    @RequestParam(name = "sortBy", defaultValue = "code") String sortBy,
                                    @RequestParam(name = "sortType", defaultValue = "ASC") String sortType) {
         Pageable pageRequest = pageRequestFor(pageNum, size, sortType, sortBy);

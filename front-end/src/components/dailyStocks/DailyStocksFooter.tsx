@@ -6,16 +6,16 @@ import {
 } from '../../helpers/constants';
 import {useDispatch} from 'react-redux';
 import { clearCurrentStock } from '../../features/dailyStocks/actions';
+import { addStock } from '../../features/dailyStocks/dailyStockThunk';
 
 export const DailyStocksFooter: React.FC = (props) => {
     
     const dispatch = useDispatch();
-    const onSave = () => {
-       console.log("Saving the info");
-    };
+    const onSave = () => {       
+        dispatch(addStock());
+    }
 
-    const onClear = () => {
-        console.log("Clearing the stock");
+    const onClear = () => {        
         dispatch(clearCurrentStock());
     };
 

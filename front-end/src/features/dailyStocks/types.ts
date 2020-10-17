@@ -125,6 +125,14 @@ export interface StockDetails{
     closingStocks:number;
 }
 
+export interface CreateStockRequest {
+    type:string;
+    productName:string;
+    packaging:string;
+    stockDate:Date;
+    openingStock:number;
+    closingStock:number;    
+}
 
 export interface StockState {
     stockState: {

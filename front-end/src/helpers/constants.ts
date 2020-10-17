@@ -1,4 +1,4 @@
-export const baseURL = 'https://16e8e330-0633-41ec-b5de-bdb7dfb1981c.mock.pstmn.io';  
+export const baseURL = 'http://localhost:8080';  
 
 export const appName = 'Stock Administrator';
 
@@ -52,6 +52,9 @@ export const updatingProduct = 'Updating product...';
 export const deletingProduct = 'Deleting product...';
 
 export const fetchingStocks = 'Fetching Stocks...';
+export const creatingStocks = 'Creating Stocks...';
+export const searchingStocks  = 'Searching Stocks...';
+
 export type LocalPackaging = {name:string};
 export const packaging : LocalPackaging[] = [
     { name: '1 Ml' },

@@ -22,7 +22,7 @@ export const DailyStocks: React.FC = () => {
         <div className="p-lg-12 p-md-12 p-sm-12">
             <div className="p-lg-10 p-md-12 p-sm-12 p-lg-offset-1">
                 <TabView activeIndex={activeIndex} 
-                renderActiveOnly={false}  
+                renderActiveOnly={true}
                 onTabChange={(e) => { updateTab(e.index)}}>
                     <TabPanel header={viewDailyStocksTitle}>
                         <DailyStockList />
