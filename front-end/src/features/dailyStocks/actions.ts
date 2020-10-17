@@ -16,8 +16,8 @@ import {
     setCLoseStockAction,
     SET_CLOSE_STOCK,
     ClearCurrentStockAction,
-    CLEAR_CURRENT_STOCK,    
-    LocalPackaging
+    CLEAR_CURRENT_STOCK,
+    LocalPackaging,
 } from './types';
 
 export const fetchProducts = (
@@ -54,7 +54,7 @@ export const setProductPackaging = (
 ): setProductPackagingAction => {
     return {
         type: SET_PRODUCT_PACKAGING,
-        productPackaging
+        productPackaging,
     };
 };
 
@@ -67,7 +67,7 @@ export const setStockDate = (stockDate: Date): setStockDateAction => {
 
 export const clearCurrentStock = (): ClearCurrentStockAction => {
     return {
-        type: CLEAR_CURRENT_STOCK,        
+        type: CLEAR_CURRENT_STOCK,
     };
 };
 

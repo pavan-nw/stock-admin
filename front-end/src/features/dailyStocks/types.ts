@@ -25,31 +25,31 @@ export interface FetchProductsAction {
 }
 
 export interface ClearCurrentStockAction {
-    type : typeof CLEAR_CURRENT_STOCK    
+    type: typeof CLEAR_CURRENT_STOCK;
 }
 
-export interface setProductAction{
-    type :typeof SET_PRODUCT;
+export interface setProductAction {
+    type: typeof SET_PRODUCT;
     product: Product;
 }
 
-export interface setProductPackagingAction{
-    type :typeof SET_PRODUCT_PACKAGING;
+export interface setProductPackagingAction {
+    type: typeof SET_PRODUCT_PACKAGING;
     productPackaging: LocalPackaging;
 }
 
-export interface setStockDateAction{
-    type :typeof SET_STOCK_DATE;
+export interface setStockDateAction {
+    type: typeof SET_STOCK_DATE;
     stockDate: Date;
 }
 
-export interface setOpenStockAction{
-    type :typeof SET_OPEN_STOCK;
+export interface setOpenStockAction {
+    type: typeof SET_OPEN_STOCK;
     openStock: string;
 }
 
-export interface setCLoseStockAction{
-    type :typeof SET_CLOSE_STOCK;
+export interface setCLoseStockAction {
+    type: typeof SET_CLOSE_STOCK;
     closeStock: string;
 }
 
@@ -61,7 +61,7 @@ export interface FetchStocksAction {
 
 export interface CreateStocksAction {
     type: typeof CREATE_STOCK;
-    stock: Stocks;    
+    stock: Stocks;
 }
 
 export interface UpdateStockAction {
@@ -100,7 +100,7 @@ export interface Stocks {
     openingStock: string;
     closingStock: string;
     stockDate: string;
-    totalStock:number;
+    totalStock: number;
     createdAt?: number;
     updatedAt?: number;
 }
@@ -114,30 +114,30 @@ export interface ProductState {
 }
 
 export interface LocalPackaging {
-    name:string;
+    name: string;
 }
 
-export interface StockDetails{
-    product:Product;
-    packaging:LocalPackaging;
-    stockDate:Date;
-    openingStocks:number;
-    closingStocks:number;
+export interface StockDetails {
+    product: Product;
+    packaging: LocalPackaging;
+    stockDate: Date;
+    openingStocks: number;
+    closingStocks: number;
 }
 
 export interface CreateStockRequest {
-    type:string;
-    productName:string;
-    packaging:string;
-    stockDate:Date;
-    openingStock:number;
-    closingStock:number;    
+    type: string;
+    productName: string;
+    packaging: string;
+    stockDate: Date;
+    openingStock: number;
+    closingStock: number;
 }
 
 export interface StockState {
     stockState: {
         stocks: Stocks[];
-        showEditDialog: boolean; 
+        showEditDialog: boolean;
         currentStock: StockDetails;
     };
 }

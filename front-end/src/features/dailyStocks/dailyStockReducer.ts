@@ -1,5 +1,5 @@
-import {    
-    StockActionTypes,    
+import {
+    StockActionTypes,
     UPDATE_STOCK,
     StockState,
     FETCH_STOCKS,
@@ -11,22 +11,22 @@ import {
     SET_CLOSE_STOCK,
     CLEAR_CURRENT_STOCK,
     Product,
-    LocalPackaging
+    LocalPackaging,
 } from './types';
 
-const product : Product = {
+const product: Product = {
     id: '',
     code: '',
     name: '',
     packaging: '',
     shopCode: '',
     createdAt: 0,
-    updateAt: 0
-}
+    updateAt: 0,
+};
 
-const packaging : LocalPackaging = {
-    name :''
-}
+const packaging: LocalPackaging = {
+    name: '',
+};
 const currentStock: StockDetails = {
     product: product,
     packaging: packaging,
@@ -42,7 +42,7 @@ const initialState: StockState = {
     },
 };
 
-export default (state = initialState.stockState, action: StockActionTypes) => {    
+export default (state = initialState.stockState, action: StockActionTypes) => {
     switch (action.type) {
         case FETCH_STOCKS:
             return {
@@ -54,7 +54,7 @@ export default (state = initialState.stockState, action: StockActionTypes) => {
                 ...state,
                 products: [...state.stocks, action.stock],
             };
-        case SET_PRODUCT:           
+        case SET_PRODUCT:
             return {
                 ...state,
                 currentStock: {
@@ -62,7 +62,7 @@ export default (state = initialState.stockState, action: StockActionTypes) => {
                     product: action.product,
                 },
             };
-        case SET_PRODUCT_PACKAGING:            
+        case SET_PRODUCT_PACKAGING:
             return {
                 ...state,
                 currentStock: {
@@ -73,23 +73,32 @@ export default (state = initialState.stockState, action: StockActionTypes) => {
         case SET_STOCK_DATE:
             return {
                 ...state,
-                currentStock: { ...state.currentStock, stockDate: action.stockDate },
+                currentStock: {
+                    ...state.currentStock,
+                    stockDate: action.stockDate,
+                },
             };
         case SET_OPEN_STOCK:
             return {
                 ...state,
-                currentStock: { ...state.currentStock, openingStocks: action.openStock },
+                currentStock: {
+                    ...state.currentStock,
+                    openingStocks: action.openStock,
+                },
             };
         case SET_CLOSE_STOCK:
             return {
                 ...state,
-                currentStock: { ...state.currentStock, closingStocks: action.closeStock },
+                currentStock: {
+                    ...state.currentStock,
+                    closingStocks: action.closeStock,
+                },
             };
-        case CLEAR_CURRENT_STOCK:            
+        case CLEAR_CURRENT_STOCK:
             return {
                 ...state,
                 currentStock: currentStock,
-            };         
+            };
         default:
             return state;
     }

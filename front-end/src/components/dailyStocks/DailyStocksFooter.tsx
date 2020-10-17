@@ -1,28 +1,24 @@
 import React from 'react';
 import { Button } from 'primereact/button';
-import {       
-    saveLabel,   
-    clearLabel
-} from '../../helpers/constants';
-import {useDispatch} from 'react-redux';
+import { saveLabel, clearLabel } from '../../helpers/constants';
+import { useDispatch } from 'react-redux';
 import { clearCurrentStock } from '../../features/dailyStocks/actions';
 import { addStock } from '../../features/dailyStocks/dailyStockThunk';
 
 export const DailyStocksFooter: React.FC = (props) => {
-    
     const dispatch = useDispatch();
-    const onSave = () => {       
+    const onSave = () => {
         dispatch(addStock());
-    }
+    };
 
-    const onClear = () => {        
+    const onClear = () => {
         dispatch(clearCurrentStock());
     };
 
     return (
         <div>
-            <div className="p-fluid">                                                 
-                    {props.children}                                                                               
+            <div className="p-fluid">
+                {props.children}
                 <div className="p-grid p-mt-lg-4 p-mt-md-2 p-mt-sm-1">
                     <div className="p-lg-4 p-md-12 p-sm-12 p-lg-offset-4">
                         <div className="p-grid">
@@ -32,7 +28,7 @@ export const DailyStocksFooter: React.FC = (props) => {
                                     className="p-button-raised p-mr-2"
                                     label={saveLabel}
                                     onClick={(event) => onSave()}
-                                />                               
+                                />
                             </div>
                             <div className="p-lg-4 p-md-4 p-sm-12">
                                 <Button
@@ -40,11 +36,11 @@ export const DailyStocksFooter: React.FC = (props) => {
                                     className="p-button-raised p-mr-2"
                                     label={clearLabel}
                                     onClick={(event) => onClear()}
-                                />                              
+                                />
                             </div>
                         </div>
                     </div>
-                </div>               
+                </div>
             </div>
         </div>
     );

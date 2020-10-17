@@ -2,7 +2,7 @@ import { ThunkAction } from 'redux-thunk';
 import {    
     fetchStocks
 } from './actions';
-import { StockState,StockActionTypes, StockDetails,CreateStockRequest } from './types';
+import { StockState,StockActionTypes, CreateStockRequest } from './types';
 import {
     hideSpinnerDialog,
     showSpinnerDialog,
@@ -12,10 +12,10 @@ import { CommonActionTypes } from '../common/types';
 import { checkSuccess, getErrorMessageToShow } from '../../helpers/utils';
 import axiosInstance from '../../config/axiosConfig';
 import {   
-    errorOccurred,    
+    errorOccurred,
+    stockAdded, 
     fetchingStocks,
-    creatingStocks,
-    packaging
+    creatingStocks,    
 } from '../../helpers/constants';
 
 export const getStocks = (): ThunkAction<
@@ -63,9 +63,8 @@ export const addStock = (): ThunkAction<
         );
         const responseJson = await response.data;
         dispatch(hideSpinnerDialog());
-        if (checkSuccess(responseJson)) {
-            //dispatch(createProduct(responseJson.payload));
-            showToast("Successfully Added", responseJson.status, 'success')
+        if (checkSuccess(responseJson)) {                 
+            dispatch(showToast(stockAdded, responseJson.status));
         } else {
             dispatch(showToast(errorOccurred, responseJson.status, 'error'));
         }

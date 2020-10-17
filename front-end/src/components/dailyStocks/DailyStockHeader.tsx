@@ -2,47 +2,52 @@ import React, { useEffect } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { LocalPackaging, Product } from '../../features/dailyStocks/types';
-import { getProducts, getCurrentStockProduct, getCurrentStockProductPackaging, getCurrentStockDate } from '../../features/dailyStocks/selectors';
+import {
+    getProducts,
+    getCurrentStockProduct,
+    getCurrentStockProductPackaging,
+    getCurrentStockDate,
+} from '../../features/dailyStocks/selectors';
 import { Calendar } from 'primereact/calendar';
-import {   
+import {
     productNameLabel,
     productNamePlaceHolder,
     productPackagingLabel,
-    productPackagingPlaceHolder,    
-    dailyStockDateLabel,    
-    packaging
+    productPackagingPlaceHolder,
+    dailyStockDateLabel,
+    packaging,
 } from '../../helpers/constants';
+import { getProducts as fetchProducts } from '../../features/product/productThunk';
 import {
-    getProducts as fetchProducts    
-} from '../../features/product/productThunk';
-import { setProduct, setProductPackaging, setStockDate } from '../../features/dailyStocks/actions';
+    setProduct,
+    setProductPackaging,
+    setStockDate,
+} from '../../features/dailyStocks/actions';
 
 export const DailyStockHeader: React.FC = () => {
-    const dispatch = useDispatch();    
+    const dispatch = useDispatch();
     const products: Product[] | [] = useSelector(getProducts);
     const selectedProduct = useSelector(getCurrentStockProduct);
     const selectedPackaging = useSelector(getCurrentStockProductPackaging);
-    const selectedStockDate = useSelector(getCurrentStockDate);   
-    
+    const selectedStockDate = useSelector(getCurrentStockDate);
+
     useEffect(() => {
-        if(products.length==0){                
+        if (products.length == 0) {
             dispatch(fetchProducts());
-        } 
-    }, [])
+        }
+    }, []);
 
-    
+    const onProductNameChange = (product: Product) => {
+        dispatch(setProduct(product));
+    };
 
-    const onProductNameChange = (product:Product ) => {                
-        dispatch(setProduct(product));        
-    }
+    const onProductPackagingChange = (stockPackaging: LocalPackaging) => {
+        dispatch(setProductPackaging(stockPackaging));
+    };
 
-    const onProductPackagingChange = (stockPackaging:LocalPackaging) => {        
-        dispatch(setProductPackaging(stockPackaging));        
-    }
-
-    const onDateChange = (date:Date ) => {        
+    const onDateChange = (date: Date) => {
         dispatch(setStockDate(date));
-    }
+    };
 
     return (
         <div>
@@ -52,9 +57,19 @@ export const DailyStockHeader: React.FC = () => {
                         {dailyStockDateLabel}
                     </label>
                     <div className="p-field p-col-12 p-md-4">
-                        <Calendar id="icon" viewDate={selectedStockDate} dateFormat="dd/mm/yy" value={selectedStockDate} 
-                        onViewDateChange={(event: any) => onDateChange(event.value)}
-                        onChange={(event: any) => onDateChange(event.target.value)} showIcon />
+                        <Calendar
+                            id="icon"
+                            viewDate={selectedStockDate}
+                            dateFormat="dd/mm/yy"
+                            value={selectedStockDate}
+                            onViewDateChange={(event: any) =>
+                                onDateChange(event.value)
+                            }
+                            onChange={(event: any) =>
+                                onDateChange(event.target.value)
+                            }
+                            showIcon
+                        />
                     </div>
                 </div>
                 <div className="p-field p-grid">
@@ -92,7 +107,7 @@ export const DailyStockHeader: React.FC = () => {
                             placeholder={productPackagingPlaceHolder}
                         />
                     </div>
-                </div>                               
+                </div>
             </div>
         </div>
     );

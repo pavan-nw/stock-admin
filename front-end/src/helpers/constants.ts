@@ -54,6 +54,7 @@ export const deletingProduct = 'Deleting product...';
 export const fetchingStocks = 'Fetching Stocks...';
 export const creatingStocks = 'Creating Stocks...';
 export const searchingStocks  = 'Searching Stocks...';
+export const stockAdded = 'Successfully Added';
 
 export type LocalPackaging = {name:string};
 export const packaging : LocalPackaging[] = [
