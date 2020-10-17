@@ -4,7 +4,7 @@ import { TabPanel, TabView } from 'primereact/tabview';
 import { DailyStockList } from '../components/dailyStocks/DailyStockList';
 import {DailyStockAddInvoice  } from '../components/dailyStocks/DailyStockAddInvoice';
 import {DailyStockAddSales  } from '../components/dailyStocks/DailyStockAddSales';
-import {viewDailyStocksTitle,addDailyStockTitle,addInvoiceTitle,addSalesTitle } from '../helpers/constants';
+import {viewDailyStocksTitle,addInvoiceTitle,addSalesTitle } from '../helpers/constants';
 import { clearCurrentStock } from '../features/dailyStocks/actions';
 
 export const DailyStocks: React.FC = () => {

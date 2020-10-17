@@ -16,8 +16,7 @@ import {
     setCLoseStockAction,
     SET_CLOSE_STOCK,
     ClearCurrentStockAction,
-    CLEAR_CURRENT_STOCK,
-    StockDetails,
+    CLEAR_CURRENT_STOCK,    
     LocalPackaging
 } from './types';
 

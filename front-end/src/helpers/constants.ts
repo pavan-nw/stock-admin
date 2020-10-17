@@ -26,7 +26,7 @@ export const productPackagingLabel = 'Packaging';
 export const manageProductsLabel = 'Manage Products';
 export const productIdLabel = 'Product ID';
 export const actionsLabel = 'Actions';
-export const searchLabel = 'Search...';
+export const searchLabel = 'Search';
 export const saveLabel = 'Save';
 export const clearLabel = 'Clear';
 

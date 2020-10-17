@@ -1,8 +1,8 @@
-import React, { useState,useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { LocalPackaging, Product } from '../../features/dailyStocks/types';
-import { getSelectedProduct,getProducts, getCurrentStockProduct, getCurrentStockProductPackaging, getCurrentStockDate } from '../../features/dailyStocks/selectors';
+import { getProducts, getCurrentStockProduct, getCurrentStockProductPackaging, getCurrentStockDate } from '../../features/dailyStocks/selectors';
 import { Calendar } from 'primereact/calendar';
 import {   
     productNameLabel,
@@ -20,11 +20,10 @@ import { setProduct, setProductPackaging, setStockDate } from '../../features/da
 export const DailyStockHeader: React.FC = () => {
     const dispatch = useDispatch();    
     const products: Product[] | [] = useSelector(getProducts);
-
     const selectedProduct = useSelector(getCurrentStockProduct);
     const selectedPackaging = useSelector(getCurrentStockProductPackaging);
     const selectedStockDate = useSelector(getCurrentStockDate);   
-    console.log("date in header",selectedStockDate);
+    
     useEffect(() => {
         if(products.length==0){                
             dispatch(fetchProducts());
@@ -38,12 +37,10 @@ export const DailyStockHeader: React.FC = () => {
     }
 
     const onProductPackagingChange = (stockPackaging:LocalPackaging) => {        
-        dispatch(setProductPackaging(stockPackaging));
-        console.log(`${selectedPackaging}`);
+        dispatch(setProductPackaging(stockPackaging));        
     }
 
-    const onDateChange = (date:Date ) => {
-        console.log("stock date ")
+    const onDateChange = (date:Date ) => {        
         dispatch(setStockDate(date));
     }
 

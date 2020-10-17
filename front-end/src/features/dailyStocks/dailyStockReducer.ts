@@ -14,8 +14,6 @@ import {
     LocalPackaging
 } from './types';
 
-import {formatDate} from '../../helpers/utils';
-
 const product : Product = {
     id: '',
     code: '',

@@ -4,23 +4,23 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStocks } from '../../features/dailyStocks/selectors';
-import {
-    getStocks as fetchStocks,    
-} from '../../features/dailyStocks/dailyStockThunk';
+import { getStocks as fetchStocks } from '../../features/dailyStocks/dailyStockThunk';
 import { Stocks } from '../../features/dailyStocks/types';
 import { InputText } from 'primereact/inputtext';
-import {    
+import {
     dailyStockDateLabel,
     incomingStockCountLabel,
     ManageStocksLabel,
     outgoingStockCountLabel,
-    productCodeLabel,    
+    productCodeLabel,
     productNameLabel,
     productPackagingLabel,
-    searchLabel,    
-    totalStockCountLabel
+    searchLabel,
+    totalStockCountLabel,
 } from '../../helpers/constants';
-import {formatDate} from '../../helpers/utils'
+import { formatDate } from '../../helpers/utils';
+import { DailyStockHeader } from './DailyStockHeader';
+import { Panel } from 'primereact/panel';
 
 export const DailyStockList: React.FC = () => {
     const dispatch = useDispatch();
@@ -36,13 +36,13 @@ export const DailyStockList: React.FC = () => {
     );
     const paginatorRight = (
         <Button type="button" icon="pi pi-cloud" className="p-button-text" />
-    );   
+    );
 
     const indexBodyTemplate = (rowData: any) => {
         return <>{rowData.product.code}</>;
     };
 
-    const dateBodyTemplate = (rowData: any) => {                 
+    const dateBodyTemplate = (rowData: any) => {
         return <>{formatDate(rowData.stockDate)}</>;
     };
 
@@ -60,8 +60,29 @@ export const DailyStockList: React.FC = () => {
         </div>
     );
 
+    const onSave = () => {};
+
     return (
-        <div>            
+        <div>
+            <div>
+                <Panel header={searchLabel} toggleable collapsed>
+                    <DailyStockHeader></DailyStockHeader>
+                    <div className="p-grid p-mt-lg-4 p-mt-md-2 p-mt-sm-1">
+                        <div className="p-lg-4 p-md-12 p-sm-12 p-lg-offset-4">
+                            <div className="p-grid">
+                                <div className="p-lg-4 p-md-4 p-sm-12 p-lg-offset-2 p-md-offset-2">
+                                    <Button
+                                        type="button"
+                                        className="p-button-raised p-mr-2"
+                                        label={searchLabel}
+                                        onClick={(event) => onSave()}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Panel>
+            </div>
             <DataTable
                 emptyMessage={'No Stocks Found'}
                 value={stocks}
@@ -82,12 +103,36 @@ export const DailyStockList: React.FC = () => {
                     headerStyle={{ width: '3rem' }}
                 />
                 <Column header={productCodeLabel} body={indexBodyTemplate} />
-                <Column body={dateBodyTemplate} header={dailyStockDateLabel} sortable />
-                <Column field="product.name" header={productNameLabel} sortable />
-                <Column field="product.packaging" header={productPackagingLabel} sortable />
-                <Column field="openingStock" header={incomingStockCountLabel} sortable />
-                <Column field="closingStock" header={outgoingStockCountLabel} sortable />
-                <Column field="totalStock" header={totalStockCountLabel} sortable />                
+                <Column
+                    body={dateBodyTemplate}
+                    header={dailyStockDateLabel}
+                    sortable
+                />
+                <Column
+                    field="product.name"
+                    header={productNameLabel}
+                    sortable
+                />
+                <Column
+                    field="product.packaging"
+                    header={productPackagingLabel}
+                    sortable
+                />
+                <Column
+                    field="openingStock"
+                    header={incomingStockCountLabel}
+                    sortable
+                />
+                <Column
+                    field="closingStock"
+                    header={outgoingStockCountLabel}
+                    sortable
+                />
+                <Column
+                    field="totalStock"
+                    header={totalStockCountLabel}
+                    sortable
+                />
             </DataTable>
         </div>
     );
