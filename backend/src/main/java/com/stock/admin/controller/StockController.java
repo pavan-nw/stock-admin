@@ -13,6 +13,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/stocks")
+@CrossOrigin
 public class StockController {
 
     private final StockService stockService;
@@ -68,7 +70,7 @@ public class StockController {
                                       @DateTimeFormat(pattern = "dd-MM-yyyy",
                                               iso = DateTimeFormat.ISO.DATE) Optional<Date> stockDate,
                                       @RequestParam(name = "page", defaultValue = "1") int pageNum,
-                                      @RequestParam(name = "size", defaultValue = "5") int size,
+                                      @RequestParam(name = "size", defaultValue = "500") int size,
                                       @RequestParam(name = "sort", defaultValue = "DESC") String sortType) {
 
         Page<Stock> page = stockDate.map(date -> stockService

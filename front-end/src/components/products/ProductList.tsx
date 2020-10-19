@@ -18,6 +18,7 @@ import {
 } from '../../features/product/actions';
 import {
     actionsLabel,
+    manageProductsLabel,
     productCodeLabel,
     productIdLabel,
     productNameLabel,
@@ -75,7 +76,7 @@ export const ProductList: React.FC = () => {
 
     const header = (
         <div className="table-header">
-            <h3 className="p-m-0">Manage Products</h3>
+            <h3 className="p-m-0">{manageProductsLabel}</h3>
             <span className="p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText

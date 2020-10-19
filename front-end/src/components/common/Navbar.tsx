@@ -6,6 +6,7 @@ import './navbar.css';
 import {
     aboutMenu,
     appName,
+    dailyStocksMenu,
     logoutMenu,
     productsMenu,
     stocksMenu,
@@ -31,6 +32,11 @@ const rightContents = () => (
             <div className="p-mr-2">
                 <NavLink className="link-text" to="/">
                     <Button className="p-button-text" label={productsMenu} />
+                </NavLink>
+            </div>
+            <div className="p-mr-2">
+                <NavLink className="link-text" to="/daily-stocks">
+                    <Button className="p-button-text" label={dailyStocksMenu} />
                 </NavLink>
             </div>
             <div className="p-mr-2">
