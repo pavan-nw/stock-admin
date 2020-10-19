@@ -15,10 +15,17 @@ export const productIdLabel = 'Product ID';
 export const actionsLabel = 'Actions';
 export const searchLabel = 'Search...';
 export const saveLabel = 'Save';
+export const userNameLabel = 'User Name';
+export const passwordLabel = 'Password';
+export const shopLabel = 'Shop';
+export const loginLabel = 'Login';
 
 export const productCodePlaceHolder = 'Enter the product code here';
 export const productNamePlaceHolder = 'Enter the product name here';
 export const productPackagingPlaceHolder = 'Select a product packaging';
+export const usernamePlaceHolder = 'Enter a user name';
+export const passwordPlaceHolder = 'Enter a password';
+export const shopPlaceHolder = 'Select a shop';
 
 export const productsMenu = 'Products';
 export const stocksMenu = 'Stocks';
