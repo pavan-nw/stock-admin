@@ -11,6 +11,14 @@
 # idea
 /.idea
 
+#settings
+/.classpath
+/.project
+/.settings/org.eclipse.core.resources.prefs
+/.settings/org.eclipse.jdt.core.prefs
+/.settings/org.springframework.ide.eclipse.prefs
+/.vscode/settings.json
+
 # production
 /build
 

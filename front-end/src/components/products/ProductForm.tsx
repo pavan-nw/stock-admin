@@ -22,24 +22,24 @@ export const ProductForm: React.FC = () => {
 
     const initialProductCode = selectedProduct ? selectedProduct.code : '';
     const initialProductName = selectedProduct ? selectedProduct.name : '';
-    const initialPackaging = selectedProduct ? selectedProduct.packaging : '';
+    const initialPackaging = {name: ""};
 
     const [selectedPackaging, updatePackaging] = useState(initialPackaging);
     const [productCode, updateProductCode] = useState(initialProductCode);
     const [productName, updateProductName] = useState(initialProductName);
 
     const packagings = [
-        '1 Ml',
-        '10 Ml',
-        '1 Liter',
-        '10 Gram',
-        '200 Gram',
-        '1 Kg',
-        '2 Kg',
-        '3 Kg',
-        '5 Kg',
-        '10 Kg',
-        '15 Kg',
+        { name: '1 Ml' },
+        { name: '10 Ml' },
+        { name: '1 Liter' },
+        { name: '10 Gram' },
+        { name: '200 Gram' },
+        { name: '1 Kg' },
+        { name: '2 Kg' },
+        { name: '3 Kg' },
+        { name: '5 Kg' },
+        { name: '10 Kg' },
+        { name: '15 Kg' },
     ];
 
     const onSave = () => {
@@ -48,14 +48,14 @@ export const ProductForm: React.FC = () => {
                 id: selectedProduct.id,
                 code: productCode,
                 name: productName,
-                packaging: selectedPackaging,
+                packaging: selectedPackaging.name,
             };
             dispatch(editProduct(product));
         } else {
             const product: Product = {
                 code: productCode,
                 name: productName,
-                packaging: selectedPackaging,
+                packaging: selectedPackaging.name,
             };
             dispatch(addProduct(product));
         }
@@ -108,6 +108,7 @@ export const ProductForm: React.FC = () => {
                             options={packagings}
                             showClear
                             filter
+                            optionLabel="name"
                             filterBy="name"
                             onChange={(e) => updatePackaging(e.value)}
                             placeholder={productPackagingPlaceHolder}

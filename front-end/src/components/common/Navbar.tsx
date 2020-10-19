@@ -6,6 +6,7 @@ import './navbar.css';
 import {
     aboutMenu,
     appName,
+    dailyStocksMenu,
     logoutMenu,
     productsMenu,
     stocksMenu,
@@ -39,7 +40,12 @@ export const Navbar: React.FC = () => {
                     </NavLink>
                 </div>
                 <div className="p-mr-2">
-                    <NavLink className="link-text" to="/counter">
+                    <NavLink className="link-text" to="/daily-stocks">
+                    <Button className="p-button-text" label={dailyStocksMenu} />
+                </NavLink>
+            </div>
+            <div className="p-mr-2">
+                <NavLink className="link-text" to="/counter">
                         <Button className="p-button-text" label={stocksMenu} />
                     </NavLink>
                 </div>
