@@ -3,19 +3,19 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProducts } from '../../features/product/selectors';
+import { getProducts } from '../../features/products/selectors';
 import {
     getProducts as fetchProducts,
     removeProduct,
-} from '../../features/product/productThunk';
-import { Product } from '../../features/product/types';
+} from '../../features/products/productThunk';
+import { Product } from '../../features/products/types';
 import { InputText } from 'primereact/inputtext';
 import './productList.css';
 import { EditProductDialog } from './EditProductDialog';
 import {
     selectProduct,
     toggleShowEditDialog,
-} from '../../features/product/actions';
+} from '../../features/products/actions';
 import {
     actionsLabel,
     manageProductsLabel,

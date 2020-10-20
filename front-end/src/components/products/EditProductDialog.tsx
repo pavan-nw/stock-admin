@@ -4,9 +4,9 @@ import { ProductForm } from './ProductForm';
 import {
     selectProduct,
     toggleShowEditDialog,
-} from '../../features/product/actions';
+} from '../../features/products/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { getShowEditProductDialog } from '../../features/product/selectors';
+import { getShowEditProductDialog } from '../../features/products/selectors';
 import { editProductTitle } from '../../helpers/constants';
 
 export const EditProductDialog: React.FC = () => {

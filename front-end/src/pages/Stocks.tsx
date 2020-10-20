@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { TabPanel, TabView } from 'primereact/tabview';
-import { DailyStockList } from '../components/dailyStocks/DailyStockList';
-import { DailyStockAddInvoice } from '../components/dailyStocks/DailyStockAddInvoice';
-import { DailyStockAddSales } from '../components/dailyStocks/DailyStockAddSales';
+import { StockList } from '../components/stocks/StockList';
+import { AddInvoice } from '../components/stocks/AddInvoice';
+import { AddSales } from '../components/stocks/AddSales';
 import {
     viewDailyStocksTitle,
     addInvoiceTitle,
     addSalesTitle,
 } from '../helpers/constants';
-import { clearCurrentStock } from '../features/dailyStocks/actions';
+import { clearCurrentStock } from '../features/stocks/actions';
 
-export const DailyStocks: React.FC = () => {
+export const Stocks: React.FC = () => {
     const initIndex = 0;
     const [activeIndex, updateActiveIndex] = useState(initIndex);
     const dispatch = useDispatch();
@@ -32,13 +32,13 @@ export const DailyStocks: React.FC = () => {
                     }}
                 >
                     <TabPanel header={viewDailyStocksTitle}>
-                        <DailyStockList />
+                        <StockList />
                     </TabPanel>
                     <TabPanel header={addInvoiceTitle}>
-                        <DailyStockAddInvoice />
+                        <AddInvoice />
                     </TabPanel>
                     <TabPanel header={addSalesTitle}>
-                        <DailyStockAddSales />
+                        <AddSales />
                     </TabPanel>
                 </TabView>
             </div>

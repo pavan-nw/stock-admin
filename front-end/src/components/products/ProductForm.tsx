@@ -3,9 +3,9 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { useDispatch, useSelector } from 'react-redux';
-import { Product } from '../../features/product/types';
-import { addProduct, editProduct } from '../../features/product/productThunk';
-import { getSelectedProduct } from '../../features/product/selectors';
+import { Product } from '../../features/products/types';
+import { addProduct, editProduct } from '../../features/products/productThunk';
+import { getSelectedProduct } from '../../features/products/selectors';
 import {
     productCodeLabel,
     productCodePlaceHolder,
@@ -22,7 +22,7 @@ export const ProductForm: React.FC = () => {
 
     const initialProductCode = selectedProduct ? selectedProduct.code : '';
     const initialProductName = selectedProduct ? selectedProduct.name : '';
-    const initialPackaging = {name: ""};
+    const initialPackaging = { name: '' };
 
     const [selectedPackaging, updatePackaging] = useState(initialPackaging);
     const [productCode, updateProductCode] = useState(initialProductCode);

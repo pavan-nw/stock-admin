@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import { useDispatch, useSelector } from 'react-redux';
-import { LocalPackaging, Product } from '../../features/dailyStocks/types';
+import { LocalPackaging, Product } from '../../features/stocks/types';
 import {
     getProducts,
     getCurrentStockProduct,
     getCurrentStockProductPackaging,
     getCurrentStockDate,
-} from '../../features/dailyStocks/selectors';
+} from '../../features/stocks/selectors';
 import { Calendar } from 'primereact/calendar';
 import {
     productNameLabel,
@@ -17,14 +17,14 @@ import {
     dailyStockDateLabel,
     packaging,
 } from '../../helpers/constants';
-import { getProducts as fetchProducts } from '../../features/product/productThunk';
+import { getProducts as fetchProducts } from '../../features/products/productThunk';
 import {
     setProduct,
     setProductPackaging,
     setStockDate,
-} from '../../features/dailyStocks/actions';
+} from '../../features/stocks/actions';
 
-export const DailyStockHeader: React.FC = () => {
+export const StocksFormHeader: React.FC = () => {
     const dispatch = useDispatch();
     const products: Product[] | [] = useSelector(getProducts);
     const selectedProduct = useSelector(getCurrentStockProduct);

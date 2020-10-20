@@ -3,9 +3,9 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { useDispatch, useSelector } from 'react-redux';
-import { getStocks } from '../../features/dailyStocks/selectors';
-import { getStocks as fetchStocks } from '../../features/dailyStocks/dailyStockThunk';
-import { Stocks } from '../../features/dailyStocks/types';
+import { getStocks } from '../../features/stocks/selectors';
+import { getStocks as fetchStocks } from '../../features/stocks/stockThunk';
+import { Stocks } from '../../features/stocks/types';
 import { InputText } from 'primereact/inputtext';
 import {
     dailyStockDateLabel,
@@ -19,10 +19,11 @@ import {
     totalStockCountLabel,
 } from '../../helpers/constants';
 import { formatDate } from '../../helpers/utils';
-import { DailyStockHeader } from './DailyStockHeader';
+import { StocksFormHeader } from './StocksFormHeader';
 import { Panel } from 'primereact/panel';
+import './stockList.css';
 
-export const DailyStockList: React.FC = () => {
+export const StockList: React.FC = () => {
     const dispatch = useDispatch();
     const stocks: Stocks[] = useSelector(getStocks);
     const [globalFilter, updateGlobalFilter] = useState(null);
@@ -66,7 +67,7 @@ export const DailyStockList: React.FC = () => {
         <div>
             <div>
                 <Panel header={searchLabel} toggleable collapsed>
-                    <DailyStockHeader></DailyStockHeader>
+                    <StocksFormHeader></StocksFormHeader>
                     <div className="p-grid p-mt-lg-4 p-mt-md-2 p-mt-sm-1">
                         <div className="p-lg-4 p-md-12 p-sm-12 p-lg-offset-4">
                             <div className="p-grid">

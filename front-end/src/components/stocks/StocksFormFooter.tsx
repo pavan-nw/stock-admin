@@ -2,10 +2,10 @@ import React from 'react';
 import { Button } from 'primereact/button';
 import { saveLabel, clearLabel } from '../../helpers/constants';
 import { useDispatch } from 'react-redux';
-import { clearCurrentStock } from '../../features/dailyStocks/actions';
-import { addStock } from '../../features/dailyStocks/dailyStockThunk';
+import { clearCurrentStock } from '../../features/stocks/actions';
+import { addStock } from '../../features/stocks/stockThunk';
 
-export const DailyStocksFooter: React.FC = (props) => {
+export const StocksFormFooter: React.FC = (props) => {
     const dispatch = useDispatch();
     const onSave = () => {
         dispatch(addStock());

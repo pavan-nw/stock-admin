@@ -1,16 +1,16 @@
 import React from 'react';
 import { InputText } from 'primereact/inputtext';
 import { useDispatch, useSelector } from 'react-redux';
-import { DailyStockHeader } from './DailyStockHeader';
+import { StocksFormHeader } from './StocksFormHeader';
 import {
     incomingStockCountLabel,
     incomingStockCountPlaceHolder,
 } from '../../helpers/constants';
-import { DailyStocksFooter } from './DailyStocksFooter';
-import { setOpenStock } from '../../features/dailyStocks/actions';
-import { getOpeningStock } from '../../features/dailyStocks/selectors';
+import { StocksFormFooter } from './StocksFormFooter';
+import { setOpenStock } from '../../features/stocks/actions';
+import { getOpeningStock } from '../../features/stocks/selectors';
 
-export const DailyStockAddInvoice: React.FC = () => {
+export const AddInvoice: React.FC = () => {
     const dispatch = useDispatch();
     const openStock = useSelector(getOpeningStock);
 
@@ -20,8 +20,8 @@ export const DailyStockAddInvoice: React.FC = () => {
 
     return (
         <div>
-            <DailyStockHeader> </DailyStockHeader>
-            <DailyStocksFooter>
+            <StocksFormHeader> </StocksFormHeader>
+            <StocksFormFooter>
                 <div className="p-field p-grid">
                     <label htmlFor="openStock" className="p-col-12 p-md-3">
                         {incomingStockCountLabel}
@@ -38,7 +38,7 @@ export const DailyStockAddInvoice: React.FC = () => {
                         />
                     </div>
                 </div>
-            </DailyStocksFooter>
+            </StocksFormFooter>
         </div>
     );
 };

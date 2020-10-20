@@ -12,7 +12,7 @@ import './app.css';
 import { ToastWrapper } from './components/common/ToastWrapper';
 import { SpinnerDialog } from './components/common/SpinnerDialog';
 import { Products } from './pages/Products';
-import { DailyStocks } from './pages/DailyStocks';
+import { Stocks } from './pages/Stocks';
 import { Login } from './pages/Login';
 import { PrivateRoute } from './components/common/PrivateRoute';
 import { useDispatch } from 'react-redux';
@@ -48,10 +48,7 @@ const App: React.FC = () => {
                     <Route path="/counter" component={Counter} exact />
                     <Route path="/login" component={Login} exact />
                     <Route path="/about" component={About} exact />
-                    <PrivateRoute
-                        path="/daily-stocks"
-                        component={DailyStocks}
-                    />
+                    <PrivateRoute path="/daily-stocks" component={Stocks} />
                     <Route path="*" component={Login} exact />
                 </Switch>
             </div>

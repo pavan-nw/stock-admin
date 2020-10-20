@@ -9,7 +9,7 @@ import {
 import { creatingProduct, errorOccurred } from '../../helpers/constants';
 import axiosInstance from '../../config/axiosConfig';
 import { checkSuccess, getErrorMessageToShow } from '../../helpers/utils';
-import { createProduct } from '../product/actions';
+import { createProduct } from '../products/actions';
 import { authenticate, clearSession } from './actions';
 
 export const login = (
