@@ -48,8 +48,11 @@ const App: React.FC = () => {
                     <Route path="/counter" component={Counter} exact />
                     <Route path="/login" component={Login} exact />
                     <Route path="/about" component={About} exact />
+                    <PrivateRoute
+                        path="/daily-stocks"
+                        component={DailyStocks}
+                    />
                     <Route path="*" component={Login} exact />
-                    <Route path="/daily-stocks" component={DailyStocks} />
                 </Switch>
             </div>
         </BrowserRouter>
