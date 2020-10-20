@@ -5,7 +5,8 @@ import CounterReducer from './features/counter/counterReducer';
 import CommonReducer from './features/common/commonReducer';
 import ProductReducer from './features/product/productReducer';
 import LoginReducer from './features/login/loginReducer';
-import DailyStockReducer  from './features/dailyStocks/dailyStockReducer';
+import DailyStockReducer from './features/dailyStocks/dailyStockReducer';
+import ShopReducer from './features/shop/shopReducer';
 
 /* Create root reducer, containing all features of the application */
 const rootReducer = combineReducers({
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
     commonState: CommonReducer,
     productState: ProductReducer,
     sessionState: LoginReducer,
-    stockState:DailyStockReducer
+    stockState: DailyStockReducer,
+    shopState: ShopReducer,
 });
 
 const store = createStore(

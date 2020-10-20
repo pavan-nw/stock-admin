@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import {
@@ -14,18 +14,26 @@ import {
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { login } from '../../features/login/loginThunk';
+import { getShops as fetchShops } from '../../features/shop/shopThunk';
+import { getShops } from '../../features/shop/selectors';
+import { Shop } from '../../features/shop/types';
 
 const LoginForm: React.FC = () => {
     const dispatch = useDispatch();
+    const shops: Shop[] = useSelector(getShops);
 
-    const [shop, setShop] = useState('');
+    useEffect(() => {
+        dispatch(fetchShops());
+    }, []);
+
+    const [shop, setShop] = useState<Shop | undefined>(undefined);
     const [password, setPassword] = useState('');
     const [userName, setUserName] = useState('');
 
-    const allShops = ['Seeds Center', 'Seeds Corner'];
-
     const onLogin = () => {
-        dispatch(login(userName, password, shop));
+        if (shop) {
+            dispatch(login(userName, password, shop.shopCode));
+        }
     };
 
     return (
@@ -77,10 +85,11 @@ const LoginForm: React.FC = () => {
                             </label>
                             <div className="p-col-12 p-md-9">
                                 <Dropdown
+                                    showClear
+                                    optionLabel="name"
                                     id="shop"
                                     value={shop}
-                                    options={allShops}
-                                    optionLabel={name}
+                                    options={shops}
                                     onChange={(e) => setShop(e.value)}
                                     placeholder={shopPlaceHolder}
                                 />

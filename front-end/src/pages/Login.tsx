@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import LoginForm from '../components/login/LoginForm';
+import { isLoggedIn } from '../helpers/utils';
 import { useSelector } from 'react-redux';
 import { getShopCode } from '../features/login/selectors';
 
@@ -9,7 +10,7 @@ export const Login: React.FC = () => {
     const history = useHistory();
 
     useEffect(() => {
-        if (shopCode) {
+        if (isLoggedIn()) {
             history.push('/home');
         }
     }, [shopCode]);
