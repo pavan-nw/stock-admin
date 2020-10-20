@@ -7,6 +7,7 @@ import { Product } from '../../features/products/types';
 import { addProduct, editProduct } from '../../features/products/productThunk';
 import { getSelectedProduct } from '../../features/products/selectors';
 import {
+    packaging,
     productCodeLabel,
     productCodePlaceHolder,
     productNameLabel,
@@ -15,47 +16,39 @@ import {
     productPackagingPlaceHolder,
     saveLabel,
 } from '../../helpers/constants';
+import { getShopCode } from '../../features/login/selectors';
 
 export const ProductForm: React.FC = () => {
     const dispatch = useDispatch();
     const selectedProduct: Product | null = useSelector(getSelectedProduct);
+    const shopCode: string = useSelector(getShopCode);
 
     const initialProductCode = selectedProduct ? selectedProduct.code : '';
     const initialProductName = selectedProduct ? selectedProduct.name : '';
-    const initialPackaging = { name: '' };
+    const initialPackaging = selectedProduct
+        ? { name: selectedProduct.packaging }
+        : undefined;
 
     const [selectedPackaging, updatePackaging] = useState(initialPackaging);
     const [productCode, updateProductCode] = useState(initialProductCode);
     const [productName, updateProductName] = useState(initialProductName);
 
-    const packagings = [
-        { name: '1 Ml' },
-        { name: '10 Ml' },
-        { name: '1 Liter' },
-        { name: '10 Gram' },
-        { name: '200 Gram' },
-        { name: '1 Kg' },
-        { name: '2 Kg' },
-        { name: '3 Kg' },
-        { name: '5 Kg' },
-        { name: '10 Kg' },
-        { name: '15 Kg' },
-    ];
-
     const onSave = () => {
-        if (selectedProduct) {
+        if (selectedProduct && selectedPackaging) {
             const product: Product = {
                 id: selectedProduct.id,
                 code: productCode,
                 name: productName,
                 packaging: selectedPackaging.name,
+                shopCode,
             };
             dispatch(editProduct(product));
-        } else {
+        } else if (selectedPackaging) {
             const product: Product = {
                 code: productCode,
                 name: productName,
                 packaging: selectedPackaging.name,
+                shopCode,
             };
             dispatch(addProduct(product));
         }
@@ -105,7 +98,7 @@ export const ProductForm: React.FC = () => {
                         <Dropdown
                             id="packaging"
                             value={selectedPackaging}
-                            options={packagings}
+                            options={packaging}
                             showClear
                             filter
                             optionLabel="name"

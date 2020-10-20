@@ -1,8 +1,5 @@
-// export const baseURL = 'http://localhost:8080';
+export const baseURL = '/api/';
 import productPackages from '../config/productPackages.json';
-
-export const baseURL =
-    'https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io';
 
 export const appName = 'Stock Administrator';
 
@@ -57,6 +54,9 @@ export const fetchingProduct = 'Fetching products...';
 export const creatingProduct = 'Creating product...';
 export const updatingProduct = 'Updating product...';
 export const deletingProduct = 'Deleting product...';
+export const authenticating = 'Authenticating...';
+export const loggingOut = 'Logging out...';
+export const fetchingShops = 'Fetching shops...';
 
 export const fetchingStocks = 'Fetching Stocks...';
 export const creatingStocks = 'Creating Stocks...';

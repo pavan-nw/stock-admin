@@ -48,7 +48,7 @@ export interface Product {
     code: string;
     name: string;
     packaging: string;
-    shopCode?: string;
+    shopCode: string;
     createDate?: number;
     updateDate?: number;
 }

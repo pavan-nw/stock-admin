@@ -42,6 +42,7 @@
     "redux-thunk": "^2.3.0",
     "typescript": "^3.9.7"
   },
+  "proxy": "https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

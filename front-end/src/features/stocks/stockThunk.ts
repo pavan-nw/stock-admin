@@ -1,8 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
-import {    
-    fetchStocks
-} from './actions';
-import { StockState,StockActionTypes, CreateStockRequest } from './types';
+import { fetchStocks } from './actions';
+import { StockState, StockActionTypes, CreateStockRequest } from './types';
 import {
     hideSpinnerDialog,
     showSpinnerDialog,
@@ -11,11 +9,11 @@ import {
 import { CommonActionTypes } from '../common/types';
 import { checkSuccess, getErrorMessageToShow } from '../../helpers/utils';
 import axiosInstance from '../../config/axiosConfig';
-import {   
+import {
     errorOccurred,
-    stockAdded, 
+    stockAdded,
     fetchingStocks,
-    creatingStocks,    
+    creatingStocks,
 } from '../../helpers/constants';
 
 export const getStocks = (): ThunkAction<
@@ -29,12 +27,12 @@ export const getStocks = (): ThunkAction<
         const response = await axiosInstance.get('/stocks');
         const responseJson = await response.data;
         dispatch(hideSpinnerDialog());
-        if (checkSuccess(responseJson)) {            
+        if (checkSuccess(responseJson)) {
             dispatch(fetchStocks('shopCode', responseJson.payload));
         } else {
             dispatch(showToast(errorOccurred, responseJson.status, 'error'));
         }
-    } catch (e) {        
+    } catch (e) {
         dispatch(hideSpinnerDialog());
         dispatch(showToast(errorOccurred, getErrorMessageToShow(e), 'error'));
     }
@@ -48,22 +46,19 @@ export const addStock = (): ThunkAction<
 > => async (dispatch, getState) => {
     try {
         dispatch(showSpinnerDialog(creatingStocks));
-        const {currentStock} =  getState().stockState;
-        const stockRequest : CreateStockRequest = {
-            productName :currentStock.product.name,
-            packaging : currentStock.packaging.name,
-            stockDate:currentStock.stockDate,
-            openingStock:currentStock.openingStocks,
-            closingStock:currentStock.closingStocks,
-            type:"stock-request"
+        const { currentStock } = getState().stockState;
+        const stockRequest: CreateStockRequest = {
+            productName: currentStock.product.name,
+            packaging: currentStock.packaging.name,
+            stockDate: currentStock.stockDate,
+            openingStock: currentStock.openingStocks,
+            closingStock: currentStock.closingStocks,
+            type: 'stock-request',
         };
-        const response = await axiosInstance.post(
-            '/stocks',
-            stockRequest
-        );
+        const response = await axiosInstance.post('/stocks', stockRequest);
         const responseJson = await response.data;
         dispatch(hideSpinnerDialog());
-        if (checkSuccess(responseJson)) {                 
+        if (checkSuccess(responseJson)) {
             dispatch(showToast(stockAdded, responseJson.status));
         } else {
             dispatch(showToast(errorOccurred, responseJson.status, 'error'));

@@ -6,7 +6,7 @@ import {
     showSpinnerDialog,
     showToast,
 } from '../common/actions';
-import { errorOccurred } from '../../helpers/constants';
+import { errorOccurred, fetchingShops } from '../../helpers/constants';
 import axiosInstance from '../../config/axiosConfig';
 import { checkSuccess, getErrorMessageToShow } from '../../helpers/utils';
 import { fetchShops } from './actions';
@@ -18,7 +18,7 @@ export const getShops = (): ThunkAction<
     ShopActionTypes | CommonActionTypes
 > => async (dispatch, getState) => {
     try {
-        dispatch(showSpinnerDialog('Fetching shops...'));
+        dispatch(showSpinnerDialog(fetchingShops));
         const response = await axiosInstance.get('/shops');
         const responseJson = await response.data;
         if (checkSuccess(responseJson)) {
