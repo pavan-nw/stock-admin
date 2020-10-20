@@ -8,7 +8,7 @@ import { getStocks as fetchStocks } from '../../features/stocks/stockThunk';
 import { Stocks } from '../../features/stocks/types';
 import { InputText } from 'primereact/inputtext';
 import {
-    dailyStockDateLabel,
+    stockDateLabel,
     incomingStockCountLabel,
     ManageStocksLabel,
     outgoingStockCountLabel,
@@ -106,7 +106,7 @@ export const StockList: React.FC = () => {
                 <Column header={productCodeLabel} body={indexBodyTemplate} />
                 <Column
                     body={dateBodyTemplate}
-                    header={dailyStockDateLabel}
+                    header={stockDateLabel}
                     sortable
                 />
                 <Column

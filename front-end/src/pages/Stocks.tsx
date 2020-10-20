@@ -5,7 +5,7 @@ import { StockList } from '../components/stocks/StockList';
 import { AddInvoice } from '../components/stocks/AddInvoice';
 import { AddSales } from '../components/stocks/AddSales';
 import {
-    viewDailyStocksTitle,
+    viewStocksTitle,
     addInvoiceTitle,
     addSalesTitle,
 } from '../helpers/constants';
@@ -31,7 +31,7 @@ export const Stocks: React.FC = () => {
                         updateTab(e.index);
                     }}
                 >
-                    <TabPanel header={viewDailyStocksTitle}>
+                    <TabPanel header={viewStocksTitle}>
                         <StockList />
                     </TabPanel>
                     <TabPanel header={addInvoiceTitle}>

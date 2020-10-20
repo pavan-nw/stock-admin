@@ -14,7 +14,7 @@ import {
     productNamePlaceHolder,
     productPackagingLabel,
     productPackagingPlaceHolder,
-    dailyStockDateLabel,
+    stockDateLabel,
     packaging,
 } from '../../helpers/constants';
 import { getProducts as fetchProducts } from '../../features/products/productThunk';
@@ -54,7 +54,7 @@ export const StocksFormHeader: React.FC = () => {
             <div className="p-fluid">
                 <div className="p-field p-grid">
                     <label htmlFor="stockDate" className="p-col-12 p-md-3">
-                        {dailyStockDateLabel}
+                        {stockDateLabel}
                     </label>
                     <div className="p-field p-col-12 p-md-4">
                         <Calendar
