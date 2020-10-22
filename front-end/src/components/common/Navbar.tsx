@@ -11,6 +11,8 @@ import {
     productsMenu,
     stocksMenu,
 } from '../../helpers/constants';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../features/login/loginThunk';
 
 const leftContents = () => (
     <div className="p-d-flex p-jc-between">
@@ -21,46 +23,55 @@ const leftContents = () => (
     </div>
 );
 
-const rightContents = () => (
-    <>
-        <div className="p-d-flex p-ai-center">
-            {/*<div className="p-mr-2">*/}
-            {/*    <NavLink className="link-text" to="/home">*/}
-            {/*        <Button className="p-button-text" label="Home" />*/}
-            {/*    </NavLink>*/}
-            {/*</div>*/}
-            <div className="p-mr-2">
-                <NavLink className="link-text" to="/">
-                    <Button className="p-button-text" label={productsMenu} />
-                </NavLink>
-            </div>
-            <div className="p-mr-2">
-                <NavLink className="link-text" to="/daily-stocks">
+export const Navbar: React.FC = () => {
+    const dispatch = useDispatch();
+    const onLogout = () => {
+        dispatch(logout());
+    };
+    const rightContents = () => {
+        return (
+            <div className="p-d-flex p-ai-center">
+                <div className="p-mr-2">
+                    <NavLink className="link-text" to="/">
+                        <Button
+                            className="p-button-text"
+                            label={productsMenu}
+                        />
+                    </NavLink>
+                </div>
+                <div className="p-mr-2">
+                    <NavLink className="link-text" to="/daily-stocks">
                     <Button className="p-button-text" label={dailyStocksMenu} />
                 </NavLink>
             </div>
             <div className="p-mr-2">
                 <NavLink className="link-text" to="/counter">
-                    <Button className="p-button-text" label={stocksMenu} />
-                </NavLink>
+                        <Button className="p-button-text" label={stocksMenu} />
+                    </NavLink>
+                </div>
+                <div className="p-mr-2">
+                    <NavLink className="link-text" to="/about">
+                        <Button className="p-button-text" label={aboutMenu} />
+                    </NavLink>
+                </div>
+                <div className="p-mr-2">
+                    <NavLink className="link-text" to="/login">
+                        <Button
+                            className="p-button-text"
+                            label={logoutMenu}
+                            onClick={(event) => onLogout()}
+                        />
+                    </NavLink>
+                </div>
             </div>
-            <div className="p-mr-2">
-                <NavLink className="link-text" to="/about">
-                    <Button className="p-button-text" label={aboutMenu} />
-                </NavLink>
-            </div>
-            <div className="p-mr-2">
-                <NavLink className="link-text" to="/logout">
-                    <Button className="p-button-text" label={logoutMenu} />
-                </NavLink>
-            </div>
-        </div>
-    </>
-);
-export const Navbar: React.FC = () => (
-    <Toolbar
-        className="layout-topbar"
-        left={leftContents}
-        right={rightContents}
-    />
-);
+        );
+    };
+
+    return (
+        <Toolbar
+            className="layout-topbar"
+            left={leftContents}
+            right={rightContents}
+        />
+    );
+};
