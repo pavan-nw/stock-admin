@@ -95,6 +95,15 @@ public class StockController {
 				page.getTotalPages(), page.isLast(), page.getTotalElements());
 	}
 
+	/**
+	 * Download the stocks.
+	 *
+	 * @param fromDate the from date
+	 * @param toDate the to date
+	 * @param shopCode the shop code
+	 * @return the response entity
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@GetMapping(path = "/download")
 	public ResponseEntity<Resource> download(
 			@RequestParam(name = "fromDate") @DateTimeFormat(pattern = "dd-MM-yyyy", iso = DateTimeFormat.ISO.DATE) Date fromDate,

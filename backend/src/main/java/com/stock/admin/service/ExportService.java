@@ -1,60 +1,38 @@
 package com.stock.admin.service;
 
-import static com.stock.admin.utils.Helper.pageRequestFor;
-import static com.stock.admin.utils.StockAdminConstants.PATH_PRODUCT_NAME;
-import static com.stock.admin.utils.StockAdminConstants.PATH_PRODUCT_PACKAGING;
-import static com.stock.admin.utils.StockAdminConstants.PRODUCT_DOES_NOT_EXISTS;
-import static com.stock.admin.utils.StockAdminConstants.STOCK_DATE;
-import static com.stock.admin.utils.StockAdminConstants.TOTAL_STOCK;
-
 import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Font.FontFamily;
-import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfPageEventHelper;
-import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.mongodb.client.result.UpdateResult;
 import com.stock.admin.exception.StockAdminApplicationException;
-import com.stock.admin.model.entity.Product;
 import com.stock.admin.model.entity.Shop;
 import com.stock.admin.model.entity.Stock;
-import com.stock.admin.model.request.StockRequest;
 import com.stock.admin.repository.ShopsRepository;
 import com.stock.admin.repository.StocksRepository;
 import com.stock.admin.utils.HeaderFooterPageEvent;
 
+import static com.stock.admin.utils.StockAdminConstants.SOMETHING_WENT_WRONG;
+
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The type Stock service.
@@ -63,32 +41,47 @@ import org.springframework.transaction.annotation.Transactional;
 public class ExportService {
 	private final StocksRepository stocksRepository;
 	private final ShopsRepository shopsRepository;
-	private final MongoTemplate mongoTemplate;
 
 	private final Font bfBold12 = new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD, new BaseColor(0, 0, 0));
 	private final Font bf12 = new Font(FontFamily.TIMES_ROMAN, 12);
 
+	
 	/**
-	 * Instantiates a new Stock service.
+	 * Instantiates a new export service.
 	 *
 	 * @param stocksRepository the stocks repository
-	 * @param productService   the product service
-	 * @param mongoTemplate    the mongo template
+	 * @param shopsRepository the shops repository
 	 */
 	@Autowired
-	public ExportService(StocksRepository stocksRepository, ShopsRepository shopsRepository,
-			MongoTemplate mongoTemplate) {
+	public ExportService(StocksRepository stocksRepository, ShopsRepository shopsRepository) {
 		this.stocksRepository = stocksRepository;
 		this.shopsRepository = shopsRepository;
-		this.mongoTemplate = mongoTemplate;
 	}
 
-	public File getFileToExport(Date fromDate, Date toDate, String shopCode) throws Exception {
+	/**
+	 * Gets the file to export.
+	 *
+	 * @param fromDate the from date
+	 * @param toDate the to date
+	 * @param shopCode the shop code
+	 * @return the file to export
+	 * @throws Exception the exception
+	 */
+	public File getFileToExport(Date fromDate, Date toDate, String shopCode) {
 		createPDF("stocks.pdf", fromDate, toDate, shopCode);		
 		return new File("stocks.pdf");
 	}
 
-	private void createPDF(String pdfFilename, Date fromDate, Date toDate, String shopCode) throws Exception {
+	/**
+	 * Creates the PDF.
+	 *
+	 * @param pdfFilename the pdf filename
+	 * @param fromDate the from date
+	 * @param toDate the to date
+	 * @param shopCode the shop code
+	 * @throws Exception the exception
+	 */
+	private void createPDF(String pdfFilename, Date fromDate, Date toDate, String shopCode) {
 
 		Document doc = new Document();
 		PdfWriter docWriter = null;
@@ -115,7 +108,7 @@ public class ExportService {
 			doc.add(stocksTable);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			throw ex;
+			throw new StockAdminApplicationException(SOMETHING_WENT_WRONG, HttpStatus.NOT_FOUND);
 		} finally {
 			doc.close();
 			if (docWriter != null) {
@@ -125,7 +118,15 @@ public class ExportService {
 		}
 	}
 
-	private void updateInfoTable(PdfPTable infoTable, Date fromDate, Date toDate) throws DocumentException {
+	/**
+	 * Update info table.
+	 *
+	 * @param infoTable the info table
+	 * @param fromDate the from date
+	 * @param toDate the to date
+	 * @throws DocumentException the document exception
+	 */
+	private void updateInfoTable(PdfPTable infoTable, Date fromDate, Date toDate) {
 
 		PdfPCell exportedDateLabel = new PdfPCell(new Phrase("Exported Date :- ", bfBold12));
 		exportedDateLabel.setBorder(Rectangle.NO_BORDER);
@@ -154,17 +155,30 @@ public class ExportService {
 
 	}
 
+	/**
+	 * Update document header.
+	 *
+	 * @param doc the doc
+	 */
 	private void updateDocumentHeader(Document doc) {
 		// document header attributes
 		doc.addAuthor("Stock Admin");
 		doc.addCreationDate();
 		doc.addProducer();
 		doc.addCreator("Stock Admin");
-		doc.addTitle("Report with Column Headings");
+		doc.addTitle("Stock Report");
 		doc.setPageSize(PageSize.A4);
 
 	}
 
+	/**
+	 * Update stocks table.
+	 *
+	 * @param stocksTable the stocks table
+	 * @param shop the shop
+	 * @param fromDate the from date
+	 * @param toDate the to date
+	 */
 	private void updateStocksTable(PdfPTable stocksTable, Shop shop, Date fromDate, Date toDate) {
 		// set table width a percentage of the page width
 		stocksTable.setWidthPercentage(90f);
@@ -197,6 +211,12 @@ public class ExportService {
 
 	}
 
+	/**
+	 * Gets the date.
+	 *
+	 * @param stockDate the stock date
+	 * @return the date
+	 */
 	private String getDate(Date stockDate) {
 		TimeZone timeZone = TimeZone.getTimeZone("UTC");
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -204,6 +224,16 @@ public class ExportService {
 		return formatter.format(stockDate);
 	}
 
+	/**
+	 * Insert cell.
+	 *
+	 * @param table the table
+	 * @param text the text
+	 * @param align the align
+	 * @param colspan the colspan
+	 * @param font the font
+	 * @param isHeader the is header
+	 */
 	private void insertCell(PdfPTable table, String text, int align, int colspan, Font font, boolean isHeader) {
 
 		// create a new cell with the specified Text and Font

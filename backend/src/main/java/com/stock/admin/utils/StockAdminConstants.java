@@ -25,4 +25,5 @@ public interface StockAdminConstants {
      * The constant PRODUCT_DOES_NOT_EXISTS.
      */
     String PRODUCT_DOES_NOT_EXISTS = "Product does not exists";
+    String SOMETHING_WENT_WRONG = "Something Went Wrong. Please contact the Admin";
 }
