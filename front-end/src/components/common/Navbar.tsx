@@ -17,7 +17,11 @@ const leftContents = () => (
     <div className="p-d-flex p-jc-between">
         <div className="p-d-flex p-ai-center">
             <Button className="p-mr-2" icon="pi pi-bars" />
-            <div className="p-mr-2 layout-topbar-title">{appName}</div>
+            <div className="p-mr-2">
+                <NavLink className="link-text" to="/home">
+                    <Button className="p-button-text" label={appName} />
+                </NavLink>
+            </div>
         </div>
     </div>
 );
@@ -32,15 +36,15 @@ export const Navbar: React.FC = () => {
             <div className="p-d-flex p-ai-center">
                 <div className="p-mr-2">
                     <NavLink className="link-text" to="/">
+                        <Button className="p-button-text" label={stocksMenu} />
+                    </NavLink>
+                </div>
+                <div className="p-mr-2">
+                    <NavLink className="link-text" to="/products">
                         <Button
                             className="p-button-text"
                             label={productsMenu}
                         />
-                    </NavLink>
-                </div>
-                <div className="p-mr-2">
-                    <NavLink className="link-text" to="/daily-stocks">
-                        <Button className="p-button-text" label={stocksMenu} />
                     </NavLink>
                 </div>
                 <div className="p-mr-2">

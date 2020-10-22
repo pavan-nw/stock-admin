@@ -13,7 +13,10 @@ import {
     showToast,
 } from '../common/actions';
 import { CommonActionTypes } from '../common/types';
-import { checkSuccess, getErrorMessageToShow } from '../../helpers/utils';
+import {
+    checkSuccess,
+    getErrorMessageToShow,
+} from '../../helpers/utils';
 import axiosInstance from '../../config/axiosConfig';
 import {
     creatingProduct,
@@ -23,7 +26,9 @@ import {
     updatingProduct,
 } from '../../helpers/constants';
 
-export const getProducts = (): ThunkAction<
+export const getProducts = (
+    shopCode: string
+): ThunkAction<
     void,
     ProductState,
     unknown,
@@ -31,7 +36,9 @@ export const getProducts = (): ThunkAction<
 > => async (dispatch, getState) => {
     try {
         dispatch(showSpinnerDialog(fetchingProduct));
-        const response = await axiosInstance.get('/products');
+        const response = await axiosInstance.get(
+            '/products?shopCode=' + shopCode
+        );
         const responseJson = await response.data;
         dispatch(hideSpinnerDialog());
         if (checkSuccess(responseJson)) {
@@ -91,7 +98,7 @@ export const editProduct = (
             product,
         };
         const response = await axiosInstance.put(
-            `/products/${product.id}`,
+            `/products/${product.code}`,
             editProductRequest
         );
 

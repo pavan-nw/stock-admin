@@ -43,12 +43,13 @@ const App: React.FC = () => {
             <SpinnerDialog />
             <div className="p-grid layout-main-content layout-stretched">
                 <Switch>
-                    <PrivateRoute path="/" component={Products} exact />
+                    <PrivateRoute path="/" component={Stocks} exact />
+                    <PrivateRoute path="/stocks" component={Stocks} exact />
+                    <PrivateRoute path="/products" component={Products} exact />
                     <PrivateRoute path="/home" component={Home} exact />
                     <Route path="/counter" component={Counter} exact />
                     <Route path="/login" component={Login} exact />
                     <Route path="/about" component={About} exact />
-                    <PrivateRoute path="/daily-stocks" component={Stocks} />
                     <Route path="*" component={Login} exact />
                 </Switch>
             </div>

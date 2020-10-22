@@ -22,15 +22,17 @@ import { formatDate } from '../../helpers/utils';
 import { StocksFormHeader } from './StocksFormHeader';
 import { Panel } from 'primereact/panel';
 import './stockList.css';
+import { getShopCode } from '../../features/login/selectors';
 
 export const StockList: React.FC = () => {
     const dispatch = useDispatch();
     const stocks: Stocks[] = useSelector(getStocks);
+    const shopCode = useSelector(getShopCode);
     const [globalFilter, updateGlobalFilter] = useState(null);
 
     useEffect(() => {
-        dispatch(fetchStocks());
-    }, []);
+        dispatch(fetchStocks(shopCode));
+    }, [shopCode]);
 
     const paginatorLeft = (
         <Button type="button" icon="pi pi-refresh" className="p-button-text" />

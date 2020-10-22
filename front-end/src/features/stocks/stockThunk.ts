@@ -16,7 +16,9 @@ import {
     creatingStocks,
 } from '../../helpers/constants';
 
-export const getStocks = (): ThunkAction<
+export const getStocks = (
+    shopCode: string
+): ThunkAction<
     void,
     StockState,
     unknown,
@@ -24,7 +26,9 @@ export const getStocks = (): ThunkAction<
 > => async (dispatch, getState) => {
     try {
         dispatch(showSpinnerDialog(fetchingStocks));
-        const response = await axiosInstance.get('/stocks');
+        const response = await axiosInstance.get(
+            '/stocks?shopCode=' + shopCode
+        );
         const responseJson = await response.data;
         dispatch(hideSpinnerDialog());
         if (checkSuccess(responseJson)) {

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The type Stock controller.
  */
 @RestController
-@RequestMapping("/stocks")
+@RequestMapping("/api/stocks")
 @CrossOrigin
 public class StockController {
 

@@ -57,23 +57,30 @@ export const ProductForm: React.FC = () => {
     return (
         <div>
             <div className="p-fluid">
-                <div className="p-field p-grid">
-                    <label htmlFor="productCode" className="p-col-12 p-md-3">
-                        {productCodeLabel}
-                    </label>
-                    <div className="p-col-12 p-md-9">
-                        <InputText
-                            id="productCode"
-                            type="text"
-                            value={productCode}
-                            onChange={(event: any) =>
-                                updateProductCode(event.target.value)
-                            }
-                            placeholder={productCodePlaceHolder}
-                            disabled={selectedProduct !== null}
-                        />
+                {selectedProduct ? (
+                    <div className="p-field p-grid">
+                        <label
+                            htmlFor="productCode"
+                            className="p-col-12 p-md-3"
+                        >
+                            {productCodeLabel}
+                        </label>
+                        <div className="p-col-12 p-md-9">
+                            <InputText
+                                id="productCode"
+                                type="text"
+                                value={productCode}
+                                onChange={(event: any) =>
+                                    updateProductCode(event.target.value)
+                                }
+                                placeholder={productCodePlaceHolder}
+                                disabled={selectedProduct !== null}
+                            />
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    ''
+                )}
                 <div className="p-field p-grid">
                     <label htmlFor="productName" className="p-col-12 p-md-3">
                         {productNameLabel}

@@ -23,19 +23,21 @@ import {
     setProductPackaging,
     setStockDate,
 } from '../../features/stocks/actions';
+import { getShopCode } from '../../features/login/selectors';
 
 export const StocksFormHeader: React.FC = () => {
     const dispatch = useDispatch();
     const products: Product[] | [] = useSelector(getProducts);
+    const shopCode = useSelector(getShopCode);
     const selectedProduct = useSelector(getCurrentStockProduct);
     const selectedPackaging = useSelector(getCurrentStockProductPackaging);
     const selectedStockDate = useSelector(getCurrentStockDate);
 
     useEffect(() => {
         if (products.length == 0) {
-            dispatch(fetchProducts());
+            dispatch(fetchProducts(shopCode));
         }
-    }, []);
+    }, [shopCode]);
 
     const onProductNameChange = (product: Product) => {
         dispatch(setProduct(product));
