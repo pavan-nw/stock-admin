@@ -183,9 +183,9 @@ public class StockService {
      * @param pageRequest the page request
      * @return the page
      */
-    public Page<Stock> findByStockDateBetween(Date fromDate, Date toDate ,Pageable pageRequest) {
+    public Page<Stock> findByProductShopCodeAndStockDateBetween(String shopCode, Date fromDate, Date toDate ,Pageable pageRequest) {
     	Pageable wholePage = Pageable.unpaged();
-        return stocksRepository.findByStockDateBetween(fromDate, toDate, wholePage);
+        return stocksRepository.findByProduct_ShopCodeAndStockDateBetween(shopCode,fromDate, toDate, wholePage);
     }
     
 }

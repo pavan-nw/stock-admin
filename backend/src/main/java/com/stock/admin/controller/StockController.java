@@ -95,33 +95,16 @@ public class StockController {
 				page.getTotalPages(), page.isLast(), page.getTotalElements());
 	}
 
-	@GetMapping(path = "/search")
-	@ResponseBody
-	public PagedResponse getStocks(
-			@RequestParam(name = "stockDate") @DateTimeFormat(pattern = "dd-MM-yyyy", iso = DateTimeFormat.ISO.DATE) Optional<Date> stockDate,
-			@RequestParam(name = "page", defaultValue = "1") int pageNum,
-			@RequestParam(name = "size", defaultValue = "500") int size,
-			@RequestParam(name = "sort", defaultValue = "DESC") String sortType) {
-
-		Page<Stock> page = stockDate
-				.map(date -> stockService.findByStockDateLessThanEqual(date,
-						pageRequestFor(pageNum, size, sortType, STOCK_DATE)))
-				.orElseGet(() -> stockService.getAll(pageNum, size, sortType));
-
-		return PagedResponse.buildPagedResponse(Stock.type, page.getContent(), true, page.getNumber(), page.getSize(),
-				page.getTotalPages(), page.isLast(), page.getTotalElements());
-	}
-
 	@GetMapping(path = "/download")
 	public ResponseEntity<Resource> download(
 			@RequestParam(name = "fromDate") @DateTimeFormat(pattern = "dd-MM-yyyy", iso = DateTimeFormat.ISO.DATE) Date fromDate,
-			@RequestParam(name = "toDate") @DateTimeFormat(pattern = "dd-MM-yyyy", iso = DateTimeFormat.ISO.DATE) Date toDate)
-			throws IOException {
+			@RequestParam(name = "toDate") @DateTimeFormat(pattern = "dd-MM-yyyy", iso = DateTimeFormat.ISO.DATE) Date toDate,
+			@RequestParam(name = "shopCode") String shopCode) throws IOException {
 
 		try {
 			HttpHeaders headers = new HttpHeaders();
-			headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Notification_result.pdf");
-			File file = exportService.getFileToExport(fromDate,toDate);
+			headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=stocks.pdf");
+			File file = exportService.getFileToExport(fromDate, toDate, shopCode);
 			InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
 			return ResponseEntity.ok().headers(headers).contentLength(file.length())
 					.contentType(MediaType.APPLICATION_PDF).body(isr);

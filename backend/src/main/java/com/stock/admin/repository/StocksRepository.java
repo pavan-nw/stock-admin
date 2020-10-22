@@ -55,6 +55,6 @@ public interface StocksRepository extends MongoRepository<Stock, String> {
 	 * @param toDate the to date
 	 * @return the page
 	 */
-	@Query(value = "{ 'stockDate' : {$gte : ?0, $lte: ?1 }}")
-	Page<Stock> findByStockDateBetween(Date fromDate, Date toDate,Pageable pageable);
+	@Query(value = "{ 'product.shopCode':?0, 'stockDate' : {$gte : ?1, $lte: ?2 }}")
+	Page<Stock> findByProduct_ShopCodeAndStockDateBetween(String shopCode, Date fromDate, Date toDate,Pageable pageable);
 }

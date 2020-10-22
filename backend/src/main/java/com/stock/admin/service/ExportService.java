@@ -14,12 +14,16 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
+import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.mongodb.client.result.UpdateResult;
 import com.stock.admin.exception.StockAdminApplicationException;
@@ -29,6 +33,7 @@ import com.stock.admin.model.entity.Stock;
 import com.stock.admin.model.request.StockRequest;
 import com.stock.admin.repository.ShopsRepository;
 import com.stock.admin.repository.StocksRepository;
+import com.stock.admin.utils.HeaderFooterPageEvent;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -78,13 +83,12 @@ public class ExportService {
 		this.mongoTemplate = mongoTemplate;
 	}
 
-	public File getFileToExport(Date fromDate, Date toDate) throws Exception {
-		createPDF("C:\\Users\\shreehari.wadawadagi\\Desktop\\file_generated1.pdf",fromDate,toDate);
-		File file = new File("C:\\Users\\shreehari.wadawadagi\\Desktop\\file_generated1.pdf");
-		return file;
+	public File getFileToExport(Date fromDate, Date toDate, String shopCode) throws Exception {
+		createPDF("stocks.pdf", fromDate, toDate, shopCode);		
+		return new File("stocks.pdf");
 	}
 
-	private void createPDF(String pdfFilename,Date fromDate, Date toDate) throws Exception {
+	private void createPDF(String pdfFilename, Date fromDate, Date toDate, String shopCode) throws Exception {
 
 		Document doc = new Document();
 		PdfWriter docWriter = null;
@@ -94,16 +98,18 @@ public class ExportService {
 			// file path
 			String path = pdfFilename;
 			docWriter = PdfWriter.getInstance(doc, new FileOutputStream(path));
-
+			Shop shop = shopsRepository.findByShopCode(shopCode);
+			docWriter.setPageEvent(new HeaderFooterPageEvent(shop));
 			updateDocumentHeader(doc);
 
 			// open document
 			doc.open();
+			doc.add(new Paragraph("\n\n\n\n\n"));
 			PdfPTable stocksTable = new PdfPTable(7);
 			PdfPTable infoTable = new PdfPTable(2);
 
-			updateSocksTable(stocksTable, fromDate,toDate);
-			updateInfoTable(infoTable, fromDate,toDate);
+			updateStocksTable(stocksTable, shop, fromDate, toDate);
+			updateInfoTable(infoTable, fromDate, toDate);
 			doc.add(infoTable);
 			doc.add(new Paragraph("\n\n"));
 			doc.add(stocksTable);
@@ -119,49 +125,47 @@ public class ExportService {
 		}
 	}
 
-	private void updateInfoTable(PdfPTable infoTable, Date fromDate, Date toDate) {
-		
-		List<Shop> shops = shopsRepository.findAll();		
-		Shop shop = shopsRepository.findByShopCode(shops.get(0).getShopCode());
-		PdfPCell shopNameLabel = new PdfPCell(new Phrase("Shop Name", bfBold12));
-		shopNameLabel.setBorder(Rectangle.NO_BORDER);
-		infoTable.addCell(shopNameLabel);
-		PdfPCell shopName = new PdfPCell(new Phrase(shop.getName(), bfBold12));
-		shopName.setBorder(Rectangle.NO_BORDER);
-		infoTable.addCell(shopName);
-		PdfPCell exportedDateLabel = new PdfPCell(new Phrase("Exported Date", bfBold12));
+	private void updateInfoTable(PdfPTable infoTable, Date fromDate, Date toDate) throws DocumentException {
+
+		PdfPCell exportedDateLabel = new PdfPCell(new Phrase("Exported Date :- ", bfBold12));
 		exportedDateLabel.setBorder(Rectangle.NO_BORDER);
+		exportedDateLabel.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		infoTable.addCell(exportedDateLabel);
 		PdfPCell exportedDate = new PdfPCell(new Phrase(getDate(new Date()), bfBold12));
 		exportedDate.setBorder(Rectangle.NO_BORDER);
+		exportedDate.setHorizontalAlignment(Element.ALIGN_LEFT);
 		infoTable.addCell(exportedDate);
-		PdfPCell fromDateLabel = new PdfPCell(new Phrase("From Date", bfBold12));
+		PdfPCell fromDateLabel = new PdfPCell(new Phrase("From Date :- ", bfBold12));
 		fromDateLabel.setBorder(Rectangle.NO_BORDER);
+		fromDateLabel.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		infoTable.addCell(fromDateLabel);
 		PdfPCell fromDateValue = new PdfPCell(new Phrase(getDate(fromDate), bfBold12));
 		fromDateValue.setBorder(Rectangle.NO_BORDER);
+		fromDateValue.setHorizontalAlignment(Element.ALIGN_LEFT);
 		infoTable.addCell(fromDateValue);
-		PdfPCell toDateLabel = new PdfPCell(new Phrase("To Date", bfBold12));
+		PdfPCell toDateLabel = new PdfPCell(new Phrase("To Date :- ", bfBold12));
 		toDateLabel.setBorder(Rectangle.NO_BORDER);
+		toDateLabel.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		infoTable.addCell(toDateLabel);
 		PdfPCell toDateValue = new PdfPCell(new Phrase(getDate(toDate), bfBold12));
 		toDateValue.setBorder(Rectangle.NO_BORDER);
+		toDateValue.setHorizontalAlignment(Element.ALIGN_LEFT);
 		infoTable.addCell(toDateValue);
 
 	}
 
 	private void updateDocumentHeader(Document doc) {
 		// document header attributes
-		doc.addAuthor("Author Name to be added");
+		doc.addAuthor("Stock Admin");
 		doc.addCreationDate();
 		doc.addProducer();
 		doc.addCreator("Stock Admin");
 		doc.addTitle("Report with Column Headings");
-		doc.setPageSize(PageSize.LETTER);
+		doc.setPageSize(PageSize.A4);
 
 	}
 
-	private void updateSocksTable(PdfPTable stocksTable, Date fromDate, Date toDate) {
+	private void updateStocksTable(PdfPTable stocksTable, Shop shop, Date fromDate, Date toDate) {
 		// set table width a percentage of the page width
 		stocksTable.setWidthPercentage(90f);
 
@@ -177,7 +181,8 @@ public class ExportService {
 
 		Integer slno = 1;
 
-		Page<Stock> stocks = stocksRepository.findByStockDateBetween(fromDate, toDate, Pageable.unpaged());		
+		Page<Stock> stocks = stocksRepository.findByProduct_ShopCodeAndStockDateBetween(shop.getShopCode(), fromDate,
+				toDate, Pageable.unpaged());
 
 		for (Stock stock : stocks.getContent()) {
 			insertCell(stocksTable, slno.toString(), Element.ALIGN_RIGHT, 1, bf12, false);
