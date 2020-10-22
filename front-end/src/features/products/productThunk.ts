@@ -13,10 +13,7 @@ import {
     showToast,
 } from '../common/actions';
 import { CommonActionTypes } from '../common/types';
-import {
-    checkSuccess,
-    getErrorMessageToShow,
-} from '../../helpers/utils';
+import { checkSuccess, getErrorMessageToShow } from '../../helpers/utils';
 import axiosInstance from '../../config/axiosConfig';
 import {
     creatingProduct,
