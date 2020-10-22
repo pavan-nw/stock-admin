@@ -78,13 +78,13 @@ public class ExportService {
 		this.mongoTemplate = mongoTemplate;
 	}
 
-	public File getFileToExport() throws Exception {
-		createPDF("C:\\Users\\shreehari.wadawadagi\\Desktop\\file_generated1.pdf");
+	public File getFileToExport(Date fromDate, Date toDate) throws Exception {
+		createPDF("C:\\Users\\shreehari.wadawadagi\\Desktop\\file_generated1.pdf",fromDate,toDate);
 		File file = new File("C:\\Users\\shreehari.wadawadagi\\Desktop\\file_generated1.pdf");
 		return file;
 	}
 
-	private void createPDF(String pdfFilename) throws Exception {
+	private void createPDF(String pdfFilename,Date fromDate, Date toDate) throws Exception {
 
 		Document doc = new Document();
 		PdfWriter docWriter = null;
@@ -102,8 +102,8 @@ public class ExportService {
 			PdfPTable stocksTable = new PdfPTable(7);
 			PdfPTable infoTable = new PdfPTable(2);
 
-			updateSocksTable(stocksTable, "20/10/2020", "22/10/2020");
-			updateInfoTable(infoTable, "20/10/2020", "22/10/2020");
+			updateSocksTable(stocksTable, fromDate,toDate);
+			updateInfoTable(infoTable, fromDate,toDate);
 			doc.add(infoTable);
 			doc.add(new Paragraph("\n\n"));
 			doc.add(stocksTable);
@@ -119,7 +119,7 @@ public class ExportService {
 		}
 	}
 
-	private void updateInfoTable(PdfPTable infoTable, String fromDate, String toDate) {
+	private void updateInfoTable(PdfPTable infoTable, Date fromDate, Date toDate) {
 		
 		List<Shop> shops = shopsRepository.findAll();		
 		Shop shop = shopsRepository.findByShopCode(shops.get(0).getShopCode());
@@ -138,13 +138,13 @@ public class ExportService {
 		PdfPCell fromDateLabel = new PdfPCell(new Phrase("From Date", bfBold12));
 		fromDateLabel.setBorder(Rectangle.NO_BORDER);
 		infoTable.addCell(fromDateLabel);
-		PdfPCell fromDateValue = new PdfPCell(new Phrase(fromDate, bfBold12));
+		PdfPCell fromDateValue = new PdfPCell(new Phrase(getDate(fromDate), bfBold12));
 		fromDateValue.setBorder(Rectangle.NO_BORDER);
 		infoTable.addCell(fromDateValue);
 		PdfPCell toDateLabel = new PdfPCell(new Phrase("To Date", bfBold12));
 		toDateLabel.setBorder(Rectangle.NO_BORDER);
 		infoTable.addCell(toDateLabel);
-		PdfPCell toDateValue = new PdfPCell(new Phrase(toDate, bfBold12));
+		PdfPCell toDateValue = new PdfPCell(new Phrase(getDate(toDate), bfBold12));
 		toDateValue.setBorder(Rectangle.NO_BORDER);
 		infoTable.addCell(toDateValue);
 
@@ -161,7 +161,7 @@ public class ExportService {
 
 	}
 
-	private void updateSocksTable(PdfPTable stocksTable, String fromDate, String toDate) {
+	private void updateSocksTable(PdfPTable stocksTable, Date fromDate, Date toDate) {
 		// set table width a percentage of the page width
 		stocksTable.setWidthPercentage(90f);
 
@@ -177,9 +177,9 @@ public class ExportService {
 
 		Integer slno = 1;
 
-		List<Stock> stocks = stocksRepository.findAll();
+		Page<Stock> stocks = stocksRepository.findByStockDateBetween(fromDate, toDate, Pageable.unpaged());		
 
-		for (Stock stock : stocks) {
+		for (Stock stock : stocks.getContent()) {
 			insertCell(stocksTable, slno.toString(), Element.ALIGN_RIGHT, 1, bf12, false);
 			insertCell(stocksTable, stock.getProduct().getName(), Element.ALIGN_LEFT, 1, bf12, false);
 			insertCell(stocksTable, stock.getProduct().getPackaging(), Element.ALIGN_RIGHT, 1, bf12, false);

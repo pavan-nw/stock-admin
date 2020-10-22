@@ -174,6 +174,20 @@ public class StockService {
     public Page<Stock> findByStockDateLessThanEqual(Date stockDate, Pageable pageRequest) {
         return stocksRepository.findByStockDateLessThanEqual(stockDate, pageRequest);
     }
+    
+    /**
+     * Find by stock date between.
+     *
+     * @param fromDate the from date
+     * @param toDate the to date
+     * @param pageRequest the page request
+     * @return the page
+     */
+    public Page<Stock> findByStockDateBetween(Date fromDate, Date toDate ,Pageable pageRequest) {
+    	Pageable wholePage = Pageable.unpaged();
+        return stocksRepository.findByStockDateBetween(fromDate, toDate, wholePage);
+    }
+    
 }
 
 
