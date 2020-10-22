@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,6 +59,7 @@ public class StockController {
     /**
      * Gets all stocks.
      *
+     * @param shopCode  the shop code
      * @param stockDate the stock date
      * @param pageNum   the page num
      * @param size      the size
@@ -66,16 +68,18 @@ public class StockController {
      */
     @GetMapping
     @ResponseBody
-    public PagedResponse getAllStocks(@RequestParam(name = "stockDate")
+    public PagedResponse getAllStocks(@RequestParam(name = "shopCode", required = true) String shopCode,
+                                      @RequestParam(name = "stockDate")
                                       @DateTimeFormat(pattern = "dd-MM-yyyy",
                                               iso = DateTimeFormat.ISO.DATE) Optional<Date> stockDate,
                                       @RequestParam(name = "page", defaultValue = "1") int pageNum,
                                       @RequestParam(name = "size", defaultValue = "500") int size,
                                       @RequestParam(name = "sort", defaultValue = "DESC") String sortType) {
 
+        PageRequest pageRequest = pageRequestFor(pageNum, size, sortType, STOCK_DATE);
         Page<Stock> page = stockDate.map(date -> stockService
-                .findByStockDateLessThanEqual(date, pageRequestFor(pageNum, size, sortType, STOCK_DATE)))
-                .orElseGet(() -> stockService.getAll(pageNum, size, sortType));
+                .findByShopAndStockDateLessThanEqual(shopCode, date, pageRequest))
+                .orElseGet(() -> stockService.findByShopCode(shopCode, pageRequest));
 
         return PagedResponse.buildPagedResponse(Stock.type,
                 page.getContent(),

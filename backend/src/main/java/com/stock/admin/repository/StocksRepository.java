@@ -13,12 +13,35 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface StocksRepository extends MongoRepository<Stock, String> {
 
     /**
-     * Find by Id
+     * Find by stock date less than equal and product shop code page.
      *
-     * @param id id of the record
-     * @return
+     * @param stockDate the stock date
+     * @param shopCode  the shop code
+     * @param pageable  the pageable
+     * @return the page
      */
-    Optional<Stock> findById(String id);
+    Page<Stock> findByStockDateLessThanEqualAndProduct_ShopCode(Date stockDate, String shopCode, Pageable pageable);
+
+    /**
+     * Find by product shop code page.
+     *
+     * @param shopCode the shop code
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<Stock> findByProduct_ShopCode(String shopCode, Pageable pageable);
+
+    /**
+     * Find by stock date less than equal and product shop code page.
+     *
+     * @param stockDate the stock date
+     * @param shopCode  the shop code
+     * @param pageable  the pageable
+     * @return the page
+     */
+    Page<Stock> findByStockDateLessThanEqualAndProduct_NameAndProduct_Packaging(Date stockDate, String shopCode,
+                                                                                String productName, String productPackaging,
+                                                                                Pageable pageable);
 
     /**
      * Find by stock date less than equal page.
@@ -28,22 +51,4 @@ public interface StocksRepository extends MongoRepository<Stock, String> {
      * @return the page
      */
     Page<Stock> findByStockDateLessThanEqual(Date stockDate, Pageable pageable);
-
-    /**
-     * Find by stock date before page.
-     *
-     * @param stockDate the stock date
-     * @param pageable  the pageable
-     * @return the page
-     */
-    Page<Stock> findByStockDateBefore(Date stockDate, Pageable pageable);
-
-    /**
-     * Find by stock date after page.
-     *
-     * @param stockDate the stock date
-     * @param pageable  the pageable
-     * @return the page
-     */
-    Page<Stock> findByStockDateAfter(Date stockDate, Pageable pageable);
 }

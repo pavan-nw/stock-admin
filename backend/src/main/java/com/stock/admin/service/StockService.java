@@ -163,6 +163,28 @@ public class StockService {
         return stocksRepository.findAll(pageRequestFor(pageNum, size, sortType, STOCK_DATE));
     }
 
+    /**
+     * Find by shop and stock date less than equal page.
+     *
+     * @param shopCode    the shop code
+     * @param stockDate   the stock date
+     * @param pageRequest the page request
+     * @return the page
+     */
+    public Page<Stock> findByShopAndStockDateLessThanEqual(String shopCode, Date stockDate, Pageable pageRequest) {
+        return stocksRepository.findByStockDateLessThanEqualAndProduct_ShopCode(stockDate, shopCode, pageRequest);
+    }
+
+    /**
+     * Find by shop code page.
+     *
+     * @param shopCode    the shop code
+     * @param pageRequest the page request
+     * @return the page
+     */
+    public Page<Stock> findByShopCode(String shopCode, Pageable pageRequest) {
+        return stocksRepository.findByProduct_ShopCode(shopCode, pageRequest);
+    }
 
     /**
      * Find by stock date less than equal page.
