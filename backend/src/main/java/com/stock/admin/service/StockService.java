@@ -119,7 +119,7 @@ public class StockService {
         stock.setOpeningStock(stockRequest.getOpeningStock());
         stock.setClosingStock(stockRequest.getClosingStock());
         if (totalStock.isPresent()) {
-            // Stock found for previous date, get the totalStock count foreword, and create new stock
+            // Stock found for previous date, get the totalStock count forward, and create new stock
             stock.setTotalStock(totalStock.get() + stockRequest.getOpeningStock() - stockRequest.getClosingStock());
         } else {
             // No stock found for previous dates as well, create new stock

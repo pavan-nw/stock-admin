@@ -7,12 +7,23 @@ import com.stock.admin.model.entity.Stock;
 import com.stock.admin.model.request.StockRequest;
 import com.stock.admin.model.response.PagedResponse;
 import com.stock.admin.model.response.Response;
+import com.stock.admin.service.ExportService;
 import com.stock.admin.service.StockService;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +42,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class StockController {
 
     private final StockService stockService;
+    
+    private final ExportService exportService;
 
     /**
      * Instantiates a new Stock controller.
@@ -38,8 +51,9 @@ public class StockController {
      * @param stockService the stock service
      */
     @Autowired
-    public StockController(StockService stockService) {
+    public StockController(StockService stockService, ExportService exportService) {
         this.stockService = stockService;
+        this.exportService = exportService;
     }
 
     /**
@@ -86,4 +100,23 @@ public class StockController {
                 page.isLast(),
                 page.getTotalElements());
     }
+    
+	@GetMapping(path = "/download")
+	public ResponseEntity<Resource> download(String param) throws IOException {
+
+		try {
+			HttpHeaders headers = new HttpHeaders();
+			headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Notification_result.pdf");
+			File file = exportService.getFileToExport();
+			InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
+			return ResponseEntity.ok().headers(headers).contentLength(file.length())
+					.contentType(MediaType.APPLICATION_PDF).body(isr);
+		} catch (Exception e) {
+			String message = "Errore in downloading the file " + e.getMessage();
+			System.out.println(message);
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
+	}
 }
