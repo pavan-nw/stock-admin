@@ -5,10 +5,10 @@ export const getErrorMessageToShow: any = (e: any) => {
         console.log('e: ', e.response);
         return e.response.data.payload
             ? e.response.data.payload.errorMessage
-            : e.response.data.error.message;
+            : e.response.statusText;
     } else {
         console.error('e: ', e.toString());
-        return e.response.data.payload.errorMessage;
+        return e.toString();
     }
 };
 
@@ -54,13 +54,14 @@ export const formatDate = (date: string | Date) => {
     // Given date =  2020-10-03T00:00:00.000+00:00
 
     let formattedDate = new Intl.DateTimeFormat('en-IN', {
-        year: 'numeric', month: '2-digit', day: '2-digit'
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
     }); // 10/03/2020
 
-    if(typeof(date)==="string"){
+    if (typeof date === 'string') {
         return formattedDate.format(new Date(date));
-    }
-    else{
+    } else {
         return formattedDate.format(date);
     }
 };
