@@ -20,7 +20,9 @@ import com.stock.admin.repository.ShopsRepository;
 import com.stock.admin.repository.StocksRepository;
 import com.stock.admin.utils.HeaderFooterPageEvent;
 
+import static com.stock.admin.utils.Helper.pageRequestFor;
 import static com.stock.admin.utils.StockAdminConstants.SOMETHING_WENT_WRONG;
+import static com.stock.admin.utils.StockAdminConstants.STOCK_DATE;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,7 +32,6 @@ import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -132,7 +133,7 @@ public class ExportService {
 		exportedDateLabel.setBorder(Rectangle.NO_BORDER);
 		exportedDateLabel.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		infoTable.addCell(exportedDateLabel);
-		PdfPCell exportedDate = new PdfPCell(new Phrase(getDate(new Date()), bfBold12));
+		PdfPCell exportedDate = new PdfPCell(new Phrase(getDate(new Date(),"IST"), bfBold12));
 		exportedDate.setBorder(Rectangle.NO_BORDER);
 		exportedDate.setHorizontalAlignment(Element.ALIGN_LEFT);
 		infoTable.addCell(exportedDate);
@@ -140,7 +141,7 @@ public class ExportService {
 		fromDateLabel.setBorder(Rectangle.NO_BORDER);
 		fromDateLabel.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		infoTable.addCell(fromDateLabel);
-		PdfPCell fromDateValue = new PdfPCell(new Phrase(getDate(fromDate), bfBold12));
+		PdfPCell fromDateValue = new PdfPCell(new Phrase(getDate(fromDate,"UTC"), bfBold12));
 		fromDateValue.setBorder(Rectangle.NO_BORDER);
 		fromDateValue.setHorizontalAlignment(Element.ALIGN_LEFT);
 		infoTable.addCell(fromDateValue);
@@ -148,7 +149,7 @@ public class ExportService {
 		toDateLabel.setBorder(Rectangle.NO_BORDER);
 		toDateLabel.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		infoTable.addCell(toDateLabel);
-		PdfPCell toDateValue = new PdfPCell(new Phrase(getDate(toDate), bfBold12));
+		PdfPCell toDateValue = new PdfPCell(new Phrase(getDate(toDate,"UTC"), bfBold12));
 		toDateValue.setBorder(Rectangle.NO_BORDER);
 		toDateValue.setHorizontalAlignment(Element.ALIGN_LEFT);
 		infoTable.addCell(toDateValue);
@@ -196,13 +197,13 @@ public class ExportService {
 		Integer slno = 1;
 
 		Page<Stock> stocks = stocksRepository.findByProduct_ShopCodeAndStockDateBetween(shop.getShopCode(), fromDate,
-				toDate, Pageable.unpaged());
+				toDate, pageRequestFor(1, Integer.MAX_VALUE, "DESC", STOCK_DATE));
 
 		for (Stock stock : stocks.getContent()) {
 			insertCell(stocksTable, slno.toString(), Element.ALIGN_RIGHT, 1, bf12, false);
 			insertCell(stocksTable, stock.getProduct().getName(), Element.ALIGN_LEFT, 1, bf12, false);
 			insertCell(stocksTable, stock.getProduct().getPackaging(), Element.ALIGN_RIGHT, 1, bf12, false);
-			insertCell(stocksTable, getDate(stock.getStockDate()), Element.ALIGN_RIGHT, 1, bf12, false);
+			insertCell(stocksTable, getDate(stock.getStockDate(),"UTC"), Element.ALIGN_RIGHT, 1, bf12, false);
 			insertCell(stocksTable, String.valueOf(stock.getOpeningStock()), Element.ALIGN_RIGHT, 1, bf12, false);
 			insertCell(stocksTable, String.valueOf(stock.getClosingStock()), Element.ALIGN_RIGHT, 1, bf12, false);
 			insertCell(stocksTable, String.valueOf(stock.getTotalStock()), Element.ALIGN_RIGHT, 1, bf12, false);
@@ -217,8 +218,8 @@ public class ExportService {
 	 * @param stockDate the stock date
 	 * @return the date
 	 */
-	private String getDate(Date stockDate) {
-		TimeZone timeZone = TimeZone.getTimeZone("UTC");
+	private String getDate(Date stockDate,String zone) {
+		TimeZone timeZone = TimeZone.getTimeZone(zone);
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		formatter.setTimeZone(timeZone);
 		return formatter.format(stockDate);
