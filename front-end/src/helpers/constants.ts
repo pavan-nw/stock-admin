@@ -20,6 +20,10 @@ export const totalStockCountLabel = 'Total Stocks';
 export const ManageStocksLabel = 'Recent Stocks';
 
 
+export const fromDateLabel = 'From Date';
+export const toDateLabel = 'To Date';
+export const exportLabel = 'Export';
+
 export const productCodeLabel = 'Product Code';
 export const productNameLabel = 'Product Name';
 export const productPackagingLabel = 'Packaging';
@@ -55,6 +59,12 @@ export const fetchingStocks = 'Fetching Stocks...';
 export const creatingStocks = 'Creating Stocks...';
 export const searchingStocks  = 'Searching Stocks...';
 export const stockAdded = 'Successfully Added';
+
+export const stockDownloaded = 'Stocks Exported Successfully.';
+export const noStockFound = 'No Stocks Found for the selected Date range';
+export const invalidShopCode = 'Invalid Shop code';
+export const somethingWentWrong = 'Something Went Wrong. Please contact the Admin';
+export const invalidDateRange = 'From Date should be smaller than To Date';
 
 export type LocalPackaging = {name:string};
 export const packaging : LocalPackaging[] = [

@@ -23,8 +23,11 @@ import com.stock.admin.utils.HeaderFooterPageEvent;
 import static com.stock.admin.utils.Helper.pageRequestFor;
 import static com.stock.admin.utils.StockAdminConstants.SOMETHING_WENT_WRONG;
 import static com.stock.admin.utils.StockAdminConstants.STOCK_DATE;
+import static com.stock.admin.utils.StockAdminConstants.INVALID_SHOP_CODE;
+import static com.stock.admin.utils.StockAdminConstants.NO_STOCKS_FOUND;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -68,9 +71,9 @@ public class ExportService {
 	 * @return the file to export
 	 * @throws Exception the exception
 	 */
-	public File getFileToExport(Date fromDate, Date toDate, String shopCode) {
-		createPDF("stocks.pdf", fromDate, toDate, shopCode);		
-		return new File("stocks.pdf");
+	public synchronized File getFileToExport(Date fromDate, Date toDate, String shopCode) {
+		createPDF("stocks_"+shopCode+".pdf", fromDate, toDate, shopCode);		
+		return new File("stocks_"+shopCode+".pdf");
 	}
 
 	/**
@@ -93,23 +96,30 @@ public class ExportService {
 			String path = pdfFilename;
 			docWriter = PdfWriter.getInstance(doc, new FileOutputStream(path));
 			Shop shop = shopsRepository.findByShopCode(shopCode);
-			docWriter.setPageEvent(new HeaderFooterPageEvent(shop));
-			updateDocumentHeader(doc);
+			if(shop!=null) {
+				docWriter.setPageEvent(new HeaderFooterPageEvent(shop));
+				updateDocumentHeader(doc);
 
-			// open document
-			doc.open();
-			doc.add(new Paragraph("\n\n\n\n\n"));
-			PdfPTable stocksTable = new PdfPTable(7);
-			PdfPTable infoTable = new PdfPTable(2);
+				// open document
+				doc.open();
+				doc.add(new Paragraph("\n\n\n\n\n"));
+				PdfPTable stocksTable = new PdfPTable(7);
+				PdfPTable infoTable = new PdfPTable(2);
 
-			updateStocksTable(stocksTable, shop, fromDate, toDate);
-			updateInfoTable(infoTable, fromDate, toDate);
-			doc.add(infoTable);
-			doc.add(new Paragraph("\n\n"));
-			doc.add(stocksTable);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			throw new StockAdminApplicationException(SOMETHING_WENT_WRONG, HttpStatus.NOT_FOUND);
+				updateStocksTable(stocksTable, shop, fromDate, toDate);
+				updateInfoTable(infoTable, fromDate, toDate);
+				doc.add(infoTable);
+				doc.add(new Paragraph("\n\n"));
+				doc.add(stocksTable);
+			}
+			else {
+				throw new StockAdminApplicationException(INVALID_SHOP_CODE,HttpStatus.BAD_REQUEST);
+			}
+			
+		} catch (StockAdminApplicationException stockException) {			
+			throw stockException;
+		} catch (DocumentException | FileNotFoundException e) {		
+			throw new StockAdminApplicationException(SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			doc.close();
 			if (docWriter != null) {
@@ -198,6 +208,11 @@ public class ExportService {
 
 		Page<Stock> stocks = stocksRepository.findByProduct_ShopCodeAndStockDateBetween(shop.getShopCode(), fromDate,
 				toDate, pageRequestFor(1, Integer.MAX_VALUE, "DESC", STOCK_DATE));
+		
+		if (stocks.isEmpty()) {
+			throw new StockAdminApplicationException(NO_STOCKS_FOUND,
+					HttpStatus.EXPECTATION_FAILED);
+		}
 
 		for (Stock stock : stocks.getContent()) {
 			insertCell(stocksTable, slno.toString(), Element.ALIGN_RIGHT, 1, bf12, false);

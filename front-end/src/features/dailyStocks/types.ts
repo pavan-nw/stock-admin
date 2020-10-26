@@ -3,7 +3,7 @@ export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const SELECT_PRODUCT = 'SELECT_PRODUCT';
-export const TOGGLE_EDIT_DIALOG = 'TOGGLE_EDIT_DIALOG';
+export const TOGGLE_EXPORT_DIALOG = 'TOGGLE_EXPORT_DIALOG';
 
 export const SET_PRODUCT = 'SET_PRODUCT';
 export const SET_PRODUCT_PACKAGING = 'SET_PRODUCT_PACKAGING';
@@ -52,7 +52,6 @@ export interface setCLoseStockAction {
     type: typeof SET_CLOSE_STOCK;
     closeStock: string;
 }
-
 export interface FetchStocksAction {
     type: typeof FETCH_STOCKS;
     stocks: Array<Stocks>;
@@ -68,9 +67,9 @@ export interface UpdateStockAction {
     type: typeof UPDATE_STOCK;
     stock: Stocks;
 }
-export interface DeleteProductAction {
-    type: typeof DELETE_PRODUCT;
-    product: Product;
+
+export interface ToggleExportDialogAction {
+    type: typeof TOGGLE_EXPORT_DIALOG;    
 }
 
 export type StockActionTypes =
@@ -82,7 +81,8 @@ export type StockActionTypes =
     | setStockDateAction
     | setOpenStockAction
     | setCLoseStockAction
-    | ClearCurrentStockAction;
+    | ClearCurrentStockAction
+    | ToggleExportDialogAction;
 
 export interface Product {
     id?: string;
@@ -137,7 +137,7 @@ export interface CreateStockRequest {
 export interface StockState {
     stockState: {
         stocks: Stocks[];
-        showEditDialog: boolean;
-        currentStock: StockDetails;
+        exportShowDialog: boolean;
+        currentStock: StockDetails;        
     };
 }

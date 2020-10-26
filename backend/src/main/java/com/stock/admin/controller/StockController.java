@@ -21,7 +21,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -99,7 +98,7 @@ public class StockController {
 	 * Download the stocks.
 	 *
 	 * @param fromDate the from date
-	 * @param toDate the to date
+	 * @param toDate   the to date
 	 * @param shopCode the shop code
 	 * @return the response entity
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -110,19 +109,12 @@ public class StockController {
 			@RequestParam(name = "toDate") @DateTimeFormat(pattern = "dd-MM-yyyy", iso = DateTimeFormat.ISO.DATE) Date toDate,
 			@RequestParam(name = "shopCode") String shopCode) throws IOException {
 
-		try {
-			HttpHeaders headers = new HttpHeaders();
-			headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=stocks.pdf");
-			File file = exportService.getFileToExport(fromDate, toDate, shopCode);
-			InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
-			return ResponseEntity.ok().headers(headers).contentLength(file.length())
-					.contentType(MediaType.APPLICATION_PDF).body(isr);
-		} catch (Exception e) {
-			String message = "Errore in downloading the file " + e.getMessage();
-			System.out.println(message);
-			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=stocks.pdf");
+		File file = exportService.getFileToExport(fromDate, toDate, shopCode);
+		InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
+		return ResponseEntity.ok().headers(headers).contentLength(file.length()).contentType(MediaType.APPLICATION_PDF)
+				.body(isr);
 
-		}
 	}
 }

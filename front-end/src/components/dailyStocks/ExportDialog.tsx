@@ -1,0 +1,28 @@
+import React from 'react';
+import { Dialog } from 'primereact/dialog';
+import {    
+    toggleExportShowDialog,
+} from '../../features/dailyStocks/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { getShowDialog } from '../../features/dailyStocks/selectors';
+import { exportLabel } from '../../helpers/constants';
+import {StockExportForm} from '../dailyStocks/StockExportForm';
+
+export const ExportDialog: React.FC = () => {
+    const dispatch = useDispatch();
+    const showDialog = useSelector(getShowDialog);
+    return (
+        <Dialog
+            header={exportLabel}
+            style={{ width: '35vw',height : '70vw'}}
+            onHide={() => {                
+                if (showDialog) {
+                    dispatch(toggleExportShowDialog());
+                }
+            }}
+            visible={showDialog}
+        >
+        <StockExportForm/>
+        </Dialog>
+    );
+};

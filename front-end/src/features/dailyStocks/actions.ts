@@ -18,6 +18,8 @@ import {
     ClearCurrentStockAction,
     CLEAR_CURRENT_STOCK,
     LocalPackaging,
+    ToggleExportDialogAction,
+    TOGGLE_EXPORT_DIALOG,   
 } from './types';
 
 export const fetchProducts = (
@@ -83,4 +85,10 @@ export const setCloseStock = (closeStock: string): setCLoseStockAction => {
         type: SET_CLOSE_STOCK,
         closeStock,
     };
+};
+
+export const toggleExportShowDialog = (): ToggleExportDialogAction => {
+    return {
+        type: TOGGLE_EXPORT_DIALOG,        
+    }
 };

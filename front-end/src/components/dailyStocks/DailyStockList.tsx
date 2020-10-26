@@ -9,6 +9,7 @@ import { Stocks } from '../../features/dailyStocks/types';
 import { InputText } from 'primereact/inputtext';
 import {
     dailyStockDateLabel,
+    exportLabel,
     incomingStockCountLabel,
     ManageStocksLabel,
     outgoingStockCountLabel,
@@ -21,6 +22,8 @@ import {
 import { formatDate } from '../../helpers/utils';
 import { DailyStockHeader } from './DailyStockHeader';
 import { Panel } from 'primereact/panel';
+import { ExportDialog } from './ExportDialog';
+import { toggleExportShowDialog } from '../../features/dailyStocks/actions';
 
 export const DailyStockList: React.FC = () => {
     const dispatch = useDispatch();
@@ -62,8 +65,14 @@ export const DailyStockList: React.FC = () => {
 
     const onSave = () => {};
 
+    const onExport = () => {
+        console.log("on export");
+        dispatch(toggleExportShowDialog());
+    }
+
     return (
         <div>
+            <ExportDialog/>
             <div>
                 <Panel header={searchLabel} toggleable collapsed>
                     <DailyStockHeader></DailyStockHeader>
@@ -82,6 +91,16 @@ export const DailyStockList: React.FC = () => {
                         </div>
                     </div>
                 </Panel>
+                <div className="p-grid">
+                    <div className="p-lg-4 p-md-4 p-sm-12 p-lg-offset-2 p-md-offset-2">
+                        <Button
+                            type="button"
+                            className="p-button-raised p-mr-2"
+                            label={exportLabel}
+                            onClick={(event) => onExport()}
+                        />
+                    </div>
+                </div>
             </div>
             <DataTable
                 emptyMessage={'No Stocks Found'}
