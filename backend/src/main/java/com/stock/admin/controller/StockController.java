@@ -5,6 +5,7 @@ import static com.stock.admin.utils.StockAdminConstants.STOCK_DATE;
 
 import com.stock.admin.model.entity.Stock;
 import com.stock.admin.model.request.StockRequest;
+import com.stock.admin.model.request.StockSearchRequest;
 import com.stock.admin.model.response.PagedResponse;
 import com.stock.admin.model.response.Response;
 import com.stock.admin.service.StockService;
@@ -90,4 +91,17 @@ public class StockController {
                 page.isLast(),
                 page.getTotalElements());
     }
+    
+	@PostMapping(path = "/search")
+	@ResponseBody
+	public PagedResponse getStocks(@RequestBody StockSearchRequest stockSearchRequest) {
+		
+		PageRequest pageRequest = pageRequestFor(stockSearchRequest.getPageNum(), stockSearchRequest.getSize(),
+				stockSearchRequest.getSortType(), STOCK_DATE);
+		Page<Stock> page = stockService.search(stockSearchRequest.getShopCode(), stockSearchRequest.getStockDate(),
+				Optional.ofNullable(stockSearchRequest.getProductName()), Optional.ofNullable(stockSearchRequest.getPackaging()), pageRequest);
+
+		return PagedResponse.buildPagedResponse(Stock.type, page.getContent(), true, page.getNumber(), page.getSize(),
+				page.getTotalPages(), page.isLast(), page.getTotalElements());
+	}
 }

@@ -37,7 +37,7 @@ public interface ProductsRepository extends MongoRepository<Product, String> {
      * @param packaging the packaging
      * @return the optional
      */
-    Optional<Product> findByNameAndPackaging(String name, String packaging);
+    Optional<Product> findByNameAndPackagingAndShopCode(String name, String packaging,String shopCode);
 
     /**
      * Find by shop code list.

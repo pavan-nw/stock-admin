@@ -39,9 +39,19 @@ public interface StocksRepository extends MongoRepository<Stock, String> {
      * @param pageable  the pageable
      * @return the page
      */
-    Page<Stock> findByStockDateLessThanEqualAndProduct_NameAndProduct_Packaging(Date stockDate, String shopCode,
-                                                                                String productName, String productPackaging,
+    Page<Stock> findByStockDateLessThanEqualAndProduct_ShopCodeAndProduct_NameAndProduct_Packaging(Date stockDate, String shopCode,
+                                                                                String productName, String packaging,
                                                                                 Pageable pageable);
+    
+    Page<Stock> findByStockDateLessThanEqualAndProduct_ShopCodeAndProduct_Name(Date stockDate, String shopCode,
+            String productName,
+            Pageable pageable);
+    
+    Page<Stock> findByStockDateLessThanEqualAndProduct_ShopCodeAndProduct_Packaging(Date stockDate, String shopCode,
+            String packaging,
+            Pageable pageable);
+    
+    
 
     /**
      * Find by stock date less than equal page.
