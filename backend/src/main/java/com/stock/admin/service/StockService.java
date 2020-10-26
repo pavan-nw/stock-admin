@@ -28,7 +28,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 /**
  * The type Stock service.
@@ -212,17 +211,6 @@ public class StockService {
 					shopCode, packaging.get(), pageRequest);
 		}
 		
-				
-//		if (StringUtils.hasText(productName) && StringUtils.hasText(packaging)) {
-//			return stocksRepository.findByStockDateLessThanEqualAndProduct_ShopCodeAndProduct_NameAndProduct_Packaging(
-//					stockDate, shopCode, productName, packaging, pageRequest);
-//		} else if (StringUtils.hasText(productName) && !StringUtils.hasText(packaging)) {
-//			return stocksRepository.findByStockDateLessThanEqualAndProduct_ShopCodeAndProduct_Name(stockDate, shopCode,
-//					productName, pageRequest);
-//		} else if (!StringUtils.hasText(productName) && StringUtils.hasText(packaging)) {
-//			return stocksRepository.findByStockDateLessThanEqualAndProduct_ShopCodeAndProduct_Packaging(stockDate,
-//					shopCode, packaging, pageRequest);
-//		}
 		return stocksRepository.findByStockDateLessThanEqualAndProduct_ShopCode(stockDate, shopCode, pageRequest);
 	}
 }
