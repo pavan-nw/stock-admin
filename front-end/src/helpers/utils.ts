@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import { Product } from '../features/stocks/types';
 
 export const getErrorMessageToShow: any = (e: any) => {
     if (e.response) {
@@ -65,3 +66,12 @@ export const formatDate = (date: string | Date) => {
         return formattedDate.format(date);
     }
 };
+
+export const getUniqueProducts = (products : Product []) => {
+    return products.filter((product, index) => {
+        const foundProduct = products.find(
+            (productToBeSearched) => productToBeSearched.name === product.name
+        );
+        return foundProduct ? products.indexOf(foundProduct) === index : true;
+    }); 
+}

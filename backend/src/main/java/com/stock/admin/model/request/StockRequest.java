@@ -15,9 +15,6 @@ public class StockRequest extends Request {
     private int openingStock = 0;
     private int closingStock = 0;
     private String shopCode;
-    
-    
-
     /**
      * Gets the shop code.
      *

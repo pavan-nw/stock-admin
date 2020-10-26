@@ -1,6 +1,11 @@
 import { ThunkAction } from 'redux-thunk';
 import { fetchStocks } from './actions';
-import { StockState, StockActionTypes, CreateStockRequest, SearchStockRequest } from './types';
+import {
+    StockState,
+    StockActionTypes,
+    CreateStockRequest,
+    SearchStockRequest,
+} from './types';
 import {
     hideSpinnerDialog,
     showSpinnerDialog,
@@ -60,7 +65,7 @@ export const addStock = (
                 Date.UTC(
                     currentStock.stockDate.getFullYear(),
                     currentStock.stockDate.getMonth(),
-                    currentStock.stockDate.getDate(),
+                    currentStock.stockDate.getDate()
                 )
             ),
             openingStock: currentStock.openingStocks,
@@ -94,23 +99,33 @@ export const searchStock = (
         dispatch(showSpinnerDialog(creatingStocks));
         const { currentStock } = getState().stockState;
         const stockRequest: SearchStockRequest = {
-            productName: currentStock.product!=null? currentStock.product.name:null,
-            packaging: currentStock.packaging!=null? currentStock.packaging.name:null,
+            productName:
+                currentStock.product != null && currentStock.product.name !== ''
+                    ? currentStock.product.name
+                    : null,
+            packaging:
+                currentStock.packaging != null &&
+                currentStock.packaging.name !== ''
+                    ? currentStock.packaging.name
+                    : null,
             stockDate: new Date(
                 Date.UTC(
                     currentStock.stockDate.getFullYear(),
                     currentStock.stockDate.getMonth(),
-                    currentStock.stockDate.getDate(),
+                    currentStock.stockDate.getDate()
                 )
-            ),           
+            ),
             shopCode,
             type: 'stock-request',
         };
-        const response = await axiosInstance.post('/stocks/search', stockRequest);
+        const response = await axiosInstance.post(
+            '/stocks/search',
+            stockRequest
+        );
         const responseJson = await response.data;
         dispatch(hideSpinnerDialog());
         if (checkSuccess(responseJson)) {
-            dispatch(fetchStocks(shopCode,responseJson.payload));
+            dispatch(fetchStocks(shopCode, responseJson.payload));
         } else {
             dispatch(showToast(errorOccurred, responseJson.status, 'error'));
         }

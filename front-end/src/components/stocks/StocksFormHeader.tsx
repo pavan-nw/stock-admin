@@ -24,16 +24,12 @@ import {
     setStockDate,
 } from '../../features/stocks/actions';
 import { getShopCode } from '../../features/login/selectors';
+import { getUniqueProducts } from '../../helpers/utils';
 
 export const StocksFormHeader: React.FC = () => {
     const dispatch = useDispatch();
     const products: Product[] | [] = useSelector(getProducts);
-    const uniqueProducts = products.filter((product, index) => {
-        const foundProduct = products.find(
-            (productToBeSearched) => productToBeSearched.name === product.name
-        );
-        return foundProduct ? products.indexOf(foundProduct) === index : true;
-    });    
+    const uniqueProducts = getUniqueProducts(products);    
     const shopCode = useSelector(getShopCode);
     const selectedProduct = useSelector(getCurrentStockProduct);
     const selectedPackaging = useSelector(getCurrentStockProductPackaging);

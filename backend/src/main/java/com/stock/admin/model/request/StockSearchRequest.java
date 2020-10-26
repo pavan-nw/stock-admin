@@ -15,9 +15,7 @@ public class StockSearchRequest extends Request {
     private String shopCode;
     int pageNum=1;
     int size=500;
-    String sortType="DESC";
-    
-
+    String sortType="DESC";    
     /**
      * Gets the shop code.
      *
