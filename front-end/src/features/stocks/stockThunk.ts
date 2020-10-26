@@ -1,6 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
 import { fetchStocks } from './actions';
-import { StockState, StockActionTypes, CreateStockRequest } from './types';
+import { StockState, StockActionTypes, CreateStockRequest, SearchStockRequest } from './types';
 import {
     hideSpinnerDialog,
     showSpinnerDialog,
@@ -42,7 +42,9 @@ export const getStocks = (
     }
 };
 
-export const addStock = (): ThunkAction<
+export const addStock = (
+    shopCode: string
+): ThunkAction<
     void,
     StockState,
     unknown,
@@ -54,9 +56,16 @@ export const addStock = (): ThunkAction<
         const stockRequest: CreateStockRequest = {
             productName: currentStock.product.name,
             packaging: currentStock.packaging.name,
-            stockDate: currentStock.stockDate,
+            stockDate: new Date(
+                Date.UTC(
+                    currentStock.stockDate.getFullYear(),
+                    currentStock.stockDate.getMonth(),
+                    currentStock.stockDate.getDate(),
+                )
+            ),
             openingStock: currentStock.openingStocks,
             closingStock: currentStock.closingStocks,
+            shopCode,
             type: 'stock-request',
         };
         const response = await axiosInstance.post('/stocks', stockRequest);
@@ -64,6 +73,44 @@ export const addStock = (): ThunkAction<
         dispatch(hideSpinnerDialog());
         if (checkSuccess(responseJson)) {
             dispatch(showToast(stockAdded, responseJson.status));
+        } else {
+            dispatch(showToast(errorOccurred, responseJson.status, 'error'));
+        }
+    } catch (e) {
+        dispatch(hideSpinnerDialog());
+        dispatch(showToast(errorOccurred, getErrorMessageToShow(e), 'error'));
+    }
+};
+
+export const searchStock = (
+    shopCode: string
+): ThunkAction<
+    void,
+    StockState,
+    unknown,
+    StockActionTypes | CommonActionTypes
+> => async (dispatch, getState) => {
+    try {
+        dispatch(showSpinnerDialog(creatingStocks));
+        const { currentStock } = getState().stockState;
+        const stockRequest: SearchStockRequest = {
+            productName: currentStock.product!=null? currentStock.product.name:null,
+            packaging: currentStock.packaging!=null? currentStock.packaging.name:null,
+            stockDate: new Date(
+                Date.UTC(
+                    currentStock.stockDate.getFullYear(),
+                    currentStock.stockDate.getMonth(),
+                    currentStock.stockDate.getDate(),
+                )
+            ),           
+            shopCode,
+            type: 'stock-request',
+        };
+        const response = await axiosInstance.post('/stocks/search', stockRequest);
+        const responseJson = await response.data;
+        dispatch(hideSpinnerDialog());
+        if (checkSuccess(responseJson)) {
+            dispatch(fetchStocks(shopCode,responseJson.payload));
         } else {
             dispatch(showToast(errorOccurred, responseJson.status, 'error'));
         }

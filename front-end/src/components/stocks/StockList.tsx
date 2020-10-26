@@ -4,7 +4,7 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStocks } from '../../features/stocks/selectors';
-import { getStocks as fetchStocks } from '../../features/stocks/stockThunk';
+import { getStocks as fetchStocks, searchStock } from '../../features/stocks/stockThunk';
 import { Stocks } from '../../features/stocks/types';
 import { InputText } from 'primereact/inputtext';
 import {
@@ -28,8 +28,7 @@ export const StockList: React.FC = () => {
     const dispatch = useDispatch();
     const stocks: Stocks[] = useSelector(getStocks);
     const shopCode = useSelector(getShopCode);
-    const [globalFilter, updateGlobalFilter] = useState(null);
-
+    const [globalFilter, updateGlobalFilter] = useState(null);   
     useEffect(() => {
         dispatch(fetchStocks(shopCode));
     }, [shopCode]);
@@ -63,7 +62,9 @@ export const StockList: React.FC = () => {
         </div>
     );
 
-    const onSave = () => {};
+    const onSearch = () => {
+        dispatch(searchStock(shopCode));
+    };
 
     return (
         <div>
@@ -78,7 +79,7 @@ export const StockList: React.FC = () => {
                                         type="button"
                                         className="p-button-raised p-mr-2"
                                         label={searchLabel}
-                                        onClick={(event) => onSave()}
+                                        onClick={(event) => onSearch()}
                                     />
                                 </div>
                             </div>

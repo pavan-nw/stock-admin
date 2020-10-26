@@ -1,14 +1,16 @@
 import React from 'react';
 import { Button } from 'primereact/button';
 import { saveLabel, clearLabel } from '../../helpers/constants';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { clearCurrentStock } from '../../features/stocks/actions';
 import { addStock } from '../../features/stocks/stockThunk';
+import { getShopCode } from '../../features/login/selectors';
 
 export const StocksFormFooter: React.FC = (props) => {
     const dispatch = useDispatch();
+    const shopCode = useSelector(getShopCode);
     const onSave = () => {
-        dispatch(addStock());
+        dispatch(addStock(shopCode));
     };
 
     const onClear = () => {
