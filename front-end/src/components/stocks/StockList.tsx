@@ -23,7 +23,7 @@ import { formatDate } from '../../helpers/utils';
 import { StocksFormHeader } from './StocksFormHeader';
 import { Panel } from 'primereact/panel';
 import { ExportDialog } from './ExportDialog';
-import { toggleExportShowDialog } from '../../features/dailyStocks/actions';
+import { toggleExportShowDialog } from '../../features/stocks/actions';
 import './stockList.css';
 import { getShopCode } from '../../features/login/selectors';
 

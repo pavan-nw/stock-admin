@@ -2,6 +2,8 @@ package com.stock.admin.repository;
 
 import com.stock.admin.model.entity.Stock;
 import java.util.Date;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -19,15 +21,6 @@ public interface StocksRepository extends MongoRepository<Stock, String> {
 	 * @return
 	 */
 	Optional<Stock> findById(String id);
-
-	/**
-	 * Find by stock date less than equal page.
-	 *
-	 * @param stockDate the stock date
-	 * @param pageable  the pageable
-	 * @return the page
-	 */
-	Page<Stock> findByStockDateLessThanEqual(Date stockDate, Pageable pageable);
 
 	/**
 	 * Find by stock date before page.

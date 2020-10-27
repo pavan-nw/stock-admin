@@ -9,7 +9,7 @@ import {
     toDateLabel,
 } from '../../helpers/constants';
 import { Button } from 'primereact/button';
-import { exportStock } from '../../features/dailyStocks/dailyStockThunk';
+import { exportStock } from '../../features/stocks/stockThunk';
 import { formatDate } from '../../helpers/utils';
 import { showToast } from '../../features/common/actions';
 

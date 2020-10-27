@@ -1,5 +1,5 @@
 import { ThunkAction } from 'redux-thunk';
-import { fetchStocks } from './actions';
+import { fetchStocks, toggleExportShowDialog } from './actions';
 import {
     StockState,
     StockActionTypes,
@@ -19,6 +19,10 @@ import {
     stockAdded,
     fetchingStocks,
     creatingStocks,
+    invalidShopCode,
+    noStockFound,
+    somethingWentWrong,
+    stockDownloaded,
 } from '../../helpers/constants';
 
 export const getStocks = (
@@ -132,5 +136,51 @@ export const searchStock = (
     } catch (e) {
         dispatch(hideSpinnerDialog());
         dispatch(showToast(errorOccurred, getErrorMessageToShow(e), 'error'));
+    }
+};
+
+export const exportStock = (
+    shopCode: string,
+    fromDate: string,
+    toDate: string
+): ThunkAction<
+    void,
+    StockState,
+    unknown,
+    StockActionTypes | CommonActionTypes
+> => async (dispatch, getState) => {
+    try {
+        dispatch(showSpinnerDialog(creatingStocks));
+        const exportRequest =
+            '?fromDate=' +
+            fromDate +
+            '&toDate=' +
+            toDate +
+            '&shopCode=' +
+            shopCode;
+        const response = await axiosInstance.get(
+            '/stocks/download' + exportRequest,
+            { responseType: 'blob' }
+        );
+
+        let blob = new Blob([response.data], { type: 'application/pdf' }),
+        url = window.URL.createObjectURL(blob);
+        window.open(url);
+        if (response.status === 200) {
+            dispatch(hideSpinnerDialog());
+            dispatch(toggleExportShowDialog());
+            dispatch(showToast(stockDownloaded, '200'));
+        } else {
+            dispatch(showToast(errorOccurred, somethingWentWrong, 'error'));
+        }
+    } catch (e) {
+        dispatch(hideSpinnerDialog());
+        let errorMessage = somethingWentWrong;
+        if (e.response.status === 417) {
+            errorMessage = noStockFound;
+        } else if (e.response.status === 400) {
+            errorMessage = invalidShopCode;
+        }
+        dispatch(showToast(errorOccurred, errorMessage, 'error'));
     }
 };

@@ -2,11 +2,11 @@ import React from 'react';
 import { Dialog } from 'primereact/dialog';
 import {    
     toggleExportShowDialog,
-} from '../../features/dailyStocks/actions';
+} from '../../features/stocks/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { getShowDialog } from '../../features/dailyStocks/selectors';
+import { getShowDialog } from '../../features/stocks/selectors';
 import { exportLabel } from '../../helpers/constants';
-import {StockExportForm} from '../dailyStocks/StockExportForm';
+import {StockExportForm} from '../stocks/StockExportForm';
 
 export const ExportDialog: React.FC = () => {
     const dispatch = useDispatch();

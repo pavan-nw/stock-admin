@@ -88,10 +88,10 @@ public class StockController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=stocks.pdf");
 		File file = exportService.getFileToExport(fromDate, toDate, shopCode);
-		InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
+		InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(file));
 		return ResponseEntity.ok().headers(headers).contentLength(file.length()).contentType(MediaType.APPLICATION_PDF)
-				.body(isr);
-
+				.body(inputStreamResource);
+	}
     /**
      * Gets all stocks.
      *
