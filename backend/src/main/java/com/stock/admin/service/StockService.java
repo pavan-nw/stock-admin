@@ -72,6 +72,12 @@ public class StockService {
 	
 	
 
+	/**
+	 * Find stock.
+	 *
+	 * @param stockRequest the stock request
+	 * @return the optional
+	 */
 	private Optional<Stock> findStock(StockRequest stockRequest) {
 		// Query to check stock exist for given date
 		Query queryToCheckStockForGivenDate = new Query();
@@ -80,6 +86,12 @@ public class StockService {
 		return Optional.ofNullable(mongoTemplate.findOne(queryToCheckStockForGivenDate, Stock.class));
 	}
 
+	/**
+	 * Matching product criteria.
+	 *
+	 * @param stockRequest the stock request
+	 * @return the criteria
+	 */
 	private Criteria matchingProductCriteria(StockRequest stockRequest) {
 		return Criteria.where(PATH_PRODUCT_NAME).is(stockRequest.getProductName()).and(PATH_PRODUCT_PACKAGING)
 				.is(stockRequest.getPackaging()).and(PATH_PRODUCT_SHOP_CODE).is(stockRequest.getShopCode());
@@ -135,6 +147,13 @@ public class StockService {
     
 
 
+	/**
+	 * Handle when stock found.
+	 *
+	 * @param stockFound the stock found
+	 * @param stockRequest the stock request
+	 * @return the stock
+	 */
 	private Stock handleWhenStockFound(Stock stockFound, StockRequest stockRequest) {
 		// Already stock found for given date
 
@@ -147,6 +166,13 @@ public class StockService {
 		return stocksRepository.save(stockFound);
 	}
 
+	/**
+	 * Handle when stock not found.
+	 *
+	 * @param stockRequest the stock request
+	 * @param product the product
+	 * @return the stock
+	 */
 	private Stock handleWhenStockNotFound(StockRequest stockRequest, Product product) {
 		// No stock found for given date
 		// Query to check stock exist for previous dates
@@ -155,6 +181,12 @@ public class StockService {
 				createStockWithTotalStock(stockRequest, product, previousStockAvailable.map(Stock::getTotalStock)));
 	}
 
+	/**
+	 * Find previous stocks.
+	 *
+	 * @param stockRequest the stock request
+	 * @return the optional
+	 */
 	private Optional<Stock> findPreviousStocks(StockRequest stockRequest) {
 		Query queryToCheckStockForPreviousDates = new Query();
 		Criteria criteria = matchingProductCriteria(stockRequest).and(STOCK_DATE).lt(stockRequest.getStockDate());
@@ -162,6 +194,14 @@ public class StockService {
 		return Optional.ofNullable(mongoTemplate.findOne(queryToCheckStockForPreviousDates, Stock.class));
 	}
 
+	/**
+	 * Creates the stock with total stock.
+	 *
+	 * @param stockRequest the stock request
+	 * @param product the product
+	 * @param totalStock the total stock
+	 * @return the stock
+	 */
 	private Stock createStockWithTotalStock(StockRequest stockRequest, Product product, Optional<Integer> totalStock) {
 		Stock stock = new Stock();
 		stock.setProduct(product);

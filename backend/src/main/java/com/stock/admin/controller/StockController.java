@@ -127,6 +127,12 @@ public class StockController {
                 page.getTotalElements());
     }
     
+	/**
+	 * Gets the stocks.
+	 *
+	 * @param stockSearchRequest the stock search request
+	 * @return the stocks
+	 */
 	@PostMapping(path = "/search")
 	@ResponseBody
 	public PagedResponse getStocks(@RequestBody StockSearchRequest stockSearchRequest) {

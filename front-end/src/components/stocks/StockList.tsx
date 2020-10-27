@@ -18,12 +18,13 @@ import {
     productPackagingLabel,
     searchLabel,
     totalStockCountLabel,
+    resetLabel,
 } from '../../helpers/constants';
 import { formatDate } from '../../helpers/utils';
 import { StocksFormHeader } from './StocksFormHeader';
 import { Panel } from 'primereact/panel';
 import { ExportDialog } from './ExportDialog';
-import { toggleExportShowDialog } from '../../features/stocks/actions';
+import { clearCurrentStock, toggleExportShowDialog } from '../../features/stocks/actions';
 import './stockList.css';
 import { getShopCode } from '../../features/login/selectors';
 
@@ -69,6 +70,11 @@ export const StockList: React.FC = () => {
         dispatch(searchStock(shopCode));
     };
 
+    const onReset = () => {
+        dispatch(clearCurrentStock());
+        dispatch(searchStock(shopCode));
+    };
+
     const onExport = () => {
         console.log("on export");
         dispatch(toggleExportShowDialog());
@@ -91,20 +97,32 @@ export const StockList: React.FC = () => {
                                         onClick={(event) => onSearch()}
                                     />
                                 </div>
+                                <div className="p-lg-4 p-md-4 p-sm-12 p-lg-offset-2 p-md-offset-2">
+                                    <Button
+                                        type="button"
+                                        className="p-button-raised p-mr-2"
+                                        label={resetLabel}
+                                        onClick={(event) => onReset()}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </Panel>
-                <div className="p-grid">
-                    <div className="p-lg-4 p-md-4 p-sm-12 p-lg-offset-2 p-md-offset-2">
-                        <Button
-                            type="button"
-                            className="p-button-raised p-mr-2"
-                            label={exportLabel}
-                            onClick={(event) => onExport()}
-                        />
-                    </div>
-                </div>
+                <div className="p-grid p-mt-lg-0 p-mt-md-6 p-mt-sm-1">
+                        <div className="p-lg-0 p-md-10 p-sm-12 p-lg-offset-4">
+                            <div className="p-grid">                            
+                                <div className="p-lg-0 p-rg-0 p-md-8 p-sm-12 p-md-offset-8">
+                                    <Button
+                                        type="button"
+                                        className="p-button-raised p-mr-2"
+                                        label={exportLabel}
+                                        onClick={(event) => onExport()}
+                                    />
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>                
             </div>
             <DataTable
                 emptyMessage={'No Stocks Found'}

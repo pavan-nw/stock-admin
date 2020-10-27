@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Calendar } from 'primereact/calendar';
 import {
     errorOccurred,
@@ -12,6 +12,7 @@ import { Button } from 'primereact/button';
 import { exportStock } from '../../features/stocks/stockThunk';
 import { formatDate } from '../../helpers/utils';
 import { showToast } from '../../features/common/actions';
+import { getShopCode } from '../../features/login/selectors';
 
 export const StockExportForm: React.FC = () => {
     const dispatch = useDispatch();
@@ -19,10 +20,9 @@ export const StockExportForm: React.FC = () => {
     const initialToDate = new Date();
     const [fromDate, setFromDate] = useState(initialFromDate); //useSelector(getFromDate);
     const [toDate, setToDate] = useState(initialToDate); //useSelector(getToDate);
-    const shopCode = 'shop01'; //useSelector(getShopCode);
+    const shopCode = useSelector(getShopCode);
 
-    const onExport = () => {
-        console.log('on export');
+    const onExport = () => {        
         const fromDateString = formatDate(fromDate).replaceAll('/', '-');
         const toDateString = formatDate(toDate).replaceAll('/', '-');
         if (fromDate.getTime() <= toDate.getTime()) {
