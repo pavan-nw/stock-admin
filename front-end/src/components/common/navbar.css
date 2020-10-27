@@ -4,7 +4,6 @@
     top: 0;
     height: 50px;
     padding: .7em 1.5em 0;
-    color: #fff;
     z-index: 999;
     right: 0;
     -webkit-transition: left .2s;
@@ -14,12 +13,4 @@
 
 .link-text {
     text-decoration: none;
-}
-
-.layout-topbar-title {
-    color: #495057;
-    font-style: normal;
-    font-size: 22px;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-    text-shadow: 0 1px black;
 }

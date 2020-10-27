@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The type Shop controller.
  */
 @RestController
-@RequestMapping("/shops")
+@RequestMapping("/api/shops")
 public class ShopController {
     private final ShopService shopService;
     private final SequenceGeneratorService sequenceGeneratorService;

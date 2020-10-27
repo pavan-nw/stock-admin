@@ -5,6 +5,7 @@ import static com.stock.admin.utils.StockAdminConstants.STOCK_DATE;
 
 import com.stock.admin.model.entity.Stock;
 import com.stock.admin.model.request.StockRequest;
+import com.stock.admin.model.request.StockSearchRequest;
 import com.stock.admin.model.response.PagedResponse;
 import com.stock.admin.model.response.Response;
 import com.stock.admin.service.ExportService;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -36,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The type Stock controller.
  */
 @RestController
-@RequestMapping("/stocks")
+@RequestMapping("/api/stocks")
 @CrossOrigin
 public class StockController {
 
@@ -69,32 +71,6 @@ public class StockController {
 	}
 
 	/**
-	 * Gets all stocks.
-	 *
-	 * @param stockDate the stock date
-	 * @param pageNum   the page num
-	 * @param size      the size
-	 * @param sortType  the sort type
-	 * @return the all stocks
-	 */
-	@GetMapping
-	@ResponseBody
-	public PagedResponse getAllStocks(
-			@RequestParam(name = "stockDate") @DateTimeFormat(pattern = "dd-MM-yyyy", iso = DateTimeFormat.ISO.DATE) Optional<Date> stockDate,
-			@RequestParam(name = "page", defaultValue = "1") int pageNum,
-			@RequestParam(name = "size", defaultValue = "500") int size,
-			@RequestParam(name = "sort", defaultValue = "DESC") String sortType) {
-
-		Page<Stock> page = stockDate
-				.map(date -> stockService.findByStockDateLessThanEqual(date,
-						pageRequestFor(pageNum, size, sortType, STOCK_DATE)))
-				.orElseGet(() -> stockService.getAll(pageNum, size, sortType));
-
-		return PagedResponse.buildPagedResponse(Stock.type, page.getContent(), true, page.getNumber(), page.getSize(),
-				page.getTotalPages(), page.isLast(), page.getTotalElements());
-	}
-
-	/**
 	 * Download the stocks.
 	 *
 	 * @param fromDate the from date
@@ -116,5 +92,51 @@ public class StockController {
 		return ResponseEntity.ok().headers(headers).contentLength(file.length()).contentType(MediaType.APPLICATION_PDF)
 				.body(isr);
 
+    /**
+     * Gets all stocks.
+     *
+     * @param shopCode  the shop code
+     * @param stockDate the stock date
+     * @param pageNum   the page num
+     * @param size      the size
+     * @param sortType  the sort type
+     * @return the all stocks
+     */
+    @GetMapping
+    @ResponseBody
+    public PagedResponse getAllStocks(@RequestParam(name = "shopCode", required = true) String shopCode,
+                                      @RequestParam(name = "stockDate")
+                                      @DateTimeFormat(pattern = "dd-MM-yyyy",
+                                              iso = DateTimeFormat.ISO.DATE) Optional<Date> stockDate,
+                                      @RequestParam(name = "page", defaultValue = "1") int pageNum,
+                                      @RequestParam(name = "size", defaultValue = "500") int size,
+                                      @RequestParam(name = "sort", defaultValue = "DESC") String sortType) {
+
+        PageRequest pageRequest = pageRequestFor(pageNum, size, sortType, STOCK_DATE);
+        Page<Stock> page = stockDate.map(date -> stockService
+                .findByShopAndStockDateLessThanEqual(shopCode, date, pageRequest))
+                .orElseGet(() -> stockService.findByShopCode(shopCode, pageRequest));
+
+        return PagedResponse.buildPagedResponse(Stock.type,
+                page.getContent(),
+                true,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalPages(),
+                page.isLast(),
+                page.getTotalElements());
+    }
+    
+	@PostMapping(path = "/search")
+	@ResponseBody
+	public PagedResponse getStocks(@RequestBody StockSearchRequest stockSearchRequest) {
+		
+		PageRequest pageRequest = pageRequestFor(stockSearchRequest.getPageNum(), stockSearchRequest.getSize(),
+				stockSearchRequest.getSortType(), STOCK_DATE);
+		Page<Stock> page = stockService.search(stockSearchRequest.getShopCode(), stockSearchRequest.getStockDate(),
+				Optional.ofNullable(stockSearchRequest.getProductName()), Optional.ofNullable(stockSearchRequest.getPackaging()), pageRequest);
+
+		return PagedResponse.buildPagedResponse(Stock.type, page.getContent(), true, page.getNumber(), page.getSize(),
+				page.getTotalPages(), page.isLast(), page.getTotalElements());
 	}
 }

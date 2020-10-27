@@ -3,19 +3,19 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProducts } from '../../features/product/selectors';
+import { getProducts } from '../../features/products/selectors';
 import {
     getProducts as fetchProducts,
     removeProduct,
-} from '../../features/product/productThunk';
-import { Product } from '../../features/product/types';
+} from '../../features/products/productThunk';
+import { Product } from '../../features/products/types';
 import { InputText } from 'primereact/inputtext';
 import './productList.css';
 import { EditProductDialog } from './EditProductDialog';
 import {
     selectProduct,
     toggleShowEditDialog,
-} from '../../features/product/actions';
+} from '../../features/products/actions';
 import {
     actionsLabel,
     manageProductsLabel,
@@ -25,15 +25,17 @@ import {
     productPackagingLabel,
     searchLabel,
 } from '../../helpers/constants';
+import { getShopCode } from '../../features/login/selectors';
 
 export const ProductList: React.FC = () => {
     const dispatch = useDispatch();
     const products: Product[] = useSelector(getProducts);
+    const shopCode = useSelector(getShopCode);
     const [globalFilter, updateGlobalFilter] = useState(null);
 
     useEffect(() => {
-        dispatch(fetchProducts());
-    }, []);
+        dispatch(fetchProducts(shopCode));
+    }, [shopCode]);
 
     const paginatorLeft = (
         <Button type="button" icon="pi pi-refresh" className="p-button-text" />
@@ -43,8 +45,8 @@ export const ProductList: React.FC = () => {
     );
 
     const onDelete = (rowData: Product) => {
-        if (rowData.id) {
-            dispatch(removeProduct(rowData.id));
+        if (rowData.code) {
+            dispatch(removeProduct(rowData.code));
         }
     };
 
@@ -101,7 +103,7 @@ export const ProductList: React.FC = () => {
                 globalFilter={globalFilter}
                 paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
-                rows={10}
+                rows={15}
                 rowsPerPageOptions={[5, 10, 15]}
                 paginatorLeft={paginatorLeft}
                 paginatorRight={paginatorRight}
@@ -110,7 +112,7 @@ export const ProductList: React.FC = () => {
                     // selectionMode="single"
                     headerStyle={{ width: '3rem' }}
                 />
-                <Column header={productIdLabel} body={indexBodyTemplate} />
+                {/*<Column header={productIdLabel} body={indexBodyTemplate} />*/}
                 <Column field="code" header={productCodeLabel} sortable />
                 <Column field="name" header={productNameLabel} sortable />
                 <Column

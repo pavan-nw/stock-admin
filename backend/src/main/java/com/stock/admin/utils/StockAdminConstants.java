@@ -17,6 +17,8 @@ public interface StockAdminConstants {
      * The constant PATH_PRODUCT_PACKAGING.
      */
     String PATH_PRODUCT_PACKAGING = "product.packaging";
+    
+    String PATH_PRODUCT_SHOP_CODE = "product.shopCode";
     /**
      * The constant TOTAL_STOCK.
      */

@@ -3,15 +3,19 @@ import thunk from 'redux-thunk';
 import { devToolsEnhancer } from 'redux-devtools-extension';
 import CounterReducer from './features/counter/counterReducer';
 import CommonReducer from './features/common/commonReducer';
-import ProductReducer from './features/product/productReducer';
-import DailyStockReducer  from './features/dailyStocks/dailyStockReducer';
+import ProductReducer from './features/products/productReducer';
+import LoginReducer from './features/login/loginReducer';
+import DailyStockReducer from './features/stocks/stockReducer';
+import ShopReducer from './features/shops/shopReducer';
 
 /* Create root reducer, containing all features of the application */
 const rootReducer = combineReducers({
     counterState: CounterReducer,
     commonState: CommonReducer,
     productState: ProductReducer,
-    stockState:DailyStockReducer
+    sessionState: LoginReducer,
+    stockState: DailyStockReducer,
+    shopState: ShopReducer,
 });
 
 const store = createStore(

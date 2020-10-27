@@ -1,6 +1,11 @@
 import { ThunkAction } from 'redux-thunk';
-import { fetchStocks, toggleExportShowDialog } from './actions';
-import { StockState, StockActionTypes, CreateStockRequest } from './types';
+import { fetchStocks } from './actions';
+import {
+    StockState,
+    StockActionTypes,
+    CreateStockRequest,
+    SearchStockRequest,
+} from './types';
 import {
     hideSpinnerDialog,
     showSpinnerDialog,
@@ -14,13 +19,11 @@ import {
     stockAdded,
     fetchingStocks,
     creatingStocks,
-    stockDownloaded,
-    invalidShopCode,
-    noStockFound,
-    somethingWentWrong,
 } from '../../helpers/constants';
 
-export const getStocks = (): ThunkAction<
+export const getStocks = (
+    shopCode: string
+): ThunkAction<
     void,
     StockState,
     unknown,
@@ -28,7 +31,9 @@ export const getStocks = (): ThunkAction<
 > => async (dispatch, getState) => {
     try {
         dispatch(showSpinnerDialog(fetchingStocks));
-        const response = await axiosInstance.get('/stocks');
+        const response = await axiosInstance.get(
+            '/stocks?shopCode=' + shopCode
+        );
         const responseJson = await response.data;
         dispatch(hideSpinnerDialog());
         if (checkSuccess(responseJson)) {
@@ -42,7 +47,9 @@ export const getStocks = (): ThunkAction<
     }
 };
 
-export const addStock = (): ThunkAction<
+export const addStock = (
+    shopCode: string
+): ThunkAction<
     void,
     StockState,
     unknown,
@@ -54,9 +61,16 @@ export const addStock = (): ThunkAction<
         const stockRequest: CreateStockRequest = {
             productName: currentStock.product.name,
             packaging: currentStock.packaging.name,
-            stockDate: currentStock.stockDate,
+            stockDate: new Date(
+                Date.UTC(
+                    currentStock.stockDate.getFullYear(),
+                    currentStock.stockDate.getMonth(),
+                    currentStock.stockDate.getDate()
+                )
+            ),
             openingStock: currentStock.openingStocks,
             closingStock: currentStock.closingStocks,
+            shopCode,
             type: 'stock-request',
         };
         const response = await axiosInstance.post('/stocks', stockRequest);
@@ -73,10 +87,8 @@ export const addStock = (): ThunkAction<
     }
 };
 
-export const exportStock = (
-    shopCode: string,
-    fromDate: string,
-    toDate: string
+export const searchStock = (
+    shopCode: string
 ): ThunkAction<
     void,
     StockState,
@@ -85,36 +97,40 @@ export const exportStock = (
 > => async (dispatch, getState) => {
     try {
         dispatch(showSpinnerDialog(creatingStocks));
-        const exportRequest =
-            '?fromDate=' +
-            fromDate +
-            '&toDate=' +
-            toDate +
-            '&shopCode=' +
-            shopCode;
-        const response = await axiosInstance.get(
-            '/stocks/download' + exportRequest,
-            { responseType: 'blob' }
+        const { currentStock } = getState().stockState;
+        const stockRequest: SearchStockRequest = {
+            productName:
+                currentStock.product != null && currentStock.product.name !== ''
+                    ? currentStock.product.name
+                    : null,
+            packaging:
+                currentStock.packaging != null &&
+                currentStock.packaging.name !== ''
+                    ? currentStock.packaging.name
+                    : null,
+            stockDate: new Date(
+                Date.UTC(
+                    currentStock.stockDate.getFullYear(),
+                    currentStock.stockDate.getMonth(),
+                    currentStock.stockDate.getDate()
+                )
+            ),
+            shopCode,
+            type: 'stock-request',
+        };
+        const response = await axiosInstance.post(
+            '/stocks/search',
+            stockRequest
         );
-
-        let blob = new Blob([response.data], { type: 'application/pdf' }),
-        url = window.URL.createObjectURL(blob);
-        window.open(url);
-        if (response.status === 200) {
-            dispatch(hideSpinnerDialog());
-            dispatch(toggleExportShowDialog());
-            dispatch(showToast(stockDownloaded, '200'));
+        const responseJson = await response.data;
+        dispatch(hideSpinnerDialog());
+        if (checkSuccess(responseJson)) {
+            dispatch(fetchStocks(shopCode, responseJson.payload));
         } else {
-            dispatch(showToast(errorOccurred, somethingWentWrong, 'error'));
+            dispatch(showToast(errorOccurred, responseJson.status, 'error'));
         }
     } catch (e) {
         dispatch(hideSpinnerDialog());
-        let errorMessage = somethingWentWrong;
-        if (e.response.status === 417) {
-            errorMessage = noStockFound;
-        } else if (e.response.status === 400) {
-            errorMessage = invalidShopCode;
-        }
-        dispatch(showToast(errorOccurred, errorMessage, 'error'));
+        dispatch(showToast(errorOccurred, getErrorMessageToShow(e), 'error'));
     }
 };
