@@ -6,15 +6,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 /**
  * The type Stock request.
  */
-public class StockRequest extends Request {
+public class StockSearchRequest extends Request {
 
     private String productName;
     private String packaging;
     @DateTimeFormat(pattern = "dd-MM-yyyy", iso = DateTimeFormat.ISO.DATE)
-    private Date stockDate;
-    private int openingStock = 0;
-    private int closingStock = 0;
+    private Date stockDate;    
     private String shopCode;
+    int pageNum=1;
+    int size=500;
+    String sortType="DESC";    
     /**
      * Gets the shop code.
      *
@@ -87,39 +88,27 @@ public class StockRequest extends Request {
         this.stockDate = stockDate;
     }
 
-    /**
-     * Gets opening stock.
-     *
-     * @return the opening stock
-     */
-    public int getOpeningStock() {
-        return openingStock;
-    }
+	public int getPageNum() {
+		return pageNum;
+	}
 
-    /**
-     * Sets opening stock.
-     *
-     * @param openingStock the opening stock
-     */
-    public void setOpeningStock(int openingStock) {
-        this.openingStock = openingStock;
-    }
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
+	}
 
-    /**
-     * Gets closing stock.
-     *
-     * @return the closing stock
-     */
-    public int getClosingStock() {
-        return closingStock;
-    }
+	public int getSize() {
+		return size;
+	}
 
-    /**
-     * Sets closing stock.
-     *
-     * @param closingStock the closing stock
-     */
-    public void setClosingStock(int closingStock) {
-        this.closingStock = closingStock;
-    }
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public String getSortType() {
+		return sortType;
+	}
+
+	public void setSortType(String sortType) {
+		this.sortType = sortType;
+	}    
 }

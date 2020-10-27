@@ -3,10 +3,11 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { useDispatch, useSelector } from 'react-redux';
-import { Product } from '../../features/product/types';
-import { addProduct, editProduct } from '../../features/product/productThunk';
-import { getSelectedProduct } from '../../features/product/selectors';
+import { Product } from '../../features/products/types';
+import { addProduct, editProduct } from '../../features/products/productThunk';
+import { getSelectedProduct } from '../../features/products/selectors';
 import {
+    packaging,
     productCodeLabel,
     productCodePlaceHolder,
     productNameLabel,
@@ -15,47 +16,39 @@ import {
     productPackagingPlaceHolder,
     saveLabel,
 } from '../../helpers/constants';
+import { getShopCode } from '../../features/login/selectors';
 
 export const ProductForm: React.FC = () => {
     const dispatch = useDispatch();
     const selectedProduct: Product | null = useSelector(getSelectedProduct);
+    const shopCode: string = useSelector(getShopCode);
 
     const initialProductCode = selectedProduct ? selectedProduct.code : '';
     const initialProductName = selectedProduct ? selectedProduct.name : '';
-    const initialPackaging = {name: ""};
+    const initialPackaging = selectedProduct
+        ? { name: selectedProduct.packaging }
+        : undefined;
 
     const [selectedPackaging, updatePackaging] = useState(initialPackaging);
     const [productCode, updateProductCode] = useState(initialProductCode);
     const [productName, updateProductName] = useState(initialProductName);
 
-    const packagings = [
-        { name: '1 Ml' },
-        { name: '10 Ml' },
-        { name: '1 Liter' },
-        { name: '10 Gram' },
-        { name: '200 Gram' },
-        { name: '1 Kg' },
-        { name: '2 Kg' },
-        { name: '3 Kg' },
-        { name: '5 Kg' },
-        { name: '10 Kg' },
-        { name: '15 Kg' },
-    ];
-
     const onSave = () => {
-        if (selectedProduct) {
+        if (selectedProduct && selectedPackaging) {
             const product: Product = {
                 id: selectedProduct.id,
                 code: productCode,
                 name: productName,
                 packaging: selectedPackaging.name,
+                shopCode,
             };
             dispatch(editProduct(product));
-        } else {
+        } else if (selectedPackaging) {
             const product: Product = {
                 code: productCode,
                 name: productName,
                 packaging: selectedPackaging.name,
+                shopCode,
             };
             dispatch(addProduct(product));
         }
@@ -64,23 +57,30 @@ export const ProductForm: React.FC = () => {
     return (
         <div>
             <div className="p-fluid">
-                <div className="p-field p-grid">
-                    <label htmlFor="productCode" className="p-col-12 p-md-3">
-                        {productCodeLabel}
-                    </label>
-                    <div className="p-col-12 p-md-9">
-                        <InputText
-                            id="productCode"
-                            type="text"
-                            value={productCode}
-                            onChange={(event: any) =>
-                                updateProductCode(event.target.value)
-                            }
-                            placeholder={productCodePlaceHolder}
-                            disabled={selectedProduct !== null}
-                        />
+                {selectedProduct ? (
+                    <div className="p-field p-grid">
+                        <label
+                            htmlFor="productCode"
+                            className="p-col-12 p-md-3"
+                        >
+                            {productCodeLabel}
+                        </label>
+                        <div className="p-col-12 p-md-9">
+                            <InputText
+                                id="productCode"
+                                type="text"
+                                value={productCode}
+                                onChange={(event: any) =>
+                                    updateProductCode(event.target.value)
+                                }
+                                placeholder={productCodePlaceHolder}
+                                disabled={selectedProduct !== null}
+                            />
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    ''
+                )}
                 <div className="p-field p-grid">
                     <label htmlFor="productName" className="p-col-12 p-md-3">
                         {productNameLabel}
@@ -105,7 +105,7 @@ export const ProductForm: React.FC = () => {
                         <Dropdown
                             id="packaging"
                             value={selectedPackaging}
-                            options={packagings}
+                            options={packaging}
                             showClear
                             filter
                             optionLabel="name"

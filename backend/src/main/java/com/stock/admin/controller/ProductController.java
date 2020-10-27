@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The type Product controller.
  */
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/products")
 @CrossOrigin
 public class ProductController {
     private final ProductService productService;

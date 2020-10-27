@@ -3,10 +3,10 @@ import thunk from 'redux-thunk';
 import { devToolsEnhancer } from 'redux-devtools-extension';
 import CounterReducer from './features/counter/counterReducer';
 import CommonReducer from './features/common/commonReducer';
-import ProductReducer from './features/product/productReducer';
+import ProductReducer from './features/products/productReducer';
 import LoginReducer from './features/login/loginReducer';
-import DailyStockReducer from './features/dailyStocks/dailyStockReducer';
-import ShopReducer from './features/shop/shopReducer';
+import DailyStockReducer from './features/stocks/stockReducer';
+import ShopReducer from './features/shops/shopReducer';
 
 /* Create root reducer, containing all features of the application */
 const rootReducer = combineReducers({

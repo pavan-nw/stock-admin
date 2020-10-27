@@ -1,41 +1,45 @@
 import React, { useEffect } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import { useDispatch, useSelector } from 'react-redux';
-import { LocalPackaging, Product } from '../../features/dailyStocks/types';
+import { LocalPackaging, Product } from '../../features/stocks/types';
 import {
     getProducts,
     getCurrentStockProduct,
     getCurrentStockProductPackaging,
     getCurrentStockDate,
-} from '../../features/dailyStocks/selectors';
+} from '../../features/stocks/selectors';
 import { Calendar } from 'primereact/calendar';
 import {
     productNameLabel,
     productNamePlaceHolder,
     productPackagingLabel,
     productPackagingPlaceHolder,
-    dailyStockDateLabel,
+    stockDateLabel,
     packaging,
 } from '../../helpers/constants';
-import { getProducts as fetchProducts } from '../../features/product/productThunk';
+import { getProducts as fetchProducts } from '../../features/products/productThunk';
 import {
     setProduct,
     setProductPackaging,
     setStockDate,
-} from '../../features/dailyStocks/actions';
+} from '../../features/stocks/actions';
+import { getShopCode } from '../../features/login/selectors';
+import { getUniqueProducts } from '../../helpers/utils';
 
-export const DailyStockHeader: React.FC = () => {
+export const StocksFormHeader: React.FC = () => {
     const dispatch = useDispatch();
     const products: Product[] | [] = useSelector(getProducts);
+    const uniqueProducts = getUniqueProducts(products);    
+    const shopCode = useSelector(getShopCode);
     const selectedProduct = useSelector(getCurrentStockProduct);
     const selectedPackaging = useSelector(getCurrentStockProductPackaging);
     const selectedStockDate = useSelector(getCurrentStockDate);
 
     useEffect(() => {
         if (products.length == 0) {
-            dispatch(fetchProducts());
+            dispatch(fetchProducts(shopCode));
         }
-    }, []);
+    }, [shopCode]);
 
     const onProductNameChange = (product: Product) => {
         dispatch(setProduct(product));
@@ -54,7 +58,7 @@ export const DailyStockHeader: React.FC = () => {
             <div className="p-fluid">
                 <div className="p-field p-grid">
                     <label htmlFor="stockDate" className="p-col-12 p-md-3">
-                        {dailyStockDateLabel}
+                        {stockDateLabel}
                     </label>
                     <div className="p-field p-col-12 p-md-4">
                         <Calendar
@@ -80,7 +84,7 @@ export const DailyStockHeader: React.FC = () => {
                         <Dropdown
                             id="productName"
                             value={selectedProduct}
-                            options={products}
+                            options={uniqueProducts}
                             showClear
                             filter
                             optionLabel="name"

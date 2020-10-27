@@ -14,9 +14,9 @@ import {
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { login } from '../../features/login/loginThunk';
-import { getShops as fetchShops } from '../../features/shop/shopThunk';
-import { getShops } from '../../features/shop/selectors';
-import { Shop } from '../../features/shop/types';
+import { getShops as fetchShops } from '../../features/shops/shopThunk';
+import { getShops } from '../../features/shops/selectors';
+import { Shop } from '../../features/shops/types';
 
 const LoginForm: React.FC = () => {
     const dispatch = useDispatch();

@@ -3,12 +3,12 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { useDispatch, useSelector } from 'react-redux';
-import { getStocks } from '../../features/dailyStocks/selectors';
-import { getStocks as fetchStocks } from '../../features/dailyStocks/dailyStockThunk';
-import { Stocks } from '../../features/dailyStocks/types';
+import { getStocks } from '../../features/stocks/selectors';
+import { getStocks as fetchStocks, searchStock } from '../../features/stocks/stockThunk';
+import { Stocks } from '../../features/stocks/types';
 import { InputText } from 'primereact/inputtext';
 import {
-    dailyStockDateLabel,
+    stockDateLabel,
     incomingStockCountLabel,
     ManageStocksLabel,
     outgoingStockCountLabel,
@@ -19,17 +19,19 @@ import {
     totalStockCountLabel,
 } from '../../helpers/constants';
 import { formatDate } from '../../helpers/utils';
-import { DailyStockHeader } from './DailyStockHeader';
+import { StocksFormHeader } from './StocksFormHeader';
 import { Panel } from 'primereact/panel';
+import './stockList.css';
+import { getShopCode } from '../../features/login/selectors';
 
-export const DailyStockList: React.FC = () => {
+export const StockList: React.FC = () => {
     const dispatch = useDispatch();
     const stocks: Stocks[] = useSelector(getStocks);
-    const [globalFilter, updateGlobalFilter] = useState(null);
-
+    const shopCode = useSelector(getShopCode);
+    const [globalFilter, updateGlobalFilter] = useState(null);   
     useEffect(() => {
-        dispatch(fetchStocks());
-    }, []);
+        dispatch(fetchStocks(shopCode));
+    }, [shopCode]);
 
     const paginatorLeft = (
         <Button type="button" icon="pi pi-refresh" className="p-button-text" />
@@ -60,13 +62,15 @@ export const DailyStockList: React.FC = () => {
         </div>
     );
 
-    const onSave = () => {};
+    const onSearch = () => {
+        dispatch(searchStock(shopCode));
+    };
 
     return (
         <div>
             <div>
                 <Panel header={searchLabel} toggleable collapsed>
-                    <DailyStockHeader></DailyStockHeader>
+                    <StocksFormHeader></StocksFormHeader>
                     <div className="p-grid p-mt-lg-4 p-mt-md-2 p-mt-sm-1">
                         <div className="p-lg-4 p-md-12 p-sm-12 p-lg-offset-4">
                             <div className="p-grid">
@@ -75,7 +79,7 @@ export const DailyStockList: React.FC = () => {
                                         type="button"
                                         className="p-button-raised p-mr-2"
                                         label={searchLabel}
-                                        onClick={(event) => onSave()}
+                                        onClick={(event) => onSearch()}
                                     />
                                 </div>
                             </div>
@@ -105,7 +109,7 @@ export const DailyStockList: React.FC = () => {
                 <Column header={productCodeLabel} body={indexBodyTemplate} />
                 <Column
                     body={dateBodyTemplate}
-                    header={dailyStockDateLabel}
+                    header={stockDateLabel}
                     sortable
                 />
                 <Column

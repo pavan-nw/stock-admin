@@ -6,10 +6,14 @@ import {
     showSpinnerDialog,
     showToast,
 } from '../common/actions';
-import { creatingProduct, errorOccurred } from '../../helpers/constants';
+import {
+    authenticating,
+    errorOccurred,
+    loggingOut,
+} from '../../helpers/constants';
 import axiosInstance from '../../config/axiosConfig';
 import { checkSuccess, getErrorMessageToShow } from '../../helpers/utils';
-import { createProduct } from '../product/actions';
+import { createProduct } from '../products/actions';
 import { authenticate, clearSession } from './actions';
 
 export const login = (
@@ -23,7 +27,7 @@ export const login = (
     LoginActionTypes | CommonActionTypes
 > => async (dispatch, getState) => {
     try {
-        dispatch(showSpinnerDialog('Authenticating...'));
+        dispatch(showSpinnerDialog(authenticating));
         const loginRequest = {
             type: 'login',
             username,
@@ -55,7 +59,7 @@ export const logout = (): ThunkAction<
     unknown,
     LoginActionTypes | CommonActionTypes
 > => async (dispatch, getState) => {
-    dispatch(showSpinnerDialog('Logging out...'));
+    dispatch(showSpinnerDialog(loggingOut));
     dispatch(clearSession());
     dispatch(hideSpinnerDialog());
 };

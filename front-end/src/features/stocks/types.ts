@@ -132,6 +132,15 @@ export interface CreateStockRequest {
     stockDate: Date;
     openingStock: number;
     closingStock: number;
+    shopCode:string;
+}
+
+export interface SearchStockRequest {
+    type: string;
+    productName: string | null;
+    packaging: string | null;
+    stockDate: Date;   
+    shopCode:string;
 }
 
 export interface StockState {

@@ -12,7 +12,7 @@ import './app.css';
 import { ToastWrapper } from './components/common/ToastWrapper';
 import { SpinnerDialog } from './components/common/SpinnerDialog';
 import { Products } from './pages/Products';
-import { DailyStocks } from './pages/DailyStocks';
+import { Stocks } from './pages/Stocks';
 import { Login } from './pages/Login';
 import { PrivateRoute } from './components/common/PrivateRoute';
 import { useDispatch } from 'react-redux';
@@ -43,15 +43,13 @@ const App: React.FC = () => {
             <SpinnerDialog />
             <div className="p-grid layout-main-content layout-stretched">
                 <Switch>
-                    <PrivateRoute path="/" component={Products} exact />
+                    <PrivateRoute path="/" component={Stocks} exact />
+                    <PrivateRoute path="/stocks" component={Stocks} exact />
+                    <PrivateRoute path="/products" component={Products} exact />
                     <PrivateRoute path="/home" component={Home} exact />
                     <Route path="/counter" component={Counter} exact />
                     <Route path="/login" component={Login} exact />
                     <Route path="/about" component={About} exact />
-                    <PrivateRoute
-                        path="/daily-stocks"
-                        component={DailyStocks}
-                    />
                     <Route path="*" component={Login} exact />
                 </Switch>
             </div>
