@@ -12,15 +12,15 @@ export const ExportDialog: React.FC = () => {
     const dispatch = useDispatch();
     const showDialog = useSelector(getShowDialog);
     return (
-        <Dialog
+        <Dialog           
             header={exportLabel}
-            style={{ width: '35vw',height : '70vw'}}
+            style={{ width: '45vw',height:'90vw'}}
             onHide={() => {                
                 if (showDialog) {
                     dispatch(toggleExportShowDialog());
                 }
             }}
-            visible={showDialog}
+            visible={showDialog}                       
         >
         <StockExportForm/>
         </Dialog>

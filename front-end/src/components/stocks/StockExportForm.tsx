@@ -39,7 +39,7 @@ export const StockExportForm: React.FC = () => {
                     <label htmlFor="fromDate" className="p-col-12 p-md-3">
                         {fromDateLabel}
                     </label>
-                    <div className="p-field p-col-12 p-md-4">
+                    <div className="p-field p-col-12 p-lg-6 p-md-4">
                         <Calendar
                             id="icon"
                             viewDate={fromDate}
@@ -54,10 +54,12 @@ export const StockExportForm: React.FC = () => {
                             showIcon
                         />
                     </div>
+                </div>
+                <div className="p-field p-grid">
                     <label htmlFor="toDate" className="p-col-12 p-md-3">
                         {toDateLabel}
                     </label>
-                    <div className="p-field p-col-12 p-md-4">
+                    <div className="p-field p-col-12 p-lg-6 p-md-4">
                         <Calendar
                             id="icon"
                             viewDate={toDate}
@@ -72,7 +74,7 @@ export const StockExportForm: React.FC = () => {
                             showIcon
                         />
                     </div>
-                    <div className="p-lg-4 p-md-4 p-sm-12 p-lg-offset-2 p-md-offset-2">
+                    <div className="p-lg-4 p-md-4 p-sm-12 p-lg-offset-4 p-md-offset-2">
                         <Button
                             type="button"
                             className="p-button-raised p-mr-2"

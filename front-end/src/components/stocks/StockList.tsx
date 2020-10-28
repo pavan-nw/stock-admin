@@ -109,10 +109,10 @@ export const StockList: React.FC = () => {
                         </div>
                     </div>
                 </Panel>
-                <div className="p-grid p-mt-lg-0 p-mt-md-6 p-mt-sm-1">
-                        <div className="p-lg-0 p-md-10 p-sm-12 p-lg-offset-4">
-                            <div className="p-grid">                            
-                                <div className="p-lg-0 p-rg-0 p-md-8 p-sm-12 p-md-offset-8">
+                <div className="p-grid p-mt-lg-2 p-mt-md-2 p-mt-sm-1">
+                        <div className="p-lg-2 p-md-12 p-sm-12 p-lg-offset-10">
+                            <div className="p-grid">
+                                <div className="p-lg-4 p-md-4 p-sm-12 p-lg-offset-2 p-md-offset-4">
                                     <Button
                                         type="button"
                                         className="p-button-raised p-mr-2"
