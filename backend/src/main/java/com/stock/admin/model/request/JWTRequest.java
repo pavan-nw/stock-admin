@@ -2,26 +2,28 @@ package com.stock.admin.model.request;
 
 import java.io.Serializable;
 
-public class JWTRequest implements Serializable {
+public class JWTRequest extends Request implements Serializable  {
 
 	private static final long serialVersionUID = 5926468583005150707L;
 	
-	private String username;
-	private String password;
+	private String username;	
+	private String password;	
+	private String shopCode;
 	
-	//need default constructor for JSON Parsing
-	public JWTRequest()
-	{
-		
-	}
-
-	public JWTRequest(String username, String password) {
-		this.setUsername(username);
-		this.setPassword(password);
-	}
-
 	public String getUsername() {
 		return this.username;
+	}	
+	
+	public String getShopCode() {
+		return shopCode;
+	}
+
+	public void setShopCode(String shopCode) {
+		this.shopCode = shopCode;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public void setUsername(String username) {

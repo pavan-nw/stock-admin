@@ -1,6 +1,10 @@
 package com.stock.admin.service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.inject.Inject;
 
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,13 +12,24 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.stock.admin.model.entity.ApplicationUser;
+import com.stock.admin.repository.UserRepository;
+
 @Service
 public class JWTUserDetailsService implements UserDetailsService {
+	
+	@Inject
+	UserRepository userRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		if ("javainuse".equals(username)) {
-			return new User("javainuse", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
+		
+		List<ApplicationUser> users = userRepository.findAll();
+		
+		Optional<ApplicationUser> applicationUser = userRepository.findByUsername(username);
+		
+		if (applicationUser.isPresent()) {			
+			return new User(applicationUser.get().getUsername(), applicationUser.get().getPassword(),
 					new ArrayList<>());
 		} else {
 			throw new UsernameNotFoundException("User not found with username: " + username);

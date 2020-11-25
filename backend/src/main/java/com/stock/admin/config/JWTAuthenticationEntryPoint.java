@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
 public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
@@ -19,6 +20,15 @@ public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException {
 
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+		
+		String headerConstant = request.getHeader("Authorization");
+		
+		if (headerConstant == null || !StringUtils.hasText(headerConstant)) {
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token missing");			
+		}		
+		else{
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Token");
+		}
+		
 	}
 }

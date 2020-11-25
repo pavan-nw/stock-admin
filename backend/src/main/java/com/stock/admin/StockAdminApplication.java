@@ -2,7 +2,9 @@ package com.stock.admin;
 
 import java.util.TimeZone;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @EnableMongoAuditing
 @RestController
+@EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
 public class StockAdminApplication {
 
 

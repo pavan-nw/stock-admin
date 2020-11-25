@@ -38,13 +38,19 @@ public class JWTTokenUtil implements Serializable {
 		final Claims claims = getAllClaimsFromToken(token);
 		return claimsResolver.apply(claims);
 	}
-    //for retrieveing any information from token we will need the secret key
+    //for retrieving any information from token we will need the secret key
 	private Claims getAllClaimsFromToken(String token) {
+		try {
 		return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+		}
+		catch(Exception e) {
+			System.err.println("Error in parsing JWT "+e.getMessage());
+			return null;
+		}
 	}
 
 	//check if the token has expired
-	private Boolean isTokenExpired(String token) {
+	private boolean isTokenExpired(String token) {
 		final Date expiration = getExpirationDateFromToken(token);
 		return expiration.before(new Date());
 	}
@@ -68,7 +74,7 @@ public class JWTTokenUtil implements Serializable {
 	}
 
 	//validate token
-	public Boolean validateToken(String token, UserDetails userDetails) {
+	public boolean validateToken(String token, UserDetails userDetails) {
 		final String username = getUsernameFromToken(token);
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
