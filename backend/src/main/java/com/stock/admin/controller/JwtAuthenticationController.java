@@ -1,5 +1,6 @@
 package com.stock.admin.controller;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -7,6 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,10 +27,11 @@ import com.stock.admin.model.response.JWTResponse;
 import com.stock.admin.model.response.Response;
 import com.stock.admin.model.response.ResponseStatus;
 import com.stock.admin.repository.ShopsRepository;
+import com.stock.admin.repository.UserRepository;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 public class JwtAuthenticationController {
 
 	@Autowired
@@ -42,9 +45,13 @@ public class JwtAuthenticationController {
 	
 	@Autowired
 	private ShopsRepository shopRepository;
-
-	@PostMapping
-	@RequestMapping(value = "/login")
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
+	UserRepository userRepository;
+	
+	@PostMapping(value = "/login")
 	@ResponseBody
 	public Response createAuthenticationToken(@RequestBody JWTRequest authenticationRequest) throws Exception {
 
@@ -57,8 +64,25 @@ public class JwtAuthenticationController {
 		JWTResponse  jwtResponse= new JWTResponse(token);
 		return new Response(ApplicationUser.type, jwtResponse, ResponseStatus.Success);
 	}
+	
+		
+	@PostMapping(value = "/signUp")
+	@ResponseBody
+	public Response signUp(@RequestBody JWTRequest authenticationRequest) {
 
-	private void authenticate(String username, String password,String shopCode) throws StockAdminApplicationException {
+		Optional<ApplicationUser> userExisting = userRepository.findByUsername(authenticationRequest.getUsername());
+    	if(userExisting.isPresent()) {
+    		throw new StockAdminApplicationException(authenticationRequest.getUsername() + " User Already Exists",HttpStatus.EXPECTATION_FAILED);
+    	}
+    	authenticationRequest.setPassword(bCryptPasswordEncoder.encode(authenticationRequest.getPassword()));
+    	ApplicationUser applicationUser = new ApplicationUser();
+    	applicationUser.setUsername(authenticationRequest.getUsername());
+    	applicationUser.setPassword(authenticationRequest.getPassword());
+    	userRepository.save(applicationUser);
+        return Response.buildResponse(ApplicationUser.type, authenticationRequest.getUsername()+ " Added Successfully", true);
+	}
+
+	private void authenticate(String username, String password,String shopCode) {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		} catch (DisabledException e) {

@@ -1,7 +1,6 @@
 package com.stock.admin.service;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -22,10 +21,8 @@ public class JWTUserDetailsService implements UserDetailsService {
 	UserRepository userRepository;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
-		List<ApplicationUser> users = userRepository.findAll();
-		
+	public UserDetails loadUserByUsername(String username){
+				
 		Optional<ApplicationUser> applicationUser = userRepository.findByUsername(username);
 		
 		if (applicationUser.isPresent()) {			

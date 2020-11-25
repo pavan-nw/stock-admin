@@ -11,6 +11,9 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stock.admin.model.response.ErrorResponse;
+
 @Component
 public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
 
@@ -23,12 +26,24 @@ public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 		
 		String headerConstant = request.getHeader("Authorization");
 		
+		ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorCode(HttpServletResponse.SC_UNAUTHORIZED);             
+		
 		if (headerConstant == null || !StringUtils.hasText(headerConstant)) {
-			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token missing");			
+			errorResponse.setErrorMessage("Token missing");			
 		}		
 		else{
-			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Token");
+			errorResponse.setErrorMessage("Invalid Token");		
 		}
+		byte[] responseToSend = restResponseBytes(errorResponse);
+        response.setHeader("Content-Type", "application/json");
+        response.setStatus(401);
+        response.getOutputStream().write(responseToSend);        
 		
 	}
+	
+	 private byte[] restResponseBytes(ErrorResponse eErrorResponse) throws IOException {
+	        String serialized = new ObjectMapper().writeValueAsString(eErrorResponse);
+	        return serialized.getBytes();
+	    }
 }
