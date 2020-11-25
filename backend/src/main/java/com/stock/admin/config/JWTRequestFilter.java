@@ -19,6 +19,9 @@ import com.stock.admin.service.JWTUserDetailsService;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
+import static com.stock.admin.utils.StockAdminConstants.AUTHORIZATION;
+import static com.stock.admin.utils.StockAdminConstants.BEARER;
+
 @Component
 public class JWTRequestFilter extends OncePerRequestFilter {
 
@@ -28,17 +31,26 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 	@Autowired
 	private JWTTokenUtil jwtTokenUtil;
 
+	/**
+	 * Do filter internal.
+	 *
+	 * @param request the request
+	 * @param response the response
+	 * @param chain the chain
+	 * @throws ServletException the servlet exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
 
-		final String requestTokenHeader = request.getHeader("Authorization");
+		final String requestTokenHeader = request.getHeader(AUTHORIZATION);
 
 		String username = null;
 		String jwtToken = null;
 		// JWT Token is in the form "Bearer token". Remove Bearer word and get
 		// only the Token
-		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+		if (requestTokenHeader != null && requestTokenHeader.startsWith(BEARER)) {
 			jwtToken = requestTokenHeader.substring(7);
 			try {
 				username = jwtTokenUtil.getUsernameFromToken(jwtToken);

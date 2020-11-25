@@ -1,6 +1,4 @@
 package com.stock.admin.model.entity;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.Id;
@@ -10,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * The type Application user.
  */
 @Document(collection = "user")
-@JsonIgnoreProperties({"type","shopCode"})
 public class ApplicationUser {
     /**
      * The constant type.

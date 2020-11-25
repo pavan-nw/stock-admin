@@ -18,5 +18,12 @@ public interface UserRepository extends MongoRepository<ApplicationUser, String>
      */
     Optional<ApplicationUser> findByUsername(String userName);
     
+    /**
+     * Find by username and password.
+     *
+     * @param userName the user name
+     * @param passWord the pass word
+     * @return the optional
+     */
     Optional<ApplicationUser> findByUsernameAndPassword(String userName, String passWord);
 }

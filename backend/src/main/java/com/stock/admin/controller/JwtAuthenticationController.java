@@ -28,6 +28,9 @@ import com.stock.admin.model.response.Response;
 import com.stock.admin.model.response.ResponseStatus;
 import com.stock.admin.repository.ShopsRepository;
 import com.stock.admin.repository.UserRepository;
+import static com.stock.admin.utils.StockAdminConstants.USER_DISABLED;
+import static com.stock.admin.utils.StockAdminConstants.INVALID_SHOPCODE;
+import static com.stock.admin.utils.StockAdminConstants.INVALID_CREDENTIALS;
 
 @RestController
 @CrossOrigin
@@ -51,6 +54,13 @@ public class JwtAuthenticationController {
 	@Autowired
 	UserRepository userRepository;
 	
+	/**
+	 * Creates the authentication token.
+	 *
+	 * @param authenticationRequest the authentication request
+	 * @return the response
+	 * @throws Exception the exception
+	 */
 	@PostMapping(value = "/login")
 	@ResponseBody
 	public Response createAuthenticationToken(@RequestBody JWTRequest authenticationRequest) throws Exception {
@@ -66,10 +76,16 @@ public class JwtAuthenticationController {
 	}
 	
 		
-	@PostMapping(value = "/signUp")
+	/**
+	 * Sign up.
+	 *
+	 * @param authenticationRequest the authentication request
+	 * @return the response
+	 */
+	@PostMapping(value = "/sign-up")
 	@ResponseBody
 	public Response signUp(@RequestBody JWTRequest authenticationRequest) {
-
+		
 		Optional<ApplicationUser> userExisting = userRepository.findByUsername(authenticationRequest.getUsername());
     	if(userExisting.isPresent()) {
     		throw new StockAdminApplicationException(authenticationRequest.getUsername() + " User Already Exists",HttpStatus.EXPECTATION_FAILED);
@@ -82,18 +98,25 @@ public class JwtAuthenticationController {
         return Response.buildResponse(ApplicationUser.type, authenticationRequest.getUsername()+ " Added Successfully", true);
 	}
 
+	/**
+	 * Authenticate.
+	 *
+	 * @param username the username
+	 * @param password the password
+	 * @param shopCode the shop code
+	 */
 	private void authenticate(String username, String password,String shopCode) {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		} catch (DisabledException e) {
-			throw new StockAdminApplicationException("USER_DISABLED", HttpStatus.UNAUTHORIZED);			
+			throw new StockAdminApplicationException(USER_DISABLED, HttpStatus.UNAUTHORIZED);			
 		} catch (BadCredentialsException e) {
-			throw new StockAdminApplicationException("INVALID_CREDENTIALS", HttpStatus.UNAUTHORIZED);
+			throw new StockAdminApplicationException(INVALID_CREDENTIALS, HttpStatus.UNAUTHORIZED);
 		}
 		
 		Shop shop = shopRepository.findByShopCode(shopCode);
 		if(shop==null) {
-			throw new StockAdminApplicationException("INVALID SHOPCODE", HttpStatus.BAD_REQUEST);
+			throw new StockAdminApplicationException(INVALID_SHOPCODE, HttpStatus.BAD_REQUEST);
 		}
 	}
 }

@@ -13,13 +13,14 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import static com.stock.admin.utils.StockAdminConstants.TOKEN_EXPIRY_HOURS;
 
 @Component
 public class JWTTokenUtil implements Serializable {
 
 	private static final long serialVersionUID = -2550185165626007488L;
 
-	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+	public static final long JWT_TOKEN_VALIDITY = TOKEN_EXPIRY_HOURS * 60 * 60;
 
 	@Value("${jwt.secret}")
 	private String secret;
