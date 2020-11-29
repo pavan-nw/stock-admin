@@ -1,4 +1,6 @@
 package com.stock.admin.model.entity;
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.Id;
@@ -22,8 +24,17 @@ public class ApplicationUser {
     @NotNull(message = "Password is the mandatory field")
     private String password;    
     
+    private List<String> shopCodes;    
     
-    public String getId() {
+    public List<String> getShopCodes() {
+		return shopCodes;
+	}
+
+	public void setShopCodes(List<String> shopCodes) {
+		this.shopCodes = shopCodes;
+	}
+
+	public String getId() {
 		return id;
 	}
 

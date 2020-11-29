@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.stock.admin.utils.CustomUserDetail;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -57,9 +59,9 @@ public class JWTTokenUtil implements Serializable {
 	}
 
 	//generate token for user
-	public String generateToken(UserDetails userDetails) {
+	public String generateToken(CustomUserDetail userDetails) {
 		Map<String, Object> claims = new HashMap<>();
-		return doGenerateToken(claims, userDetails.getUsername());
+		return doGenerateToken(claims, userDetails.getUser().getUsername());
 	}
 
 	//while creating the token -
@@ -75,8 +77,8 @@ public class JWTTokenUtil implements Serializable {
 	}
 
 	//validate token
-	public boolean validateToken(String token, UserDetails userDetails) {
+	public boolean validateToken(String token, CustomUserDetail userDetails) {
 		final String username = getUsernameFromToken(token);
-		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+		return (username.equals(userDetails.getUser().getUsername()) && !isTokenExpired(token));
 	}
 }

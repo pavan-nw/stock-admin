@@ -1,5 +1,7 @@
 package com.stock.admin.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.stock.admin.service.JWTUserDetailsService;
-
-
+import com.stock.admin.utils.CustomUserDetail;
 import com.stock.admin.config.JWTTokenUtil;
 import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.ApplicationUser;
@@ -67,7 +68,7 @@ public class JwtAuthenticationController {
 
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword(),authenticationRequest.getShopCode());
 
-		final UserDetails userDetails = userDetailsService
+		final CustomUserDetail userDetails = userDetailsService
 				.loadUserByUsername(authenticationRequest.getUsername());
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
@@ -87,13 +88,23 @@ public class JwtAuthenticationController {
 	public Response signUp(@RequestBody JWTRequest authenticationRequest) {
 		
 		Optional<ApplicationUser> userExisting = userRepository.findByUsername(authenticationRequest.getUsername());
-    	if(userExisting.isPresent()) {
-    		throw new StockAdminApplicationException(authenticationRequest.getUsername() + " User Already Exists",HttpStatus.EXPECTATION_FAILED);
+    	if(userExisting.isPresent()) { 
+    		if( userExisting.get().getShopCodes().contains(authenticationRequest.getShopCode())) {
+    			throw new StockAdminApplicationException(authenticationRequest.getUsername() + " User Already Exists",HttpStatus.EXPECTATION_FAILED);
+    		}
+    		else {
+    			ApplicationUser applicationUser = userExisting.get();
+    			applicationUser.getShopCodes().add(authenticationRequest.getShopCode());
+    			Response.buildResponse(ApplicationUser.type, authenticationRequest.getUsername()+ " Added to " + authenticationRequest.getShopCode()+ " Successfully", true);
+    		}
     	}
     	authenticationRequest.setPassword(bCryptPasswordEncoder.encode(authenticationRequest.getPassword()));
     	ApplicationUser applicationUser = new ApplicationUser();
     	applicationUser.setUsername(authenticationRequest.getUsername());
     	applicationUser.setPassword(authenticationRequest.getPassword());
+    	List<String> shopCodes = new ArrayList<>();
+    	shopCodes.add(authenticationRequest.getShopCode());
+    	applicationUser.setShopCodes(shopCodes);
     	userRepository.save(applicationUser);
         return Response.buildResponse(ApplicationUser.type, authenticationRequest.getUsername()+ " Added Successfully", true);
 	}
