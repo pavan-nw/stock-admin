@@ -41,6 +41,11 @@ public class JWTTokenUtil implements Serializable {
 		final Claims claims = getAllClaimsFromToken(token);
 		return claimsResolver.apply(claims);
 	}
+	
+	public Object getClaimFromToken(String token, String key) {
+		final Claims claims = getAllClaimsFromToken(token);
+		return claims!=null ? claims.get(key):null;
+	}
     //for retrieving any information from token we will need the secret key
 	private Claims getAllClaimsFromToken(String token) {
 		try {
@@ -59,8 +64,9 @@ public class JWTTokenUtil implements Serializable {
 	}
 
 	//generate token for user
-	public String generateToken(CustomUserDetail userDetails) {
+	public String generateToken(CustomUserDetail userDetails,String shopCode) {
 		Map<String, Object> claims = new HashMap<>();
+		claims.put("shopCode",shopCode);
 		return doGenerateToken(claims, userDetails.getUser().getUsername());
 	}
 
@@ -79,6 +85,12 @@ public class JWTTokenUtil implements Serializable {
 	//validate token
 	public boolean validateToken(String token, CustomUserDetail userDetails) {
 		final String username = getUsernameFromToken(token);
-		return (username.equals(userDetails.getUser().getUsername()) && !isTokenExpired(token));
+		final String shopCode = getShopCodeFromToken(token);
+		final boolean isValidShop = userDetails.getUser().getShopCodes().contains(shopCode);
+		return (username.equals(userDetails.getUser().getUsername()) && !isTokenExpired(token) && isValidShop);
+	}
+
+	private String getShopCodeFromToken(String token) {
+		return (String) getClaimFromToken(token, "shopCode");
 	}
 }

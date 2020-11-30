@@ -64,14 +64,18 @@ public class JwtAuthenticationController {
 	 */
 	@PostMapping(value = "/login")
 	@ResponseBody
-	public Response createAuthenticationToken(@RequestBody JWTRequest authenticationRequest) throws Exception {
-
+	public Response createAuthenticationToken(@RequestBody JWTRequest authenticationRequest){
+	
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword(),authenticationRequest.getShopCode());
-
+	
 		final CustomUserDetail userDetails = userDetailsService
 				.loadUserByUsername(authenticationRequest.getUsername());
-
-		final String token = jwtTokenUtil.generateToken(userDetails);
+		
+		if(!userDetails.getUser().getShopCodes().contains(authenticationRequest.getShopCode())) {
+			throw new StockAdminApplicationException("USER Not Registered for this Shop", HttpStatus.BAD_REQUEST); 
+		}
+	
+		final String token = jwtTokenUtil.generateToken(userDetails,authenticationRequest.getShopCode());
 		JWTResponse  jwtResponse= new JWTResponse(token);
 		return new Response(ApplicationUser.type, jwtResponse, ResponseStatus.Success);
 	}
@@ -87,15 +91,17 @@ public class JwtAuthenticationController {
 	@ResponseBody
 	public Response signUp(@RequestBody JWTRequest authenticationRequest) {
 		
+		validateShopCode(authenticationRequest.getShopCode());
 		Optional<ApplicationUser> userExisting = userRepository.findByUsername(authenticationRequest.getUsername());
     	if(userExisting.isPresent()) { 
     		if( userExisting.get().getShopCodes().contains(authenticationRequest.getShopCode())) {
     			throw new StockAdminApplicationException(authenticationRequest.getUsername() + " User Already Exists",HttpStatus.EXPECTATION_FAILED);
     		}
     		else {
-    			ApplicationUser applicationUser = userExisting.get();
+    			ApplicationUser applicationUser = userExisting.get();    			
     			applicationUser.getShopCodes().add(authenticationRequest.getShopCode());
-    			Response.buildResponse(ApplicationUser.type, authenticationRequest.getUsername()+ " Added to " + authenticationRequest.getShopCode()+ " Successfully", true);
+    			userRepository.save(applicationUser);
+    			return Response.buildResponse(ApplicationUser.type, authenticationRequest.getUsername()+ " Added to " + authenticationRequest.getShopCode()+ " Successfully", true);
     		}
     	}
     	authenticationRequest.setPassword(bCryptPasswordEncoder.encode(authenticationRequest.getPassword()));
@@ -125,6 +131,11 @@ public class JwtAuthenticationController {
 			throw new StockAdminApplicationException(INVALID_CREDENTIALS, HttpStatus.UNAUTHORIZED);
 		}
 		
+		validateShopCode(shopCode);
+	}
+
+
+	private void validateShopCode(String shopCode) {
 		Shop shop = shopRepository.findByShopCode(shopCode);
 		if(shop==null) {
 			throw new StockAdminApplicationException(INVALID_SHOPCODE, HttpStatus.BAD_REQUEST);
