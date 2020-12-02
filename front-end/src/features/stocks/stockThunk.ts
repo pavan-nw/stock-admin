@@ -1,5 +1,5 @@
 import { ThunkAction } from 'redux-thunk';
-import { fetchStocks, toggleExportShowDialog } from './actions';
+import { fetchStocks} from './actions';
 import {
     StockState,
     StockActionTypes,
@@ -167,8 +167,7 @@ export const exportStock = (
         url = window.URL.createObjectURL(blob);
         window.open(url);
         if (response.status === 200) {
-            dispatch(hideSpinnerDialog());
-            dispatch(toggleExportShowDialog());
+            dispatch(hideSpinnerDialog());            
             dispatch(showToast(stockDownloaded, '200'));
         } else {
             dispatch(showToast(errorOccurred, somethingWentWrong, 'error'));

@@ -7,8 +7,7 @@ import { getStocks } from '../../features/stocks/selectors';
 import { getStocks as fetchStocks, searchStock } from '../../features/stocks/stockThunk';
 import { Stocks } from '../../features/stocks/types';
 import { InputText } from 'primereact/inputtext';
-import {    
-    exportLabel,
+import {        
     stockDateLabel,
     incomingStockCountLabel,
     ManageStocksLabel,
@@ -23,8 +22,7 @@ import {
 import { formatDate } from '../../helpers/utils';
 import { StocksFormHeader } from './StocksFormHeader';
 import { Panel } from 'primereact/panel';
-import { ExportDialog } from './ExportDialog';
-import { clearCurrentStock, toggleExportShowDialog } from '../../features/stocks/actions';
+import { clearCurrentStock} from '../../features/stocks/actions';
 import './stockList.css';
 import { getShopCode } from '../../features/login/selectors';
 
@@ -75,14 +73,8 @@ export const StockList: React.FC = () => {
         dispatch(searchStock(shopCode));
     };
 
-    const onExport = () => {
-        console.log("on export");
-        dispatch(toggleExportShowDialog());
-    }
-
     return (
-        <div>
-            <ExportDialog/>
+        <div>            
             <div>
                 <Panel header={searchLabel} toggleable collapsed>
                     <StocksFormHeader></StocksFormHeader>
@@ -108,21 +100,7 @@ export const StockList: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                </Panel>
-                <div className="p-grid p-mt-lg-2 p-mt-md-2 p-mt-sm-1">
-                        <div className="p-lg-2 p-md-12 p-sm-12 p-lg-offset-10">
-                            <div className="p-grid">
-                                <div className="p-lg-4 p-md-4 p-sm-12 p-lg-offset-2 p-md-offset-4">
-                                    <Button
-                                        type="button"
-                                        className="p-button-raised p-mr-2"
-                                        label={exportLabel}
-                                        onClick={(event) => onExport()}
-                                    />
-                                </div>
-                            </div>                            
-                        </div>
-                    </div>                
+                </Panel>                              
             </div>
             <DataTable
                 emptyMessage={'No Stocks Found'}

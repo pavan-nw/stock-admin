@@ -68,10 +68,6 @@ export interface UpdateStockAction {
     stock: Stocks;
 }
 
-export interface ToggleExportDialogAction {
-    type: typeof TOGGLE_EXPORT_DIALOG;    
-}
-
 export type StockActionTypes =
     | FetchStocksAction
     | CreateStocksAction
@@ -81,8 +77,7 @@ export type StockActionTypes =
     | setStockDateAction
     | setOpenStockAction
     | setCLoseStockAction
-    | ClearCurrentStockAction
-    | ToggleExportDialogAction;
+    | ClearCurrentStockAction;
 
 export interface Product {
     id?: string;
@@ -146,7 +141,6 @@ export interface SearchStockRequest {
 export interface StockState {
     stockState: {
         stocks: Stocks[];
-        exportShowDialog: boolean;
         currentStock: StockDetails;        
     };
 }

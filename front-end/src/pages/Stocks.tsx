@@ -8,8 +8,10 @@ import {
     viewStocksTitle,
     addInvoiceTitle,
     addSalesTitle,
+    exportLabel,
 } from '../helpers/constants';
 import { clearCurrentStock } from '../features/stocks/actions';
+import { StockExportForm } from '../components/stocks/StockExportForm';
 
 export const Stocks: React.FC = () => {
     const initIndex = 0;
@@ -39,6 +41,9 @@ export const Stocks: React.FC = () => {
                     </TabPanel>
                     <TabPanel header={addSalesTitle}>
                         <AddSales />
+                    </TabPanel>
+                    <TabPanel header={exportLabel}>
+                        <StockExportForm/>
                     </TabPanel>
                 </TabView>
             </div>

@@ -14,5 +14,3 @@ export const getOpeningStock = (state: StockState) =>
     state.stockState.currentStock.openingStocks;
 export const getClosingStock = (state: StockState) =>
     state.stockState.currentStock.closingStocks;
-export const getShowDialog = (state: StockState) =>
-state.stockState.exportShowDialog;
