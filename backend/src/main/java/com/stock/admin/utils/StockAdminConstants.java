@@ -38,4 +38,30 @@ public interface StockAdminConstants {
     String NO_STOCKS_FOUND = "No Stocks Found for the selected Date range";
     
     
+    /** The invalid token. */
+    String INVALID_TOKEN = "Invalid Token";
+    
+	/** The token missing. */
+	String TOKEN_MISSING = "Token missing";
+	
+	/** The invalid shopcode. */
+	String INVALID_SHOPCODE = "INVALID SHOPCODE";
+
+	/** The user disabled. */
+	String USER_DISABLED = "USER_DISABLED";
+	
+	/** The bearer. */
+	String BEARER = "Bearer ";
+
+	/** The authorization. */
+	String AUTHORIZATION = "Authorization";
+	
+	/** The invalid credentials. */
+	String INVALID_CREDENTIALS = "INVALID_CREDENTIALS";
+	
+	/** The api users. */
+	String API_USERS = "/api/users/**";
+	
+	/** The token expiry hours. */
+	int TOKEN_EXPIRY_HOURS = 5;
 }
