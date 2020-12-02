@@ -9,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.stock.admin.service.JWTUserDetailsService;
+import com.stock.admin.service.LoginUserDetailsService;
 import com.stock.admin.utils.CustomUserDetail;
 import com.stock.admin.config.JWTTokenUtil;
 import com.stock.admin.exception.StockAdminApplicationException;
 import com.stock.admin.model.entity.ApplicationUser;
 import com.stock.admin.model.entity.Shop;
-import com.stock.admin.model.request.JWTRequest;
-import com.stock.admin.model.response.JWTResponse;
+import com.stock.admin.model.request.LoginRequest;
+import com.stock.admin.model.response.LoginResponse;
 import com.stock.admin.model.response.Response;
 import com.stock.admin.model.response.ResponseStatus;
 import com.stock.admin.repository.ShopsRepository;
@@ -36,7 +35,7 @@ import static com.stock.admin.utils.StockAdminConstants.INVALID_CREDENTIALS;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/users")
-public class JwtAuthenticationController {
+public class LoginController {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -45,10 +44,11 @@ public class JwtAuthenticationController {
 	private JWTTokenUtil jwtTokenUtil;
 
 	@Autowired
-	private JWTUserDetailsService userDetailsService;
+	private LoginUserDetailsService userDetailsService;
 	
 	@Autowired
 	private ShopsRepository shopRepository;
+	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
@@ -64,7 +64,7 @@ public class JwtAuthenticationController {
 	 */
 	@PostMapping(value = "/login")
 	@ResponseBody
-	public Response createAuthenticationToken(@RequestBody JWTRequest authenticationRequest){
+	public Response createAuthenticationToken(@RequestBody LoginRequest authenticationRequest){
 	
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword(),authenticationRequest.getShopCode());
 	
@@ -72,11 +72,11 @@ public class JwtAuthenticationController {
 				.loadUserByUsername(authenticationRequest.getUsername());
 		
 		if(!userDetails.getUser().getShopCodes().contains(authenticationRequest.getShopCode())) {
-			throw new StockAdminApplicationException("USER Not Registered for this Shop", HttpStatus.BAD_REQUEST); 
+			throw new StockAdminApplicationException(authenticationRequest.getUsername()+ " not registered for this shop", HttpStatus.BAD_REQUEST); 
 		}
 	
 		final String token = jwtTokenUtil.generateToken(userDetails,authenticationRequest.getShopCode());
-		JWTResponse  jwtResponse= new JWTResponse(token);
+		LoginResponse  jwtResponse= new LoginResponse(token);
 		return new Response(ApplicationUser.type, jwtResponse, ResponseStatus.Success);
 	}
 	
@@ -89,7 +89,7 @@ public class JwtAuthenticationController {
 	 */
 	@PostMapping(value = "/sign-up")
 	@ResponseBody
-	public Response signUp(@RequestBody JWTRequest authenticationRequest) {
+	public Response signUp(@RequestBody LoginRequest authenticationRequest) {
 		
 		validateShopCode(authenticationRequest.getShopCode());
 		Optional<ApplicationUser> userExisting = userRepository.findByUsername(authenticationRequest.getUsername());
@@ -135,6 +135,11 @@ public class JwtAuthenticationController {
 	}
 
 
+	/**
+	 * Validate shop code.
+	 *
+	 * @param shopCode the shop code
+	 */
 	private void validateShopCode(String shopCode) {
 		Shop shop = shopRepository.findByShopCode(shopCode);
 		if(shop==null) {

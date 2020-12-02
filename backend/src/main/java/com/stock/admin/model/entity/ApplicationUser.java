@@ -1,4 +1,5 @@
 package com.stock.admin.model.entity;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -10,11 +11,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * The type Application user.
  */
 @Document(collection = "user")
-public class ApplicationUser {
+public class ApplicationUser implements Serializable  {
     /**
      * The constant type.
      */
-    public static final String type = "login";
+    public static final String type = "user";
+    
+    private static final long serialVersionUID = 1L;
 
     @Id
     private String id;

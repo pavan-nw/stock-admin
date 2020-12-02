@@ -2,12 +2,12 @@ package com.stock.admin.model.response;
 
 import java.io.Serializable;
 
-public class JWTResponse implements Serializable {
+public class LoginResponse implements Serializable {
 
 	private static final long serialVersionUID = -8091879091924046844L;
 	private final String token;
 
-	public JWTResponse(String jwttoken) {
+	public LoginResponse(String jwttoken) {
 		this.token = jwttoken;
 	}
 

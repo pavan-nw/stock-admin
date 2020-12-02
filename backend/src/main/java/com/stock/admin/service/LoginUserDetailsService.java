@@ -10,7 +10,7 @@ import com.stock.admin.repository.UserRepository;
 import com.stock.admin.utils.CustomUserDetail;
 
 @Service
-public class JWTUserDetailsService implements UserDetailsService {
+public class LoginUserDetailsService implements UserDetailsService {
 	
 	@Inject
 	UserRepository userRepository;

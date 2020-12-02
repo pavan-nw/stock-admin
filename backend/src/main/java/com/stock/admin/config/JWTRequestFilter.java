@@ -1,25 +1,19 @@
 package com.stock.admin.config;
 
 import java.io.IOException;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import com.stock.admin.service.JWTUserDetailsService;
+import com.stock.admin.service.LoginUserDetailsService;
 import com.stock.admin.utils.CustomUserDetail;
-
 import io.jsonwebtoken.ExpiredJwtException;
-
 import static com.stock.admin.utils.StockAdminConstants.AUTHORIZATION;
 import static com.stock.admin.utils.StockAdminConstants.BEARER;
 
@@ -27,7 +21,7 @@ import static com.stock.admin.utils.StockAdminConstants.BEARER;
 public class JWTRequestFilter extends OncePerRequestFilter {
 
 	@Autowired
-	private JWTUserDetailsService jwtUserDetailsService;
+	private LoginUserDetailsService jwtUserDetailsService;
 
 	@Autowired
 	private JWTTokenUtil jwtTokenUtil;
