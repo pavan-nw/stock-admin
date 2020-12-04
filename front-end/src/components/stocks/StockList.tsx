@@ -7,7 +7,7 @@ import { getStocks } from '../../features/stocks/selectors';
 import { getStocks as fetchStocks, searchStock } from '../../features/stocks/stockThunk';
 import { Stocks } from '../../features/stocks/types';
 import { InputText } from 'primereact/inputtext';
-import {
+import {        
     stockDateLabel,
     incomingStockCountLabel,
     ManageStocksLabel,
@@ -17,10 +17,12 @@ import {
     productPackagingLabel,
     searchLabel,
     totalStockCountLabel,
+    resetLabel,
 } from '../../helpers/constants';
 import { formatDate } from '../../helpers/utils';
 import { StocksFormHeader } from './StocksFormHeader';
 import { Panel } from 'primereact/panel';
+import { clearCurrentStock} from '../../features/stocks/actions';
 import './stockList.css';
 import { getShopCode } from '../../features/login/selectors';
 
@@ -66,8 +68,13 @@ export const StockList: React.FC = () => {
         dispatch(searchStock(shopCode));
     };
 
+    const onReset = () => {
+        dispatch(clearCurrentStock());
+        dispatch(searchStock(shopCode));
+    };
+
     return (
-        <div>
+        <div>            
             <div>
                 <Panel header={searchLabel} toggleable collapsed>
                     <StocksFormHeader></StocksFormHeader>
@@ -82,10 +89,18 @@ export const StockList: React.FC = () => {
                                         onClick={(event) => onSearch()}
                                     />
                                 </div>
+                                <div className="p-lg-4 p-md-4 p-sm-12 p-lg-offset-2 p-md-offset-2">
+                                    <Button
+                                        type="button"
+                                        className="p-button-raised p-mr-2"
+                                        label={resetLabel}
+                                        onClick={(event) => onReset()}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </Panel>
+                </Panel>                              
             </div>
             <DataTable
                 emptyMessage={'No Stocks Found'}

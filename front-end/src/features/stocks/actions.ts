@@ -17,7 +17,7 @@ import {
     SET_CLOSE_STOCK,
     ClearCurrentStockAction,
     CLEAR_CURRENT_STOCK,
-    LocalPackaging,
+    LocalPackaging 
 } from './types';
 
 export const fetchProducts = (

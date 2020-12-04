@@ -34,25 +34,25 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class StockService {
-	private final StocksRepository stocksRepository;
-	private final ProductService productService;
-	private final MongoTemplate mongoTemplate;
+    private final StocksRepository stocksRepository;
+    private final ProductService productService;
+    private final MongoTemplate mongoTemplate;
 
-	/**
-	 * Instantiates a new Stock service.
-	 *
-	 * @param stocksRepository the stocks repository
-	 * @param productService   the product service
-	 * @param mongoTemplate    the mongo template
-	 */
-	@Autowired
-	public StockService(StocksRepository stocksRepository, ProductService productService, MongoTemplate mongoTemplate) {
-		this.stocksRepository = stocksRepository;
-		this.productService = productService;
-		this.mongoTemplate = mongoTemplate;
-	}
-
-	/**
+    /**
+     * Instantiates a new Stock service.
+     *
+     * @param stocksRepository the stocks repository
+     * @param productService   the product service
+     * @param mongoTemplate    the mongo template
+     */
+    @Autowired
+    public StockService(StocksRepository stocksRepository, ProductService productService, MongoTemplate mongoTemplate) {
+        this.stocksRepository = stocksRepository;
+        this.productService = productService;
+        this.mongoTemplate = mongoTemplate;
+    }
+    
+    /**
 	 * Create or Update stocks.
 	 *
 	 * @param stockRequest the stock
@@ -69,7 +69,15 @@ public class StockService {
 					return updatedStock;
 				}).orElseThrow(() -> new StockAdminApplicationException(PRODUCT_DOES_NOT_EXISTS, HttpStatus.NOT_FOUND));
 	}
+	
+	
 
+	/**
+	 * Find stock.
+	 *
+	 * @param stockRequest the stock request
+	 * @return the optional
+	 */
 	private Optional<Stock> findStock(StockRequest stockRequest) {
 		// Query to check stock exist for given date
 		Query queryToCheckStockForGivenDate = new Query();
@@ -78,11 +86,74 @@ public class StockService {
 		return Optional.ofNullable(mongoTemplate.findOne(queryToCheckStockForGivenDate, Stock.class));
 	}
 
+	/**
+	 * Matching product criteria.
+	 *
+	 * @param stockRequest the stock request
+	 * @return the criteria
+	 */
 	private Criteria matchingProductCriteria(StockRequest stockRequest) {
 		return Criteria.where(PATH_PRODUCT_NAME).is(stockRequest.getProductName()).and(PATH_PRODUCT_PACKAGING)
 				.is(stockRequest.getPackaging()).and(PATH_PRODUCT_SHOP_CODE).is(stockRequest.getShopCode());
 	}
 
+       /**
+     * Cascade update.
+     *
+     * @param stockRequest the stock request
+     */
+    public void cascadeUpdate(StockRequest stockRequest) {
+
+        // Query to check for stocks present on later dates, so that cascade the update for all the stocks
+        Query queryToCheckStocksOnLaterDate = new Query();
+        Criteria criteria = matchingProductCriteria(stockRequest).and(STOCK_DATE).gt(stockRequest.getStockDate());
+        queryToCheckStocksOnLaterDate.addCriteria(criteria);
+
+        Update updateStock = new Update();
+        // Increment the total stock
+        updateStock.inc(TOTAL_STOCK, stockRequest.getOpeningStock() - stockRequest.getClosingStock());
+
+        // Update all records matching query with total stock
+        UpdateResult updateResult = mongoTemplate.updateMulti(queryToCheckStocksOnLaterDate, updateStock, Stock.class);
+
+        System.out.println("Updates Matched to: " + updateResult.getMatchedCount());
+        System.out.println("Updates Done to: " + updateResult.getModifiedCount());
+    }
+
+    /**
+     * Gets all.
+     *
+     * @param pageNum  the page num
+     * @param size     the size
+     * @param sortType the sort type
+     * @return the all
+     */
+    public Page<Stock> getAll(int pageNum, int size, String sortType) {
+        return stocksRepository.findAll(pageRequestFor(pageNum, size, sortType, STOCK_DATE));
+    }
+    
+    /**
+     * Find by stock date between.
+     *
+     * @param fromDate the from date
+     * @param toDate the to date
+     * @param pageRequest the page request
+     * @return the page
+     */
+    public Page<Stock> findByProductShopCodeAndStockDateBetween(String shopCode, Date fromDate, Date toDate ,Pageable pageRequest) {
+    	Pageable wholePage = Pageable.unpaged();
+        return stocksRepository.findByProduct_ShopCodeAndStockDateBetween(shopCode,fromDate, toDate, wholePage);
+    }
+    
+
+
+	/**
+	 * Handle when stock found.
+	 *
+	 * @param stockFound the stock found
+	 * @param stockRequest the stock request
+	 * @return the stock
+	 */
 	private Stock handleWhenStockFound(Stock stockFound, StockRequest stockRequest) {
 		// Already stock found for given date
 
@@ -95,6 +166,13 @@ public class StockService {
 		return stocksRepository.save(stockFound);
 	}
 
+	/**
+	 * Handle when stock not found.
+	 *
+	 * @param stockRequest the stock request
+	 * @param product the product
+	 * @return the stock
+	 */
 	private Stock handleWhenStockNotFound(StockRequest stockRequest, Product product) {
 		// No stock found for given date
 		// Query to check stock exist for previous dates
@@ -103,6 +181,12 @@ public class StockService {
 				createStockWithTotalStock(stockRequest, product, previousStockAvailable.map(Stock::getTotalStock)));
 	}
 
+	/**
+	 * Find previous stocks.
+	 *
+	 * @param stockRequest the stock request
+	 * @return the optional
+	 */
 	private Optional<Stock> findPreviousStocks(StockRequest stockRequest) {
 		Query queryToCheckStockForPreviousDates = new Query();
 		Criteria criteria = matchingProductCriteria(stockRequest).and(STOCK_DATE).lt(stockRequest.getStockDate());
@@ -110,6 +194,14 @@ public class StockService {
 		return Optional.ofNullable(mongoTemplate.findOne(queryToCheckStockForPreviousDates, Stock.class));
 	}
 
+	/**
+	 * Creates the stock with total stock.
+	 *
+	 * @param stockRequest the stock request
+	 * @param product the product
+	 * @param totalStock the total stock
+	 * @return the stock
+	 */
 	private Stock createStockWithTotalStock(StockRequest stockRequest, Product product, Optional<Integer> totalStock) {
 		Stock stock = new Stock();
 		stock.setProduct(product);
@@ -127,42 +219,7 @@ public class StockService {
 		return stock;
 	}
 
-	/**
-	 * Cascade update.
-	 *
-	 * @param stockRequest the stock request
-	 */
-	public void cascadeUpdate(StockRequest stockRequest) {
-
-		// Query to check for stocks present on later dates, so that cascade the update
-		// for all the stocks
-		Query queryToCheckStocksOnLaterDate = new Query();
-		Criteria criteria = matchingProductCriteria(stockRequest).and(STOCK_DATE).gt(stockRequest.getStockDate());
-		queryToCheckStocksOnLaterDate.addCriteria(criteria);
-
-		Update updateStock = new Update();
-		// Increment the total stock
-		updateStock.inc(TOTAL_STOCK, stockRequest.getOpeningStock() - stockRequest.getClosingStock());
-
-		// Update all records matching query with total stock
-		UpdateResult updateResult = mongoTemplate.updateMulti(queryToCheckStocksOnLaterDate, updateStock, Stock.class);
-
-		System.out.println("Updates Matched to: " + updateResult.getMatchedCount());
-		System.out.println("Updates Done to: " + updateResult.getModifiedCount());
-	}
-
-	/**
-	 * Gets all.
-	 *
-	 * @param pageNum  the page num
-	 * @param size     the size
-	 * @param sortType the sort type
-	 * @return the all
-	 */
-	public Page<Stock> getAll(int pageNum, int size, String sortType) {
-		return stocksRepository.findAll(pageRequestFor(pageNum, size, sortType, STOCK_DATE));
-	}
-
+	
 	/**
 	 * Find by shop and stock date less than equal page.
 	 *

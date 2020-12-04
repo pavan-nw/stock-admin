@@ -11,7 +11,7 @@ import {
     SET_CLOSE_STOCK,
     CLEAR_CURRENT_STOCK,
     Product,
-    LocalPackaging,
+    LocalPackaging
 } from './types';
 
 const product: Product = {
@@ -34,11 +34,11 @@ const currentStock: StockDetails = {
     closingStocks: 0,
     openingStocks: 0,
 };
+
 const initialState: StockState = {
     stockState: {
         stocks: [],
-        showEditDialog: false,
-        currentStock: currentStock,
+        currentStock: currentStock        
     },
 };
 
@@ -98,7 +98,7 @@ export default (state = initialState.stockState, action: StockActionTypes) => {
             return {
                 ...state,
                 currentStock: currentStock,
-            };
+            };        
         default:
             return state;
     }
