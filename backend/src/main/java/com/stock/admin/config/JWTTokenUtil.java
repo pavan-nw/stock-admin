@@ -5,11 +5,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
+import com.stock.admin.utils.CustomUserDetail;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -39,6 +37,11 @@ public class JWTTokenUtil implements Serializable {
 		final Claims claims = getAllClaimsFromToken(token);
 		return claimsResolver.apply(claims);
 	}
+	
+	public Object getClaimFromToken(String token, String key) {
+		final Claims claims = getAllClaimsFromToken(token);
+		return claims!=null ? claims.get(key):null;
+	}
     //for retrieving any information from token we will need the secret key
 	private Claims getAllClaimsFromToken(String token) {
 		try {
@@ -57,9 +60,10 @@ public class JWTTokenUtil implements Serializable {
 	}
 
 	//generate token for user
-	public String generateToken(UserDetails userDetails) {
+	public String generateToken(CustomUserDetail userDetails,String shopCode) {
 		Map<String, Object> claims = new HashMap<>();
-		return doGenerateToken(claims, userDetails.getUsername());
+		claims.put("shopCode",shopCode);
+		return doGenerateToken(claims, userDetails.getUser().getUsername());
 	}
 
 	//while creating the token -
@@ -75,8 +79,14 @@ public class JWTTokenUtil implements Serializable {
 	}
 
 	//validate token
-	public boolean validateToken(String token, UserDetails userDetails) {
+	public boolean validateToken(String token, CustomUserDetail userDetails) {
 		final String username = getUsernameFromToken(token);
-		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+		final String shopCode = getShopCodeFromToken(token);
+		final boolean isValidShop = userDetails.getUser().getShopCodes().contains(shopCode);
+		return (username.equals(userDetails.getUser().getUsername()) && !isTokenExpired(token) && isValidShop);
+	}
+
+	private String getShopCodeFromToken(String token) {
+		return (String) getClaimFromToken(token, "shopCode");
 	}
 }
