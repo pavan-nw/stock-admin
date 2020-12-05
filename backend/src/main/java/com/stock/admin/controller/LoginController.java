@@ -29,7 +29,7 @@ import com.stock.admin.model.response.ResponseStatus;
 import com.stock.admin.repository.ShopsRepository;
 import com.stock.admin.repository.UserRepository;
 import static com.stock.admin.utils.StockAdminConstants.USER_DISABLED;
-import static com.stock.admin.utils.StockAdminConstants.INVALID_SHOPCODE;
+import static com.stock.admin.utils.StockAdminConstants.INVALID_SHOP_CODE;
 import static com.stock.admin.utils.StockAdminConstants.INVALID_CREDENTIALS;
 
 @RestController
@@ -143,7 +143,7 @@ public class LoginController {
 	private void validateShopCode(String shopCode) {
 		Shop shop = shopRepository.findByShopCode(shopCode);
 		if(shop==null) {
-			throw new StockAdminApplicationException(INVALID_SHOPCODE, HttpStatus.BAD_REQUEST);
+			throw new StockAdminApplicationException(INVALID_SHOP_CODE, HttpStatus.BAD_REQUEST);
 		}
 	}
 }

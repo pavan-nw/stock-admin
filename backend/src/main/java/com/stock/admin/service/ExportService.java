@@ -19,20 +19,29 @@ import com.stock.admin.model.entity.Stock;
 import com.stock.admin.repository.ShopsRepository;
 import com.stock.admin.repository.StocksRepository;
 import com.stock.admin.utils.HeaderFooterPageEvent;
-
 import static com.stock.admin.utils.Helper.pageRequestFor;
 import static com.stock.admin.utils.StockAdminConstants.SOMETHING_WENT_WRONG;
 import static com.stock.admin.utils.StockAdminConstants.STOCK_DATE;
 import static com.stock.admin.utils.StockAdminConstants.INVALID_SHOP_CODE;
 import static com.stock.admin.utils.StockAdminConstants.NO_STOCKS_FOUND;
-
+import static com.stock.admin.utils.StockAdminConstants.STOCK_DATE_LABEL;
+import static com.stock.admin.utils.StockAdminConstants.SL_NO;
+import static com.stock.admin.utils.StockAdminConstants.PRODUCT_NAME;
+import static com.stock.admin.utils.StockAdminConstants.PRODUCT_PACKAGING;
+import static com.stock.admin.utils.StockAdminConstants.STOCK_ADMIN;
+import static com.stock.admin.utils.StockAdminConstants.STOCK_REPORT;
+import static com.stock.admin.utils.StockAdminConstants.INCOMING_STOCK_COUNT;
+import static com.stock.admin.utils.StockAdminConstants.OUTGOING_STOCK_COUNT;
+import static com.stock.admin.utils.StockAdminConstants.TOTAL_STOCKS;
+import static com.stock.admin.utils.StockAdminConstants.EXPORTED_DATE;
+import static com.stock.admin.utils.StockAdminConstants.FROM_DATE;
+import static com.stock.admin.utils.StockAdminConstants.TO_DATE;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -43,12 +52,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ExportService {
+	
 	private final StocksRepository stocksRepository;
 	private final ShopsRepository shopsRepository;
-
 	private final Font bfBold12 = new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD, new BaseColor(0, 0, 0));
 	private final Font bf12 = new Font(FontFamily.TIMES_ROMAN, 12);
-
 	
 	/**
 	 * Instantiates a new export service.
@@ -138,32 +146,13 @@ public class ExportService {
 	 * @throws DocumentException the document exception
 	 */
 	private void updateInfoTable(PdfPTable infoTable, Date fromDate, Date toDate) {
-
-		PdfPCell exportedDateLabel = new PdfPCell(new Phrase("Exported Date :- ", bfBold12));
-		exportedDateLabel.setBorder(Rectangle.NO_BORDER);
-		exportedDateLabel.setHorizontalAlignment(Element.ALIGN_RIGHT);
-		infoTable.addCell(exportedDateLabel);
-		PdfPCell exportedDate = new PdfPCell(new Phrase(getDate(new Date(),"IST"), bfBold12));
-		exportedDate.setBorder(Rectangle.NO_BORDER);
-		exportedDate.setHorizontalAlignment(Element.ALIGN_LEFT);
-		infoTable.addCell(exportedDate);
-		PdfPCell fromDateLabel = new PdfPCell(new Phrase("From Date :- ", bfBold12));
-		fromDateLabel.setBorder(Rectangle.NO_BORDER);
-		fromDateLabel.setHorizontalAlignment(Element.ALIGN_RIGHT);
-		infoTable.addCell(fromDateLabel);
-		PdfPCell fromDateValue = new PdfPCell(new Phrase(getDate(fromDate,"UTC"), bfBold12));
-		fromDateValue.setBorder(Rectangle.NO_BORDER);
-		fromDateValue.setHorizontalAlignment(Element.ALIGN_LEFT);
-		infoTable.addCell(fromDateValue);
-		PdfPCell toDateLabel = new PdfPCell(new Phrase("To Date :- ", bfBold12));
-		toDateLabel.setBorder(Rectangle.NO_BORDER);
-		toDateLabel.setHorizontalAlignment(Element.ALIGN_RIGHT);
-		infoTable.addCell(toDateLabel);
-		PdfPCell toDateValue = new PdfPCell(new Phrase(getDate(toDate,"UTC"), bfBold12));
-		toDateValue.setBorder(Rectangle.NO_BORDER);
-		toDateValue.setHorizontalAlignment(Element.ALIGN_LEFT);
-		infoTable.addCell(toDateValue);
-
+		
+		insertCell(infoTable, EXPORTED_DATE, Element.ALIGN_RIGHT, 1, bfBold12, false,Rectangle.NO_BORDER);
+		insertCell(infoTable, getDate(new Date(),"IST"), Element.ALIGN_LEFT, 1, bfBold12, false,Rectangle.NO_BORDER);		
+		insertCell(infoTable, FROM_DATE, Element.ALIGN_RIGHT, 1, bfBold12, false,Rectangle.NO_BORDER);
+		insertCell(infoTable, getDate(fromDate,"UTC"), Element.ALIGN_LEFT, 1, bfBold12, false,Rectangle.NO_BORDER);
+		insertCell(infoTable, TO_DATE, Element.ALIGN_RIGHT, 1, bfBold12, false,Rectangle.NO_BORDER);
+		insertCell(infoTable, getDate(toDate,"UTC"), Element.ALIGN_LEFT, 1, bfBold12, false,Rectangle.NO_BORDER);
 	}
 
 	/**
@@ -173,11 +162,11 @@ public class ExportService {
 	 */
 	private void updateDocumentHeader(Document doc) {
 		// document header attributes
-		doc.addAuthor("Stock Admin");
+		doc.addAuthor(STOCK_ADMIN);
 		doc.addCreationDate();
 		doc.addProducer();
-		doc.addCreator("Stock Admin");
-		doc.addTitle("Stock Report");
+		doc.addCreator(STOCK_ADMIN);
+		doc.addTitle(STOCK_REPORT);
 		doc.setPageSize(PageSize.A4);
 
 	}
@@ -195,13 +184,13 @@ public class ExportService {
 		stocksTable.setWidthPercentage(90f);
 
 		// insert column headings
-		insertCell(stocksTable, "Sl.no", Element.ALIGN_RIGHT, 1, bfBold12, true);
-		insertCell(stocksTable, "Product Name", Element.ALIGN_LEFT, 1, bfBold12, true);
-		insertCell(stocksTable, "Product Packaging", Element.ALIGN_RIGHT, 1, bfBold12, true);
-		insertCell(stocksTable, "Stock Date", Element.ALIGN_RIGHT, 1, bfBold12, true);
-		insertCell(stocksTable, "Incoming Stock Count", Element.ALIGN_RIGHT, 1, bfBold12, true);
-		insertCell(stocksTable, "Outgoing Stock Count", Element.ALIGN_RIGHT, 1, bfBold12, true);
-		insertCell(stocksTable, "Total Stocks", Element.ALIGN_RIGHT, 1, bfBold12, true);
+		insertCell(stocksTable, SL_NO, Element.ALIGN_RIGHT, 1, bfBold12, true,Rectangle.BOX);
+		insertCell(stocksTable, PRODUCT_NAME, Element.ALIGN_LEFT, 1, bfBold12, true,Rectangle.BOX);
+		insertCell(stocksTable, PRODUCT_PACKAGING, Element.ALIGN_RIGHT, 1, bfBold12, true,Rectangle.BOX);
+		insertCell(stocksTable, STOCK_DATE_LABEL, Element.ALIGN_RIGHT, 1, bfBold12, true,Rectangle.BOX);
+		insertCell(stocksTable, INCOMING_STOCK_COUNT, Element.ALIGN_RIGHT, 1, bfBold12, true,Rectangle.BOX);
+		insertCell(stocksTable, OUTGOING_STOCK_COUNT, Element.ALIGN_RIGHT, 1, bfBold12, true,Rectangle.BOX);
+		insertCell(stocksTable, TOTAL_STOCKS, Element.ALIGN_RIGHT, 1, bfBold12, true,Rectangle.BOX);
 		stocksTable.setHeaderRows(1);
 
 		Integer slno = 1;
@@ -215,13 +204,13 @@ public class ExportService {
 		}
 
 		for (Stock stock : stocks.getContent()) {
-			insertCell(stocksTable, slno.toString(), Element.ALIGN_RIGHT, 1, bf12, false);
-			insertCell(stocksTable, stock.getProduct().getName(), Element.ALIGN_LEFT, 1, bf12, false);
-			insertCell(stocksTable, stock.getProduct().getPackaging(), Element.ALIGN_RIGHT, 1, bf12, false);
-			insertCell(stocksTable, getDate(stock.getStockDate(),"UTC"), Element.ALIGN_RIGHT, 1, bf12, false);
-			insertCell(stocksTable, String.valueOf(stock.getOpeningStock()), Element.ALIGN_RIGHT, 1, bf12, false);
-			insertCell(stocksTable, String.valueOf(stock.getClosingStock()), Element.ALIGN_RIGHT, 1, bf12, false);
-			insertCell(stocksTable, String.valueOf(stock.getTotalStock()), Element.ALIGN_RIGHT, 1, bf12, false);
+			insertCell(stocksTable, slno.toString(), Element.ALIGN_RIGHT, 1, bf12, false,Rectangle.BOX);
+			insertCell(stocksTable, stock.getProduct().getName(), Element.ALIGN_LEFT, 1, bf12, false,Rectangle.BOX);
+			insertCell(stocksTable, stock.getProduct().getPackaging(), Element.ALIGN_RIGHT, 1, bf12, false,Rectangle.BOX);
+			insertCell(stocksTable, getDate(stock.getStockDate(),"UTC"), Element.ALIGN_RIGHT, 1, bf12, false,Rectangle.BOX);
+			insertCell(stocksTable, String.valueOf(stock.getOpeningStock()), Element.ALIGN_RIGHT, 1, bf12, false,Rectangle.BOX);
+			insertCell(stocksTable, String.valueOf(stock.getClosingStock()), Element.ALIGN_RIGHT, 1, bf12, false,Rectangle.BOX);
+			insertCell(stocksTable, String.valueOf(stock.getTotalStock()), Element.ALIGN_RIGHT, 1, bf12, false,Rectangle.BOX);
 			slno++;
 		}
 
@@ -250,7 +239,7 @@ public class ExportService {
 	 * @param font the font
 	 * @param isHeader the is header
 	 */
-	private void insertCell(PdfPTable table, String text, int align, int colspan, Font font, boolean isHeader) {
+	private void insertCell(PdfPTable table, String text, int align, int colspan, Font font, boolean isHeader,int border) {
 
 		// create a new cell with the specified Text and Font
 		PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font));
@@ -259,6 +248,7 @@ public class ExportService {
 		}
 		// set the cell alignment
 		cell.setHorizontalAlignment(align);
+		cell.setBorder(border);
 		// set the cell column span in case you want to merge two or more cells
 		cell.setColspan(colspan);
 		// in case there is no text and you wan to create an empty row
