@@ -13,7 +13,6 @@ import {
 } from '../../helpers/constants';
 import axiosInstance from '../../config/axiosConfig';
 import { checkSuccess, getErrorMessageToShow } from '../../helpers/utils';
-import { createProduct } from '../products/actions';
 import { authenticate, clearSession } from './actions';
 
 export const login = (
@@ -34,7 +33,7 @@ export const login = (
             password,
             shopCode,
         };
-        const response = await axiosInstance.post('/login', loginRequest);
+        const response = await axiosInstance.post('/users/login', loginRequest);
         const responseJson = await response.data;
         if (checkSuccess(responseJson)) {
             // responseJson.payload.token to be handled

@@ -62,6 +62,9 @@ public interface StockAdminConstants {
 	/** The api users. */
 	String API_USERS = "/api/users/**";
 	
+	/** The api users. */
+	String API_GET_SHOPCODES = "/api/shops";
+	
 	/** The token expiry hours. */
 	int TOKEN_EXPIRY_HOURS = 5;
 }
