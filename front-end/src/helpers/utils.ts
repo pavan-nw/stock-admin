@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import axiosInstance from '../config/axiosConfig';
 import { Product } from '../features/stocks/types';
 
 export const getErrorMessageToShow: any = (e: any) => {
@@ -23,6 +24,11 @@ export const setSessionInfo = (
     Cookies.set('token', token);
     Cookies.set('username', username);
     Cookies.set('shopCode', shopCode);
+    const headers= {
+        'content-type': 'application/json',
+        'Authorization':'Bearer '+ token
+    }
+    axiosInstance.defaults.headers= headers
 };
 
 export const clearSessionInfo = (): void => {
@@ -39,8 +45,8 @@ export const isLoggedIn = (): boolean => {
     );
 };
 
-export const getTokenFromCookie = (): string | undefined => {
-    return Cookies.get('username');
+export const getTokenFromCookie = (): string | undefined => {    
+    return Cookies.get('token');
 };
 
 export const getUsernameFromCookie = (): string | undefined => {
