@@ -12,7 +12,7 @@ Project structure consists of
 ### Steps to set up this project - Server Side
 1. Checkout this project.
 3. Allow maven to load all required dependencies.
-4. Run\Debug `StockAdminApplication.java` main function
+4. Run\Debug `StockAdminApplication.java` main function.
 
 All the client code is `\front-end` directory.
 
