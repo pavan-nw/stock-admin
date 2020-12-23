@@ -4,6 +4,7 @@ before_install:
   - cd ./front-end
   - npm install
   - npm run build
+  - cd ..
 before_script:
   - cp -R ./front-end/build/ ./src/main/resources/static/
 script: mvn package -DskipTests
