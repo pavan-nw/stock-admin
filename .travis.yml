@@ -7,6 +7,7 @@ before_install:
   - cd ..
 before_script:
   - cp -R ./front-end/build/ ./src/main/resources/static/
+  - pwd
 script: mvn package -DskipTests
 
 
