@@ -49,7 +49,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./",
     "fix": "eslint --ext .js,.jsx,.ts,.tsx  --fix ./",
-    "copyWeb": "cp -R ./build/static ../src/main/resources/static && cp ./build/*.* ../src/main/resources/*"
+    "copyWeb": "cp -R ./build/ ../src/main/resources/public"
   },
   "eslintConfig": {
     "extends": "react-app"
