@@ -59,12 +59,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// dont authenticate this particular request
 				.authorizeRequests().
 				antMatchers(HttpMethod.GET,API_USERS).permitAll().
+				antMatchers(HttpMethod.POST,API_USERS).permitAll().
 				antMatchers(HttpMethod.GET,API_GET_SHOPCODES).permitAll().
 				antMatchers(HttpMethod.GET,"/*.json").permitAll().
 				antMatchers(HttpMethod.GET,"/*.ico").permitAll().
 				antMatchers(HttpMethod.GET,"/*.png").permitAll().
-//				antMatchers(HttpMethod.GET,"/js/**").permitAll().
-//				antMatchers(HttpMethod.GET,"/css/**").permitAll().
 				antMatchers(HttpMethod.GET,"/static/css/**").permitAll().
 				antMatchers(HttpMethod.GET,"/static/js/**").permitAll().
 				antMatchers(HttpMethod.GET,"/static/media/**").permitAll().
