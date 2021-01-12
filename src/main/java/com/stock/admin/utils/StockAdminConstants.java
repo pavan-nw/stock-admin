@@ -55,8 +55,11 @@ public interface StockAdminConstants {
 	/** The invalid credentials. */
 	String INVALID_CREDENTIALS = "INVALID_CREDENTIALS";
 
-	/** The api users. */
-	String ROOT_URL = "/";
+	/** The root url. */
+	String ROOT_URL = "/**";
+
+	/** The api endpoints. */
+	String API_URL = "/api/**";
 
 	/** The api users. */
 	String API_USERS = "/api/users/**";
