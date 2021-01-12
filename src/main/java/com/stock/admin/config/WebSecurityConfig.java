@@ -59,7 +59,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// dont authenticate this particular request
 				.authorizeRequests().antMatchers(API_USERS).permitAll().
 				antMatchers(HttpMethod.GET,API_GET_SHOPCODES).permitAll().
-				antMatchers(HttpMethod.GET,ROOT_URL).permitAll().
+				antMatchers(HttpMethod.GET,"/*.json").permitAll().
+				antMatchers(HttpMethod.GET,"/*.ico").permitAll().
+				antMatchers(HttpMethod.GET,"/*.png").permitAll().
+//				antMatchers(HttpMethod.GET,"/js/**").permitAll().
+//				antMatchers(HttpMethod.GET,"/css/**").permitAll().
+				antMatchers(HttpMethod.GET,"/static/css/**").permitAll().
+				antMatchers(HttpMethod.GET,"/static/js/**").permitAll().
+				antMatchers(HttpMethod.GET,"/static/media/**").permitAll().
+				antMatchers(HttpMethod.GET, ROOT_URL).permitAll().
 				// all other requests need to be authenticated
 				anyRequest().authenticated().and().
 				// make sure we use stateless session; session won't be used to

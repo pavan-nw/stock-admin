@@ -17,3 +17,5 @@ target/
 
 /front-enb/node_modules
 /front-enb/build
+
+/src/main/resources/static/*
