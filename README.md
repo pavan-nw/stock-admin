@@ -4,8 +4,8 @@
 Stock Administrator is application built with spring boot, mongo db, react, redux and typescript which enables user to keep track of daily stocks coming into their shop and query the the stocks inforrmation for given date.
 
 Project structure consists of
-1. design -> All the design information goes here
-2. frontend -> Front end project built with react, redux goes here
+1. design -> All the design information goes here.
+2. frontend -> Front end project built with react, redux goes here.
 
 #### This project is bootstrapped with spring boot initializer, runs with Java 8 and maven installed
 
