@@ -7,7 +7,7 @@ Project structure consists of
 1. design -> All the design information goes here.
 2. frontend -> Front end project built with react, redux goes here.
 
-#### This project is bootstrapped with spring boot initializer, runs with Java 8 and maven installed
+#### This project is bootstrapped with spring boot initializer, runs with Java 8 and maven installed.
 
 ### Steps to set up this project - Server Side
 1. Checkout this project.
