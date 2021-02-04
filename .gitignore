@@ -14,3 +14,9 @@ target/
 /.settings
 /.classpath
 /.project
+
+/front-enb/node_modules
+/front-enb/build
+
+/src/main/resources/public/static/*
+/src/main/resources/public/*
