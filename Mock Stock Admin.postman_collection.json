@@ -1,0 +1,741 @@
+{
+	"info": {
+		"_postman_id": "87d154a3-e383-4741-95d1-fb9b59b5aa72",
+		"name": "Stock Admin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"product\",\n    \"product\": {\n        \"name\": \"Product 1\",\n        \"packaging\": \"1 Kg\",\n        \"shopCode\": \"SHOP01\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products",
+					"protocol": "https",
+					"host": [
+						"69a1fe93-bc85-4be9-903e-4f0cf01e3aaf",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Create product with 500",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"product\",\n    \"product\": {\n        \"name\": \"Product 1\",\n        \"packaging\": \"\",\n        \"shopCode\": \"\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products",
+							"protocol": "https",
+							"host": [
+								"69a1fe93-bc85-4be9-903e-4f0cf01e3aaf",
+								"mock",
+								"pstmn",
+								"io"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n\t\"type\": \"error\",\n        \"status\": \"Failure\",\n\t\"payload\": {\n\t      \"errorCode\": 500,\n              \"errorMessage\": \"Unexpected error occufed\"\n        }\n\t\n}"
+				},
+				{
+					"name": "Create product",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"product\",\n    \"product\": {\n        \"name\": \"Product 1\",\n        \"packaging\": \"1 Kg\",\n        \"shopCode\": \"SHOP01\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products",
+							"protocol": "https",
+							"host": [
+								"69a1fe93-bc85-4be9-903e-4f0cf01e3aaf",
+								"mock",
+								"pstmn",
+								"io"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"type\": \"product\",\n    \"status\": \"Success\",\n    \"payload\": {\n        \"id\": \"1\",\n        \"code\": \"PRODUCT001\",\n        \"name\": \"Product 1\",\n        \"packaging\": \"1 Kg\",\n        \"shopCode\": \"SHOP01\",\n        \"createdat\": \"1600350010\",\n        \"updatedat\": \"1600350060\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get all products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products",
+					"protocol": "https",
+					"host": [
+						"69a1fe93-bc85-4be9-903e-4f0cf01e3aaf",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get all products",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products",
+							"protocol": "https",
+							"host": [
+								"69a1fe93-bc85-4be9-903e-4f0cf01e3aaf",
+								"mock",
+								"pstmn",
+								"io"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"status": "Ok",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 17 Sep 2020 13:45:59 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "278"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "x-srv-trace",
+							"value": "v=1;t=f5025376c8acec5e"
+						},
+						{
+							"key": "x-srv-span",
+							"value": "v=1;s=ced7e311f68cbb96"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "120"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "119"
+						},
+						{
+							"key": "X-RateLimit-Reset",
+							"value": "1600350419"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"116-43lkLpvqVNs8wHBOUWWw5H3CB0M\""
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"type\": \"product\",\n    \"status\": \"Success\",\n    \"payload\": [\n        {\n        \"id\": \"1\",\n        \"code\": \"PRODUCT001\",\n        \"name\": \"Product 1\",\n        \"packaging\": \"1 Kg\",\n        \"shopCode\": \"SHOP01\",\n        \"createdat\": \"1600350010\",\n        \"updatedat\": \"1600350060\"\n    },\n    {\n        \"id\": \"2\",\n        \"code\": \"PRODUCT002\",\n        \"name\": \"Product 2\",\n        \"packaging\": \"2 Kg\",\n        \"shopCode\": \"SHOP01\",\n        \"createdat\": \"1600350015\",\n        \"updatedat\": \"1600350065\"\n    }]\n}"
+				}
+			]
+		},
+		{
+			"name": "Get all products by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products/999",
+					"protocol": "https",
+					"host": [
+						"69a1fe93-bc85-4be9-903e-4f0cf01e3aaf",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"products",
+						"999"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get all products by Id with 404",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products/999",
+							"protocol": "https",
+							"host": [
+								"69a1fe93-bc85-4be9-903e-4f0cf01e3aaf",
+								"mock",
+								"pstmn",
+								"io"
+							],
+							"path": [
+								"products",
+								"999"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 17 Sep 2020 14:02:14 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "x-srv-trace",
+							"value": "v=1;t=f5025376c8acec5e"
+						},
+						{
+							"key": "x-srv-span",
+							"value": "v=1;s=ced7e311f68cbb96"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "120"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "119"
+						},
+						{
+							"key": "X-RateLimit-Reset",
+							"value": "1600350419"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"116-43lkLpvqVNs8wHBOUWWw5H3CB0M\""
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						}
+					],
+					"cookie": [],
+					"body": "{\n\t\"type\": \"error\",\n    \"status\": \"Failure\",\n\t\"payload\": {\n\t      \"errorCode\": 404,\n              \"errorMessage\": \"product dose not exist\"\n        }\n\t\n}"
+				},
+				{
+					"name": "Get all products by Id",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products/2",
+							"protocol": "https",
+							"host": [
+								"69a1fe93-bc85-4be9-903e-4f0cf01e3aaf",
+								"mock",
+								"pstmn",
+								"io"
+							],
+							"path": [
+								"products",
+								"2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 17 Sep 2020 13:51:11 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "x-srv-trace",
+							"value": "v=1;t=f5025376c8acec5e"
+						},
+						{
+							"key": "x-srv-span",
+							"value": "v=1;s=ced7e311f68cbb96"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "120"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "119"
+						},
+						{
+							"key": "X-RateLimit-Reset",
+							"value": "1600350419"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"116-43lkLpvqVNs8wHBOUWWw5H3CB0M\""
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"type\": \"product\",\n    \"status\": \"Success\",\n    \"payload\": \n        {\n            \"id\": \"2\",\n            \"code\": \"PRODUCT002\",\n            \"name\": \"Product 2\",\n            \"packaging\": \"2 Kg\",\n            \"shopCode\": \"SHOP01\",\n            \"createdat\": \"1600350015\",\n            \"updatedat\": \"1600350065\"\n        }\n    \n}"
+				}
+			]
+		},
+		{
+			"name": "Delete product",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products/2",
+					"protocol": "https",
+					"host": [
+						"69a1fe93-bc85-4be9-903e-4f0cf01e3aaf",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"products",
+						"2"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Delete product",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products/2",
+							"protocol": "https",
+							"host": [
+								"69a1fe93-bc85-4be9-903e-4f0cf01e3aaf",
+								"mock",
+								"pstmn",
+								"io"
+							],
+							"path": [
+								"products",
+								"2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 17 Sep 2020 13:52:53 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "x-srv-trace",
+							"value": "v=1;t=f5025376c8acec5e"
+						},
+						{
+							"key": "x-srv-span",
+							"value": "v=1;s=ced7e311f68cbb96"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "120"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "119"
+						},
+						{
+							"key": "X-RateLimit-Reset",
+							"value": "1600350419"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"116-43lkLpvqVNs8wHBOUWWw5H3CB0M\""
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"type\": \"product\",\n    \"status\": \"Success\",\n    \"payload\": {\n        \"id\": \"2\",\n        \"code\": \"PRODUCT002\",\n        \"name\": \"Product 2\",\n        \"packaging\": \"2 Kg\",\n        \"shopCode\": \"SHOP01\",\n        \"createdat\": \"1600350015\",\n        \"updatedat\": \"1600350065\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Update product",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"product\",\n    \"product\": {\n        \"name\": \"Product 11\",\n        \"packaging\": \"2 Kg\",\n        \"shopCode\": \"SHOP01\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products/1",
+					"protocol": "https",
+					"host": [
+						"69a1fe93-bc85-4be9-903e-4f0cf01e3aaf",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Update product",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"product\",\n    \"product\": {\n        \"name\": \"Product 11\",\n        \"packaging\": \"2 Kg\",\n        \"shopCode\": \"SHOP01\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products/1",
+							"protocol": "https",
+							"host": [
+								"69a1fe93-bc85-4be9-903e-4f0cf01e3aaf",
+								"mock",
+								"pstmn",
+								"io"
+							],
+							"path": [
+								"products",
+								"1"
+							]
+						}
+					},
+					"status": "Ok",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"type\": \"product\",\n    \"status\": \"Success\",\n    \"payload\": {\n        \"id\": \"1\",\n        \"code\": \"PRODUCT001\",\n        \"name\": \"Product 11\",\n        \"packaging\": \"2 Kg\",\n        \"shopCode\": \"SHOP01\",\n        \"createdat\": \"1600350010\",\n        \"updatedat\": \"1600350070\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Create product with 500 Error",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-mock-response-code",
+						"value": "500",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"product\",\n    \"product\": {\n        \"name\": \"Product 1\",\n        \"packaging\": \"\",\n        \"shopCode\": \"\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products",
+					"protocol": "https",
+					"host": [
+						"69a1fe93-bc85-4be9-903e-4f0cf01e3aaf",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Create product with 500",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"product\",\n    \"product\": {\n        \"name\": \"Product 1\",\n        \"packaging\": \"\",\n        \"shopCode\": \"\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products",
+							"protocol": "https",
+							"host": [
+								"69a1fe93-bc85-4be9-903e-4f0cf01e3aaf",
+								"mock",
+								"pstmn",
+								"io"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n\t\"type\": \"error\",\n        \"status\": \"Failure\",\n\t\"payload\": {\n\t      \"errorCode\": 500,\n              \"errorMessage\": \"Unexpected error occufed\"\n        }\n\t\n}"
+				},
+				{
+					"name": "Create product",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"product\",\n    \"product\": {\n        \"name\": \"Product 1\",\n        \"packaging\": \"1 Kg\",\n        \"shopCode\": \"SHOP01\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://69a1fe93-bc85-4be9-903e-4f0cf01e3aaf.mock.pstmn.io/products",
+							"protocol": "https",
+							"host": [
+								"69a1fe93-bc85-4be9-903e-4f0cf01e3aaf",
+								"mock",
+								"pstmn",
+								"io"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"type\": \"product\",\n    \"status\": \"Success\",\n    \"payload\": {\n        \"id\": \"1\",\n        \"code\": \"PRODUCT001\",\n        \"name\": \"Product 1\",\n        \"packaging\": \"1 Kg\",\n        \"shopCode\": \"SHOP01\",\n        \"createdat\": \"1600350010\",\n        \"updatedat\": \"1600350060\"\n    }\n}"
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"id": "9097b9f3-4a93-44ef-887f-5f436626c749",
+			"key": "host",
+			"value": "localhost"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
